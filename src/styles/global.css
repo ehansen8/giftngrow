@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.active-arrow {
+    background-color: red;
+    height: 40px;
+    width: 100px;
+    clip-path: polygon(10% 0% , 100% 0%, 100% 100%, 10% 100%, 0% 50%);
+}
