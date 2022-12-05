@@ -32,6 +32,7 @@ export default function Home() {
           sx={{ margin: 'auto' }}
         >
           <Grid
+            item
             xs={5}
             className='callout'
           >
@@ -82,6 +83,7 @@ export default function Home() {
             orientation='vertical'
           />
           <Grid
+            item
             xs={5}
             className='callout'
           >

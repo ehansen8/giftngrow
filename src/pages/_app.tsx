@@ -2,6 +2,7 @@ import { ThemeProvider } from '@mui/material'
 import type { AppProps } from 'next/app'
 import '../styles/global.scss'
 import { createTheme } from '@mui/material/styles'
+import { StyledEngineProvider } from '@mui/material/styles'
 
 export const colors = {
   dark: '#191919',
@@ -27,8 +28,10 @@ const theme = createTheme({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider theme={theme}>
-      <Component {...pageProps} />
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </StyledEngineProvider>
   )
 }
