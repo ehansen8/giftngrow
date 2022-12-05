@@ -1,0 +1,46 @@
+@tailwind components;
+@tailwind utilities;
+
+
+
+$dark: #191919;
+$darkBody: #314724;
+$darkGreen: #59923A;
+$green: #66B539;
+$greenLightGreen: #A7D685;
+$lightGreen: #E8F7D0;
+$light: #EEF0F2;
+
+body {
+    background-color: $darkGreen;
+    margin: 0;
+    padding: 0;
+    font: 13px/20px 'OFL Sorts Mill Goudy TT', Georgia, 'Times New Roman', serif;
+    color: $darkBody
+}
+
+@font-face {
+    font-family: 'Noto Serif', serif;
+    src: url('https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap');
+}
+
+h1 {
+    text-align: center;
+    color: $dark;
+    font-family: 'Noto Serif', serif;
+}
+
+
+
+.content {
+    background-color: $lightGreen;
+}
+
+.hero-active {
+    //background-color: $green 
+    background-image: linear-gradient(to right, $green 0%, $greenLightGreen 71%);
+}
+
+footer {
+    color: white
+}

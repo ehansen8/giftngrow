@@ -1,0 +1,23 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-giftngrow-dev-110002-authRole",
+      "UnauthRoleArn": "arn:aws:iam::568080482637:role/amplify-giftngrow-dev-110002-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::568080482637:role/amplify-giftngrow-dev-110002-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-giftngrow-dev-110002-deployment",
+      "UnauthRoleName": "amplify-giftngrow-dev-110002-unauthRole",
+      "StackName": "amplify-giftngrow-dev-110002",
+      "StackId": "arn:aws:cloudformation:us-east-1:568080482637:stack/amplify-giftngrow-dev-110002/7bc45d20-73fd-11ed-b020-0ab611811a4f",
+      "AmplifyAppId": "d9wizyppp16pj"
+    },
+    "categories": {
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d9wizyppp16pj",
+          "type": "cicd"
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,10 @@
+import { Button, Grid } from '@mui/material'
 import Head from 'next/head'
 import Hero from '../components/Hero'
 import NavBar from '../components/NavBar'
+import { Divider } from '@mui/material'
+import Image from 'next/image'
+import Footer from '../components/Footer'
 
 export default function Home() {
   return (
@@ -20,13 +24,24 @@ export default function Home() {
 
       <main>
         <Hero />
-        <div className='content'>
-          <div className='callout'>
+        <Grid
+          container
+          className='content'
+          justifyContent='space-evenly'
+          maxWidth='1000px'
+          sx={{ margin: 'auto' }}
+        >
+          <Grid
+            xs={5}
+            className='callout'
+          >
             <h1>What is a Gift 'n Grow Gift Bag, Gift Box or Gift Tag?</h1>
-            <div className='bordered-image'>
-              <img
+            <div className='bordered-image float-left mr-5 pb-2'>
+              <Image
                 alt=''
-                src='App_Themes/default/images/passiton.jpg'
+                src='/passiton.jpg'
+                width={148}
+                height={88}
               />
             </div>
             <p>
@@ -41,9 +56,14 @@ export default function Home() {
                 have gift tags that grow... wildflowers!!!!
               </span>
             </p>
-            <p>
-              <a href='http://www.giftngrow.com/passiton.aspx'>Learn more</a>
-            </p>
+            <div className='flex justify-center'>
+              <Button
+                variant='outlined'
+                href='/passiton.aspx'
+              >
+                Learn more
+              </Button>
+            </div>
             <p>&nbsp;</p>
             <p>
               <span
@@ -55,42 +75,50 @@ export default function Home() {
                 </b>
               </span>
             </p>
-          </div>
-          <div className='callout'>
+          </Grid>
+          <Divider
+            flexItem
+            variant='middle'
+            orientation='vertical'
+          />
+          <Grid
+            xs={5}
+            className='callout'
+          >
             <h1>10% of net profits donated to plant trees!</h1>
-            <div className='bordered-image'>
-              <img
+            <div className='float-left mr-5'>
+              <Image
                 alt=''
-                src='App_Themes/default/images/tree.jpg'
+                src='/tree.jpg'
+                width={148}
+                height={88}
               />
             </div>
             <p>
               <span style={{ fontSize: 16 }}>
                 Purchasing a 100% recycled Gift 'n Grow gift bag or recycled
                 gift box saves trees, water, landfill space, oil and
-                electricity. Passing it on helps even more.&nbsp;
+                electricity. Passing it on helps even more.
               </span>
             </p>
             <p>
-              <span
-                className='Apple-style-span'
-                style={{ fontSize: 16 }}
-              >
+              <span style={{ fontSize: 16 }}>
                 Gift 'n Grow takes it another step further and makes your gift
                 grow by donating a full 10% of net profits to forestry
-                organizations for new tree plantings. &nbsp;The recycled gift
-                bags and recycled gift boxes that keep on giving.
+                organizations for new tree plantings. The recycled gift bags and
+                recycled gift boxes that keep on giving.
               </span>
             </p>
-            <p>
-              <a href='/PlantingTrees.aspx'>Learn More</a>
-            </p>
-            <p>&nbsp;</p>
-            <p>&nbsp;</p>
+            <div className='flex justify-center'>
+              <Button
+                variant='outlined'
+                href='/PlantingTrees.aspx'
+              >
+                Learn more
+              </Button>
+            </div>
             <p style={{ marginBottom: 10 }}>
-              <span style={{ fontSize: 14 }}>
-                <strong>Wholesale Opportunities:</strong>
-              </span>
+              <strong>Wholesale Opportunities:</strong>
             </p>
             <p style={{ marginBottom: 10 }}>
               You too can encourage your customer to purchase with a pupose, by
@@ -103,58 +131,11 @@ export default function Home() {
               state, or country. They are available in a variety of sizes and
               designs and are perfect for any occasion.&nbsp;
             </p>
-          </div>
-        </div>
+          </Grid>
+        </Grid>
       </main>
 
-      <footer>
-        <div id='footer-contact'>
-          <img
-            src='/App_Themes/default/images/logo_footer.png'
-            alt="Gift 'n Grow"
-          />
-          <h3>Gift 'n Grow</h3>
-          <p>
-            P.O. Box 180553
-            <br />
-            Delafield, WI 53018
-            <br />
-            terri@giftngrow.com
-          </p>
-          <img
-            className='Gbsoa'
-            src='/App_Themes/default/images/GreenBusinessSealofApprovalTiny.gif'
-            alt='Green Business Seal of Approval'
-          />
-        </div>
-        <ul id='menu'>
-          <li>
-            <a href='https://www.giftngrow.com/about-us.aspx'>About Us</a>
-          </li>
-          <li>
-            <a href='https://www.giftngrow.com/terms.aspx'>
-              Terms and Conditions
-            </a>
-          </li>
-          <li>
-            <a href='https://www.giftngrow.com/privacy-policy.aspx'>
-              Privacy Policy
-            </a>
-          </li>
-          <li>
-            <a href='/ContactUs.aspx'>Contact Us</a>
-          </li>
-        </ul>
-        <p>Copyright © 2010 Gift ‘n Grow. All rights reserved.</p>
-        <p>
-          <a
-            href='http://www.facebook.com/pages/Gift-n-Grow/155791191130981'
-            target='_blank'
-          >
-            <img src='/App_Themes/default/images/social/Facebook.png' />
-          </a>
-        </p>
-      </footer>
+      <Footer />
     </div>
   )
 }

@@ -8,6 +8,8 @@ import {
   MenuItem,
 } from '@mui/material'
 import { Dancing_Script } from '@next/font/google'
+import { colors } from '../pages/_app'
+import Link from 'next/link'
 
 const ds = Dancing_Script({
   weight: '400',
@@ -21,7 +23,7 @@ export default function NavBar() {
     <header>
       <AppBar
         position='sticky'
-        sx={{ backgroundColor: 'green' }}
+        sx={{ backgroundColor: colors.darkGreen }}
       >
         <Toolbar disableGutters={false}>
           <Typography
@@ -29,6 +31,7 @@ export default function NavBar() {
             component='div'
             sx={{ flexGrow: 1 }}
             className={ds.className}
+            color='white'
           >
             Gift 'n Grow
           </Typography>
@@ -36,6 +39,7 @@ export default function NavBar() {
             <Button
               key={page}
               sx={{ color: 'white' }}
+              LinkComponent={Link}
             >
               {page}
             </Button>
