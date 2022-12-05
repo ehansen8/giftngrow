@@ -65,6 +65,7 @@ export default function Footer() {
         <div className='flex gap-1'>
           {links.map((link) => (
             <Button
+              key={link.url}
               href={link.url}
               variant='text'
               size='small'

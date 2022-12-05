@@ -50,6 +50,7 @@ export default function HeroStepper({
         const isActive = index == activeStep
         return (
           <Card
+            key={step.label}
             className={isActive ? 'hero-active' : ''}
             sx={{
               backgroundColor: colors.light,
