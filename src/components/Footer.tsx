@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { Button, SxProps } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
-import { colors } from '../pages/_app'
+import { colors } from '../colors'
 
 const links = [
   {

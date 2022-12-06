@@ -1,6 +1,34 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+$screen-sm-min: 600px;
+$screen-md-min: 900px;
+$screen-lg-min: 1200px;
+$screen-xl-min: 1536px;
+
+@mixin sm {
+    @media (min-width: #{$screen-sm-min}) {
+        @content;
+    }
+}
+
+@mixin md {
+    @media (min-width: #{$screen-md-min}) {
+        @content;
+    }
+}
+
+@mixin lg {
+    @media (min-width: #{$screen-lg-min}) {
+        @content;
+    }
+}
+
+@mixin xl {
+    @media (min-width: #{$screen-xl-min}) {
+        @content;
+    }
+}
 
 
 $dark: #191919;
@@ -31,10 +59,31 @@ h1 {
     font-family: 'Noto Serif', serif;
 }
 
+h2 {
+    color: $dark;
+    font-family: 'Noto Serif', serif;
+}
 
 
-.content {
+.hero {
+    background-color: #59923A;
+    max-width: 100%;
+}
+
+.hero-card {
+    background-color: $light;
+    border-radius: 1rem;
+    max-width: 100%;
+
+    @include md {
+        max-width: 335px;
+    }
+}
+
+main {
     background-color: $lightGreen;
+    max-width: 1000px;
+    margin: auto
 }
 
 .hero-active {

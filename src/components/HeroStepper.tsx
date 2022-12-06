@@ -1,20 +1,8 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import {
-  ButtonGroup,
-  Card,
-  CardActionArea,
-  CardContent,
-  CardHeader,
-  Chip,
-  Icon,
-  StepButton,
-  StepIcon,
-  useTheme,
-} from '@mui/material'
+import { Card, CardActionArea, CardContent, Chip } from '@mui/material'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
-import { colors } from '../pages/_app'
 
 const steps = [
   {
@@ -43,20 +31,16 @@ export default function HeroStepper({
 }) {
   return (
     <Box
-      className='flex flex-col justify-between'
+      className='flex flex-col justify-between mt-2 md:mt-0'
       sx={{ maxHeight: '300px' }}
+      gap={1}
     >
       {steps.map((step, index) => {
         const isActive = index == activeStep
         return (
           <Card
             key={step.label}
-            className={isActive ? 'hero-active' : ''}
-            sx={{
-              backgroundColor: colors.light,
-              borderRadius: 6,
-              width: '335px',
-            }}
+            className={`hero-card ${isActive ? 'hero-active' : ''}`}
             raised={true}
           >
             <CardActionArea onClick={() => handleClick(index as 0 | 1 | 2)}>

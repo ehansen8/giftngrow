@@ -1,5 +1,4 @@
 import { Grid, Stack, Button, Box } from '@mui/material'
-import { Container } from '@mui/system'
 import Image from 'next/image'
 import { useState } from 'react'
 import HeroStepper from './HeroStepper'
@@ -17,18 +16,33 @@ export default function Hero() {
   }
 
   return (
-    <Container className='flex my-4 items-stretch space-x-2 justify-center'>
-      <Image
-        className='rounded-md'
-        src={images[activeStep]}
-        alt='banner'
-        width={560}
-        height={300}
-      />
+    <Grid
+      container
+      className='hero flex py-4 items-stretch space-x-2 justify-center'
+    >
+      <Grid
+        item
+        xs={12}
+        md={5}
+        className='relative mx-2'
+        style={{
+          aspectRatio: 560 / 300,
+          maxWidth: '560px',
+          maxHeight: '300px',
+        }}
+      >
+        <Image
+          className='rounded-md'
+          src={images[activeStep]}
+          alt='banner'
+          fill
+          style={{ objectFit: 'cover' }}
+        />
+      </Grid>
       <HeroStepper
         activeStep={activeStep}
         handleClick={handleStep}
       />
-    </Container>
+    </Grid>
   )
 }
