@@ -32,10 +32,10 @@ const buttonStyle: SxProps = {
 export default function Footer() {
   return (
     <footer
-      className='flex flex-row justify-between mx-3'
+      className='flex flex-row justify-between mx-3 flex-wrap'
       style={{ maxWidth: '1000px', margin: 'auto' }}
     >
-      <div className='flex mt-4 items-center gap-2'>
+      <div className='flex mt-4 items-center gap-2 m-auto'>
         <Image
           className='-mt-6'
           src='/logo_footer.png'
@@ -43,7 +43,7 @@ export default function Footer() {
           width={84}
           height={105}
         />
-        <div className='flex flex-col'>
+        <div className='flex flex-col m-auto'>
           <h3 className='m-0'>Gift 'n Grow</h3>
           <p className='mt-2'>
             P.O. Box 180553
@@ -61,7 +61,7 @@ export default function Footer() {
           height={74}
         />
       </div>
-      <div className='flex flex-col items-center self-center'>
+      <div className='flex flex-col items-center self-center m-auto'>
         <div className='flex gap-1'>
           {links.map((link) => (
             <Button
