@@ -1,19 +1,23 @@
 import { Grid, Stack, Button, Box } from '@mui/material'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import HeroStepper from './HeroStepper'
 
-const images = {
-  0: '/PurchaseBanner.jpg',
-  1: '/recordYourID.jpg',
-  2: '/watchItGrow.jpg',
-}
+const images = ['/PurchaseBanner.jpg', '/recordYourID.jpg', '/watchItGrow.jpg']
 
 export default function Hero() {
-  const [activeStep, setActiveStep] = useState<0 | 1 | 2>(0)
-  const handleStep = (step: 0 | 1 | 2) => {
+  const [activeStep, setActiveStep] = useState<number>(0)
+  const handleStep = (step: number) => {
     setActiveStep(step)
   }
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setActiveStep((s) => (s + 1) % 3)
+    }, 8000)
+
+    return () => clearInterval(intervalId)
+  }, [])
 
   return (
     <Grid
@@ -32,10 +36,12 @@ export default function Hero() {
         }}
       >
         <Image
-          className='rounded-md'
+          key={activeStep}
+          className='rounded-md toggleIn'
           src={images[activeStep]}
           alt='banner'
           fill
+          priority={true}
           style={{ objectFit: 'cover' }}
         />
       </Grid>

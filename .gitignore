@@ -1,5 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+*.bak
+
 # dependencies
 /node_modules
 /.pnp
@@ -56,3 +58,7 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+client_secret_980892827601-7qe4ofpqck1scd19tj2kjlvo06vh86pf.apps.googleusercontent.com.json
+.vscode/launch.json
+CSVs/entries.csv
+CSVs/trackingCodes.csv

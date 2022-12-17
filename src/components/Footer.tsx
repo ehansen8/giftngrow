@@ -45,13 +45,7 @@ export default function Footer() {
         />
         <div className='flex flex-col m-auto'>
           <h3 className='m-0'>Gift 'n Grow</h3>
-          <p className='mt-2'>
-            P.O. Box 180553
-            <br />
-            Delafield, WI 53018
-            <br />
-            terri@giftngrow.com
-          </p>
+          <p className='mt-2'>Delafield, WI 53018</p>
         </div>
         <Image
           className='Gbsoa'
@@ -71,6 +65,7 @@ export default function Footer() {
               size='small'
               LinkComponent={Link}
               sx={buttonStyle}
+              className='text-center'
             >
               {link.label}
             </Button>

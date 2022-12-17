@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { ReactNode } from 'react'
 import Footer from './Footer'
 import NavBar from './NavBar'
+import { OneTap } from './OneTap'
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
@@ -17,6 +18,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           href='/favicon.ico'
         />
       </Head>
+      <OneTap />
       <NavBar />
       {children}
       <Footer />

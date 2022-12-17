@@ -1,20 +1,37 @@
 {
   "compilerOptions": {
+    "strictPropertyInitialization": false,
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "module": "esnext",
+    "module": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "types/google.d.ts",
+    "next-env.d.ts",
+    "additonal.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/utils/getEntriesFromCSV.js",
+    "src/utils/GNGBags.csv"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

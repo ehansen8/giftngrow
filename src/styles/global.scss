@@ -71,13 +71,24 @@ h2 {
 }
 
 .hero-card {
-    background-color: $light;
+
     border-radius: 1rem;
     max-width: 100%;
 
     @include md {
         max-width: 335px;
     }
+
+    background-color: $light;
+
+    transition-property: background-color;
+    transition-duration: 1.5s;
+    transition-timing-function: ease-out;
+}
+
+.hero-active {
+    background-color: transparent;
+    background-image: linear-gradient(to right, $green 0%, $greenLightGreen 71%);
 }
 
 main {
@@ -86,11 +97,22 @@ main {
     margin: auto
 }
 
-.hero-active {
-    //background-color: $green 
-    background-image: linear-gradient(to right, $green 0%, $greenLightGreen 71%);
-}
 
 footer {
     color: white
+}
+
+@keyframes fadein {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.toggleIn {
+    animation: fadein 1500ms;
+    opacity: 1;
 }

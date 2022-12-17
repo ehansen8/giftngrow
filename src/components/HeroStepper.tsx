@@ -26,12 +26,13 @@ export default function HeroStepper({
   activeStep,
   handleClick,
 }: {
-  activeStep: 0 | 1 | 2
-  handleClick: (idx: 0 | 1 | 2) => void
+  activeStep: number
+  handleClick: (idx: number) => void
 }) {
   return (
     <Box
-      className='flex flex-col justify-between mt-2 md:mt-0'
+      id='hero-stepper'
+      className='flex flex-col justify-between mt-2 md:mt-0 pr-2'
       sx={{ maxHeight: '300px' }}
       gap={1}
     >
@@ -43,12 +44,13 @@ export default function HeroStepper({
             className={`hero-card ${isActive ? 'hero-active' : ''}`}
             raised={true}
           >
-            <CardActionArea onClick={() => handleClick(index as 0 | 1 | 2)}>
-              <CardContent className='h-full flex flex-row items-center space-x-2 py-2'>
+            <CardActionArea onClick={() => handleClick(index)}>
+              <CardContent className='flex flex-row items-center py-2'>
                 {isActive ? (
-                  <ArrowBackIosNewIcon />
+                  <ArrowBackIosNewIcon className='mr-2' />
                 ) : (
                   <Chip
+                    className='mr-2'
                     label={index + 1}
                     variant='filled'
                     color='primary'
