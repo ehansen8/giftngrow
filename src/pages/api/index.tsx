@@ -5,7 +5,7 @@ import getEntriesFromCSV from '../../utils/getEntriesFromCSV'
 import { WriteBatch } from '@typedorm/core'
 import { TrackingCode } from '../../lib/entities/trackingCode.entity'
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function index(req: NextApiRequest, res: NextApiResponse) {
   const manager = batchManager
   const lines = getEntriesFromCSV() as TrackingCode[]
   //console.log(lines[0])

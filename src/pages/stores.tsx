@@ -187,7 +187,7 @@ export default function Stores() {
                   <div key={idx}>
                     <h3>{store}</h3>
                     {entries.map(([_, value]) => (
-                      <div>{value}</div>
+                      <div key={value}>{value}</div>
                     ))}
                   </div>
                 )

@@ -6,7 +6,7 @@ import { batchManager, entityManager } from '../../../lib/db'
 import getEntriesFromCSV from '../../../utils/getEntriesFromCSV'
 import { WriteBatch, BatchManager } from '@typedorm/core'
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function id(req: NextApiRequest, res: NextApiResponse) {
   const manager = entityManager
 
   // Needs ENTRY# because TrackingCode PK also starts with BAG#{{ID}}

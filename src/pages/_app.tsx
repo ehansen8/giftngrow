@@ -33,10 +33,6 @@ export default function App({
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>
           <QueryClientProvider client={queryClient}>
-            <Script
-              src='https://accounts.google.com/gsi/client'
-              strategy='beforeInteractive'
-            />
             <Layout>
               <Component {...pageProps} />
             </Layout>

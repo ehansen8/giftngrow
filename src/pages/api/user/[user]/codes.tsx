@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { entityManager } from '../../../../lib/db'
 import { TrackingCode } from '../../../../lib/entities/trackingCode.entity'
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function codes(req: NextApiRequest, res: NextApiResponse) {
   const { items } = await entityManager.find(
     TrackingCode,
     {

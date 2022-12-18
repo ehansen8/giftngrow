@@ -138,7 +138,12 @@ function CodeList({
   return (
     <>
       {data.map(({ code }) => (
-        <MenuItem onClick={() => handleClick(code)}>{code}</MenuItem>
+        <MenuItem
+          key={code}
+          onClick={() => handleClick(code)}
+        >
+          {code}
+        </MenuItem>
       ))}
     </>
   )

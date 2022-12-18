@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useSession, signIn, SignInOptions } from 'next-auth/react'
-import { debug } from 'console'
 
 interface OneTapSigninOptions {
   parentContainerId?: string
@@ -17,8 +16,6 @@ const useOneTapSignin = (
   const handleCallback = async (
     response: google.accounts.id.CredentialResponse,
   ) => {
-    debugger
-    console.log(response)
     signIn('googletest', { credential: response.credential, redirect: true })
   }
 

@@ -18,9 +18,12 @@ import { useState } from 'react'
 import { User } from '../lib/entities/user.entity'
 import { GoogleButton } from '../components/GoogleButton'
 import dynamic from 'next/dynamic'
+import { useSession } from 'next-auth/react'
 
 function Login() {
   const buttonWidth = '250'
+  //const { data: session } = useSession()
+
   return (
     <main
       className='p-4 rounded-md mt-4'

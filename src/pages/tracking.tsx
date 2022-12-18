@@ -8,7 +8,6 @@ import {
 } from '@mui/material'
 import { colors } from '../colors'
 import { useState } from 'react'
-import { Bag } from '../lib/entities/bag.entity'
 import Timeline from '@mui/lab/Timeline'
 import { timelineOppositeContentClasses } from '@mui/lab/TimelineOppositeContent'
 import TimelineEntry from '../components/TimelineEntry'
@@ -21,7 +20,6 @@ import { TrackingCode } from '../lib/entities/trackingCode.entity'
 import { User } from '../lib/entities/user.entity'
 import fetchCodes from '../services/fetchCodes'
 
-const evan = { name: 'Evan' }
 const cards = [
   {
     value: 43,
@@ -139,6 +137,8 @@ const BagTimeline = ({
   const entries = data
 
   return (
+    //TODO: why is this like this??
+    //@ts-ignore
     <Timeline
       className='px-0'
       position='right'
@@ -148,8 +148,13 @@ const BagTimeline = ({
         },
       }}
     >
-      {entries.map((entry) => {
-        return <TimelineEntry entry={entry} />
+      {entries.map((entry, idx) => {
+        return (
+          <TimelineEntry
+            key={idx}
+            entry={entry}
+          />
+        )
       })}
     </Timeline>
   )
