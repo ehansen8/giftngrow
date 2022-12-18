@@ -12,16 +12,4 @@ module.exports = {
     NEXT_PUBLIC_GOOGLE_ID: process.env.NEXT_PUBLIC_GOOGLE_ID,
     GOOGLE_SECRET: process.env.GOOGLE_SECRET,
   },
-  webpack: (config, options) => {
-    config.module.rules.push({
-      test: /\.csv$/,
-      loader: 'csv-loader',
-      options: {
-        dynamicTyping: true,
-        header: true,
-        skipEmptyLines: true
-      }
-    })
-    return config
-  }
 }

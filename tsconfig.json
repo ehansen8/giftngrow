@@ -28,8 +28,6 @@
     "additonal.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/utils/getEntriesFromCSV.js",
-    "src/utils/GNGBags.csv"
   ],
   "exclude": [
     "node_modules"
