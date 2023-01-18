@@ -1,4 +1,3 @@
-import { Attribute, AutoGenerateAttribute, AUTO_GENERATE_ATTRIBUTE_STRATEGY, Entity, INDEX_TYPE} from '@typedorm/common'
 import PK from '../../utils/primaryKeyProperty'
 import { Model } from './abcModel'
 
@@ -13,31 +12,21 @@ import { Model } from './abcModel'
 
 export class Entry extends Model{
   @PK
-  @Attribute()
   bagId: string  // BagCode
 
   /**AutoGen EPOCH */
-  @AutoGenerateAttribute({
+ /** @AutoGenerateAttribute({
     strategy: AUTO_GENERATE_ATTRIBUTE_STRATEGY.EPOCH_DATE,
-  })
+  }) */
   regDate: number
 
-  @Attribute()
   giverFN: string
-  @Attribute()
   giverCity: string
-  @Attribute()
   giverState: string
-  @Attribute()
   recipFN: string
-  @Attribute()
   recipCity: string
-  @Attribute()
   recipState: string
-  @Attribute()
   occasion: string
-  @Attribute()
   gift: string
-  @Attribute()
   comment: string
 }

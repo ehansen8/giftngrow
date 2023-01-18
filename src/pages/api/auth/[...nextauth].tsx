@@ -5,7 +5,6 @@ import { DynamoDBAdapter } from '@next-auth/dynamodb-adapter'
 import { DynamoDB } from '@aws-sdk/client-dynamodb'
 import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb'
 import { DynamoDBClientConfig } from '@aws-sdk/client-dynamodb'
-import { entityManager } from '../../../lib/db'
 import { User } from '../../../lib/entities/user.entity'
 
 const config: DynamoDBClientConfig = {
@@ -31,9 +30,9 @@ const authOptions = {
         const data = parseJWT(token as string)
         const { email, sub, name, given_name, family_name, email_verified } =
           data
-        let user = await entityManager.findOne(User, {
+        let user
+        /**let user = await entityManager.findOne(User, {
           email: email,
-        })
 
         //TODO: Redirect to custom signup screen for city/state/etc...
         if (!user) {
@@ -45,7 +44,9 @@ const authOptions = {
               state: 'AZ',
             }),
           )
+          
         }
+        */
         //console.log(user)
         return user as any
       },

@@ -1,4 +1,3 @@
-import { Attribute, AutoGenerateAttribute, AUTO_GENERATE_ATTRIBUTE_STRATEGY, Entity } from '@typedorm/common'
 import PK from '../../utils/primaryKeyProperty'
 import { Model } from './abcModel'
 

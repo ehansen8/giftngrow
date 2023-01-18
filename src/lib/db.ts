@@ -1,21 +1,28 @@
-import 'reflect-metadata';
-import {BatchManager, createConnection, EntityManager, getBatchManager, getEntityManager} from /* webpackIgnore: true */'@typedorm/core';
-import { User } from './entities/user.entity';
-import { INDEX_TYPE, Table } from '@typedorm/common';
-import {DynamoDB} from 'aws-sdk';
-import { Entry } from './entities/entry.entity';
-import { Bag } from './entities/bag.entity';
-import { TrackingCode } from './entities/trackingCode.entity';
+import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb"
+import { ddbClient } from "./ddbClient"
 
-const config: DynamoDB.ClientConfiguration = {
-  credentials: {
-    accessKeyId: process.env.DB_ACCESS_KEY_ID,
-    secretAccessKey: process.env.DB_SECRET_ACCESS_KEY,
-  },
-  region: 'us-east-2',
+const marshallOptions = {
+  // Whether to automatically convert empty strings, blobs, and sets to `null`.
+  convertEmptyValues: false, // false, by default.
+  // Whether to remove undefined values while marshalling.
+  removeUndefinedValues: true, // false, by default.
+  // Whether to convert typeof object to map attribute.
+  convertClassInstanceToMap: false, // false, by default.
 }
 
- 
+const unmarshallOptions = {
+  // Whether to return numbers as a string instead of converting them to native JavaScript numbers.
+  wrapNumbers: false, // false, by default.
+}
+
+// Create the DynamoDB document client.
+const ddbDocClient = DynamoDBDocumentClient.from(ddbClient, {
+  marshallOptions,
+  unmarshallOptions,
+})
+
+export { ddbDocClient }
+/*
 const gngTable = new Table({
     name: 'giftngrow.dev',
     partitionKey: 'PK',
@@ -27,18 +34,9 @@ const gngTable = new Table({
             sortKey: 'GSI1SK',
         }
     }
-});
+}); 
+*/
 
-
-try {
-  createConnection({
-  table: gngTable,
-  entities: [User,Bag,Entry,TrackingCode], // list other entities as you go
-  documentClient: new DynamoDB.DocumentClient(config)
-  })
-} catch (err) {
-  
-}
 
 
 
@@ -61,6 +59,3 @@ function getBatchManager() {
   }
   return manager
 } */
-
-export const batchManager = getBatchManager()
-export const entityManager = getEntityManager()

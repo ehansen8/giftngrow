@@ -1,12 +1,21 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { User } from '../../../lib/entities/user.entity'
-import { getBatchManager, getEntityManager, KeyCondition } from '@typedorm/core'
-import { Entry } from '../../../lib/entities/entry.entity'
-import { batchManager, entityManager } from '../../../lib/db'
-import { WriteBatch, BatchManager } from '@typedorm/core'
+import { QueryCommand, QueryCommandInput } from '@aws-sdk/lib-dynamodb'
+import { ddbDocClient } from '../../../lib/db'
 
 export default async function id(req: NextApiRequest, res: NextApiResponse) {
-  const manager = entityManager
+  const params: QueryCommandInput = {
+    TableName: 'giftngrow.dev',
+    KeyConditionExpression: 'PK = :PK and begins_with(SK, :SK)',
+    ExpressionAttributeValues: {
+      ':PK': `BAG#${req.query.id}`,
+      ':SK': 'ENTRY#',
+    },
+  }
+
+  const { Items } = await ddbDocClient.send(new QueryCommand(params))
+
+  res.json(Items)
+  /**const manager = entityManager
 
   // Needs ENTRY# because TrackingCode PK also starts with BAG#{{ID}}
   try {
@@ -18,5 +27,5 @@ export default async function id(req: NextApiRequest, res: NextApiResponse) {
     res.json(items)
   } catch (error) {
     res.json(error)
-  }
+  } */
 }
