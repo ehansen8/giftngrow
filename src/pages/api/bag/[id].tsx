@@ -9,10 +9,14 @@ export default async function id(req: NextApiRequest, res: NextApiResponse) {
   const manager = entityManager
 
   // Needs ENTRY# because TrackingCode PK also starts with BAG#{{ID}}
-  const { items } = await entityManager.find(
-    Entry,
-    { bagId: req.query.id },
-    { keyCondition: { BEGINS_WITH: 'ENTRY#' } },
-  )
-  res.json(items)
+  try {
+    const { items } = await entityManager.find(
+      Entry,
+      { bagId: req.query.id },
+      { keyCondition: { BEGINS_WITH: 'ENTRY#' } },
+    )
+    res.json(items)
+  } catch (error) {
+    res.json(error)
+  }
 }
