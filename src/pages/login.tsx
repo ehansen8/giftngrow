@@ -1,9 +1,5 @@
 import {
-  Box,
-  Toolbar,
   Typography,
-  AppBar,
-  IconButton,
   Button,
   Divider,
   TextField,
@@ -11,14 +7,8 @@ import {
   FormControlLabel,
   Link,
 } from '@mui/material'
-import AccountCircle from '@mui/icons-material/AccountCircle'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-import { colors } from '../colors'
-import { useState } from 'react'
-import { User } from '../lib/entities/user.entity'
 import { GoogleButton } from '../components/GoogleButton'
 import dynamic from 'next/dynamic'
-import { useSession } from 'next-auth/react'
 
 function Login() {
   const buttonWidth = '250'

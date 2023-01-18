@@ -1,14 +1,14 @@
 import PK from '../../utils/primaryKeyProperty'
 import { Model } from './abcModel'
 
-@Entity({
+/**@Entity({
   name: 'entry', // name of the entity that will be added to each item as an attribute
   // primary key
   primaryKey: {
     partitionKey: 'BAG#{{bagId}}',
     sortKey: 'ENTRY#{{regDate}}',
     },
-})
+}) */
 
 export class Entry extends Model{
   @PK
