@@ -7,5 +7,6 @@ declare namespace NodeJS {
     GOOGLE_SECRET: string
     COGNITO_CLIENT_ID: string
     COGNITO_USER_POOL_ID: string
+    NEXTAUTH_SECRET: string
   }
 }
