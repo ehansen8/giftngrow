@@ -45,8 +45,8 @@ const test_user = {
 }
 export default function Tracking() {
   const { data: session } = useSession()
-  //const user = session?.user
-  const user = test_user
+  const user = session?.user
+  //const user = test_user
   const [activeCode, setActiveCode] = useState<string | undefined>(undefined)
   const codesQuery = useQuery<TrackingCode[], AxiosError>(
     ['codes', user],
