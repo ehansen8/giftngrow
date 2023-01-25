@@ -47,10 +47,18 @@ body {
     color: $darkBody
 }
 
+@font-face {
+    font-family: 'Haakke';
+    src: local("HaakkeSlanted"), url('../../public/fonts/HaakkeSlanted.ttf') format('truetype');
+}
 
 @font-face {
     font-family: 'Noto Serif', serif;
     src: url('https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap');
+}
+
+.logo {
+    font-family: "Haakke";
 }
 
 h1 {

@@ -14,10 +14,13 @@ import AccountCircle from '@mui/icons-material/AccountCircle'
 import { colors } from '../colors'
 import { useState, useRef } from 'react'
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag'
+import PublicIcon from '@mui/icons-material/Public'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { UseQueryResult } from 'react-query'
 import { TrackingCode } from '../lib/entities/trackingCode.entity'
 import { AxiosError } from 'axios'
+import { useSession } from 'next-auth/react'
+import Link from 'next/link'
 
 export default function TrackingAppBar({
   codesQuery,
@@ -26,6 +29,8 @@ export default function TrackingAppBar({
   codesQuery: UseQueryResult<TrackingCode[], AxiosError>
   handleMenuClick: (code: string) => void
 }) {
+  const { data: session } = useSession()
+  const user = session?.user
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const anchorRef = useRef<HTMLButtonElement | null>(null)
   const handleOpenDropdown = () => {
@@ -46,26 +51,35 @@ export default function TrackingAppBar({
           className='flex justify-start gap-4'
           sx={{ flex: '1 1 0' }}
         >
-          <Button
-            ref={anchorRef}
-            onClick={handleOpenDropdown}
-            aria-haspopup='true'
-            sx={{ textTransform: 'none', color: 'black' }}
+          <Badge
+            className=''
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            badgeContent={codesQuery.data?.length}
+            slotProps={{
+              badge: {
+                //@ts-ignore For some reason it doesn't like these properties
+                sx: { color: colors.darkGreen, backgroundColor: 'white' },
+              },
+            }}
           >
-            <Badge
-              className='mr-1'
-              badgeContent={codesQuery.data?.length}
-              slotProps={{
-                badge: {
-                  //@ts-ignore For some reason it doesn't like these properties
-                  sx: { color: colors.darkGreen, backgroundColor: 'white' },
-                },
+            <Button
+              className='border-black px-1'
+              ref={anchorRef}
+              onClick={handleOpenDropdown}
+              variant='outlined'
+              aria-haspopup='true'
+              sx={{
+                textTransform: 'none',
+                color: 'black',
+                borderColor: 'black',
+                '&:hover': { borderColor: 'black' },
               }}
             >
-              <ShoppingBagIcon />
-            </Badge>
-            <ExpandMoreIcon />
-          </Button>
+              <PublicIcon className='mr-1' />
+              Code History
+              <ExpandMoreIcon />
+            </Button>
+          </Badge>
         </Box>
         <Menu
           open={!!anchorEl}
@@ -95,26 +109,50 @@ export default function TrackingAppBar({
           component='div'
           textAlign='center'
         >
-          Login
+          {user ? `Welcome, ${user?.name}` : '{No User Message}'}
         </Typography>
         <Box
           className='flex justify-end'
           sx={{ flex: '1 1 0' }}
         >
-          <IconButton
-            size='large'
-            edge='end'
-            aria-label='account settings'
-            aria-haspopup='true'
-            color='inherit'
-          >
-            <AccountCircle />
-          </IconButton>
+          {user ? <AccountButton /> : <LoginButton />}
         </Box>
       </Toolbar>
     </AppBar>
   )
 }
+
+const buttonStyle = {
+  fontSize: 15,
+  backgroundColor: colors.greenLightGreen,
+  '&:hover': {
+    backgroundColor: colors.light,
+  },
+}
+
+const LoginButton = () => (
+  <Button
+    className='rounded-full'
+    variant='contained'
+    LinkComponent={Link}
+    href={'/auth/login'}
+    sx={buttonStyle}
+  >
+    Login
+  </Button>
+)
+
+const AccountButton = () => (
+  <IconButton
+    size='large'
+    edge='end'
+    aria-label='account settings'
+    aria-haspopup='true'
+    color='inherit'
+  >
+    <AccountCircle />
+  </IconButton>
+)
 
 function CodeList({
   codesQuery,

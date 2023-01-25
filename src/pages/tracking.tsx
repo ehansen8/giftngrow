@@ -19,6 +19,8 @@ import fetchEntries from '../services/fetchEntries'
 import { TrackingCode } from '../lib/entities/trackingCode.entity'
 import { User } from '../lib/entities/user.entity'
 import fetchCodes from '../services/fetchCodes'
+import { getSession, useSession } from 'next-auth/react'
+import codes from './api/user/[user]/codes'
 
 const cards = [
   {
@@ -42,14 +44,15 @@ const test_user = {
   state: 'AZ',
 }
 export default function Tracking() {
-  const [user, setUser] = useState<User | undefined>(test_user as User)
+  const { data: session } = useSession()
+  //const user = session?.user
+  const user = test_user
   const [activeCode, setActiveCode] = useState<string | undefined>(undefined)
   const codesQuery = useQuery<TrackingCode[], AxiosError>(
     ['codes', user],
     () => fetchCodes(user as User),
     { enabled: !!user },
   )
-
   const entriesQuery = useQuery<Entry[], AxiosError>(
     ['entries', activeCode],
     () => fetchEntries(activeCode as string),
@@ -67,57 +70,13 @@ export default function Tracking() {
         style={{ backgroundColor: 'white' }}
       >
         <StatsGrid activeCode={activeCode} />
-        {!codesQuery.data && <NoBagsView />}
+        {(!codesQuery.data || codesQuery.data.length <= 0) && <NoBagsView />}
         <BagTimeline entriesQuery={entriesQuery} />
       </main>
     </>
   )
 }
 
-/* const entries = [
-  {
-    regDate: 1671747311000,
-    giverFN: 'Evan',
-    recipFN: 'Claire',
-    giverCity: 'Flagstaff',
-    recipCity: 'Milwaukee',
-    giverState: 'AZ',
-    recipState: 'WI',
-    gift: 'New Socks',
-    occasion: 'Christmas',
-    comment: 'Merry Christmas ligma nuts ',
-    bagId: '000081',
-    pk: '000081',
-  },
-  {
-    regDate: 1671747311000,
-    giverFN: 'Evan',
-    recipFN: 'Claire',
-    giverCity: 'Flagstaff',
-    recipCity: 'Milwaukee',
-    giverState: 'AZ',
-    recipState: 'WI',
-    gift: 'New Socks',
-    occasion: 'Christmas',
-    comment: 'Merry Christmas ligma nuts ',
-    bagId: '000081',
-    pk: '000081',
-  },
-  {
-    regDate: 1671747311000,
-    giverFN: 'Evan',
-    recipFN: 'Claire',
-    giverCity: 'Flagstaff',
-    recipCity: 'Milwaukee',
-    giverState: 'AZ',
-    recipState: 'WI',
-    gift: 'New Socks',
-    occasion: 'Christmas',
-    comment: 'Merry Christmas ligma nuts ',
-    bagId: '000081',
-    pk: '000081',
-  },
-] */
 const BagTimeline = ({
   entriesQuery,
 }: {
@@ -174,7 +133,7 @@ const StatsGrid = ({ activeCode }: { activeCode?: string }) => (
         color: colors.dark,
       }}
     >
-      {activeCode ? '# ' + activeCode : 'All Bag Stats'}
+      {activeCode ? 'Tracking Code: ' + activeCode : 'All Tracking Code Stats'}
     </Typography>
     <Grid
       className='mt-0'

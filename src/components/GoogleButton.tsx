@@ -1,8 +1,4 @@
-import { useRef, useEffect } from 'react'
-
 export function GoogleButton({ width }: { width: string }) {
-  debugger
-
   const renderButton = (parent: HTMLDivElement) => {
     const { google } = window
     if (google) {

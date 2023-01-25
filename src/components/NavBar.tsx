@@ -6,11 +6,10 @@ import {
   Box,
   IconButton,
   Menu,
-  MenuItem,
 } from '@mui/material'
 import { Dancing_Script } from '@next/font/google'
 import Link from 'next/link'
-import { MouseEvent, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { colors } from '../colors'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useRouter } from 'next/router'
@@ -22,9 +21,10 @@ const ds = Dancing_Script({
 
 const pages = [
   { label: 'Home', url: '/' },
+  { label: 'Shop', url: '/shop' },
   { label: 'Wholesale', url: '/wholesale' },
   { label: 'Stores', url: '/stores' },
-  { label: 'Press', url: '/press' },
+  { label: 'Track Codes', url: '/tracking' },
 ]
 
 const buttonStyle = {

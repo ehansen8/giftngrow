@@ -110,6 +110,18 @@ const EntryCard = ({ entry }: { entry: Entry }) => (
       >
         {entry.gift} for {entry.occasion}
       </Typography>
+      {entry.comment && (
+        <>
+          <Divider variant='middle' />
+          <Typography
+            className='rounded-md p-1 mr-1'
+            sx={{ backgroundColor: colors.lightGreen }}
+            variant='subtitle2'
+          >
+            {entry.comment}
+          </Typography>
+        </>
+      )}
     </CardContent>
   </Card>
 )

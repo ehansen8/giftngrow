@@ -7,9 +7,6 @@ const images = ['/PurchaseBanner.jpg', '/recordYourID.jpg', '/watchItGrow.jpg']
 
 export default function Hero() {
   const [activeStep, setActiveStep] = useState<number>(0)
-  const handleStep = (step: number) => {
-    setActiveStep(step)
-  }
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -45,10 +42,7 @@ export default function Hero() {
           style={{ objectFit: 'cover' }}
         />
       </Grid>
-      <HeroStepper
-        activeStep={activeStep}
-        handleClick={handleStep}
-      />
+      <HeroStepper activeStep={activeStep} />
     </Grid>
   )
 }

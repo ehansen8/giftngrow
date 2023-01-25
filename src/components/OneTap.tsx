@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSession, signIn, SignInOptions } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 interface OneTapSigninOptions {
   parentContainerId?: string
@@ -8,19 +9,30 @@ interface OneTapSigninOptions {
 const useOneTapSignin = (
   opt?: OneTapSigninOptions & Pick<SignInOptions, 'redirect' | 'callbackUrl'>,
 ) => {
-  const { status } = useSession()
-  const isSignedIn = status === 'authenticated'
   const { parentContainerId } = opt || {}
+  const { status } = useSession()
+  const router = useRouter()
+  // Loading status of the next-auth login process, not the useSession status
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleCallback = async (
-    response: google.accounts.id.CredentialResponse,
-  ) => {
-    signIn('googletest', { credential: response.credential, redirect: true })
-  }
+  //This handles loading & authenticated statuses
+  const needsSignIn = status === 'unauthenticated'
 
   useEffect(() => {
-    if (!isLoading && !isSignedIn) {
+    const handleCallback = async (
+      response: google.accounts.id.CredentialResponse,
+    ) => {
+      setIsLoading(true)
+      const res = await signIn('google', {
+        credential: response.credential,
+        redirect: false,
+      })
+      //TODO: error handling
+      router.push('/tracking')
+      setIsLoading(false)
+    }
+
+    if (!isLoading) {
       const { google } = window
       if (google) {
         google.accounts.id.initialize({
@@ -31,18 +43,20 @@ const useOneTapSignin = (
 
         // Here we just console.log some error situations and reason why the google one tap
         // is not displayed. You may want to handle it depending on yuor application
-        google.accounts.id.prompt((notification: any) => {
-          if (notification.isNotDisplayed()) {
-            console.log(notification.getNotDisplayedReason())
-          } else if (notification.isSkippedMoment()) {
-            console.log(notification.getSkippedReason())
-          } else if (notification.isDismissedMoment()) {
-            console.log(notification.getDismissedReason())
-          }
-        })
+        if (needsSignIn) {
+          google.accounts.id.prompt((notification: any) => {
+            if (notification.isNotDisplayed()) {
+              console.log(notification.getNotDisplayedReason())
+            } else if (notification.isSkippedMoment()) {
+              console.log(notification.getSkippedReason())
+            } else if (notification.isDismissedMoment()) {
+              console.log(notification.getDismissedReason())
+            }
+          })
+        }
       }
     }
-  }, [isLoading, isSignedIn, parentContainerId])
+  }, [isLoading, needsSignIn, parentContainerId, router])
 
   return { isLoading }
 }

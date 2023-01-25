@@ -43,9 +43,9 @@ export default function Footer() {
           width={84}
           height={105}
         />
-        <div className='flex flex-col m-auto'>
+        <div className='flex flex-col m-auto text-center'>
           <h3 className='m-0'>Gift 'n Grow</h3>
-          <p className='mt-2'>Delafield, WI 53018</p>
+          <p className='mt-2'>Delafield, WI</p>
         </div>
         <Image
           className='Gbsoa'

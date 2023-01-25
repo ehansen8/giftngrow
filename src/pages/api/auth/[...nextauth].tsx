@@ -1,57 +1,103 @@
-import NextAuth from 'next-auth'
+import NextAuth, { AuthOptions, DefaultUser } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import CognitoProvider from 'next-auth/providers/cognito'
 import { parseJWT } from '../../../utils/parseJWT'
 import { DynamoDBAdapter } from '@next-auth/dynamodb-adapter'
-import { DynamoDB } from '@aws-sdk/client-dynamodb'
 import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb'
-import { DynamoDBClientConfig } from '@aws-sdk/client-dynamodb'
 import { User } from '../../../lib/entities/user.entity'
+import { ddbClient } from '../../../lib/ddbClient'
+import { entityManager } from '../../../lib/entityManager'
+import { serverInitiateAuth } from '../../../lib/cognitoManager'
+import { getToken, JWT } from 'next-auth/jwt'
 
-const config: DynamoDBClientConfig = {
-  credentials: {
-    accessKeyId: process.env.DB_ACCESS_KEY_ID,
-    secretAccessKey: process.env.DB_SECRET_ACCESS_KEY,
-  },
-  region: 'us-east-2',
-}
-const adapter = DynamoDBAdapter(DynamoDBDocument.from(new DynamoDB(config)), {
+const adapter = DynamoDBAdapter(DynamoDBDocument.from(ddbClient), {
   tableName: 'giftngrow.dev',
 })
-
-const authOptions = {
+interface SpecialUser extends DefaultUser {
+  givenName?: string
+  familyName?: string
+}
+const authOptions: AuthOptions = {
   // Configure one or more authentication providers
   providers: [
     CredentialsProvider({
-      id: 'googletest',
-      name: 'google-test',
+      id: 'google',
+      name: 'Google',
       credentials: { credential: { type: 'text' } },
       authorize: async (credentials) => {
         const token = credentials?.credential
         const data = parseJWT(token as string)
-        const { email, sub, name, given_name, family_name, email_verified } =
-          data
-        let user
-        /**let user = await entityManager.findOne(User, {
+        const { email, name, given_name, family_name } = data
+        const user: SpecialUser = {
+          id: '',
           email: email,
-
-        //TODO: Redirect to custom signup screen for city/state/etc...
-        if (!user) {
-          user = await entityManager.create(
-            new User({
-              email: email as string,
-              firstName: given_name as string,
-              city: 'Test',
-              state: 'AZ',
-            }),
-          )
-          
+          givenName: given_name,
+          familyName: family_name,
+          name: given_name,
         }
-        */
-        //console.log(user)
-        return user as any
+        return user
+      },
+    }),
+    CredentialsProvider({
+      id: 'cognito',
+      name: 'Cognito',
+      credentials: {
+        email: {
+          label: 'email',
+          type: 'text',
+        },
+        password: {
+          label: 'password',
+          type: 'text',
+        },
+      },
+      authorize: async (credentials) => {
+        if (!credentials) {
+          return null
+        }
+        const res = await serverInitiateAuth({ ...credentials })
+        type Profile = {
+          given_name?: string
+          family_name?: string
+          email?: string
+        }
+        const profile: Profile = parseJWT(
+          res.AuthenticationResult?.IdToken as string,
+        )
+        const user: SpecialUser = {
+          id: '',
+          email: profile.email,
+          givenName: profile.given_name,
+          familyName: profile.family_name,
+          name: profile.given_name,
+        }
+        user.name = user.givenName + ' ' + user.familyName
+        return user
       },
     }),
   ],
+  debug: true,
+  callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      return true
+    },
+    async jwt({ token, user }: { token: JWT; user?: SpecialUser }) {
+      if (user && user.email) {
+        const dbUser = new User(user.email)
+        dbUser.firstName = user?.givenName
+
+        const foundUser = await entityManager.findOne(dbUser)
+        if (!foundUser) {
+          entityManager.create(dbUser)
+        }
+      }
+      token.maxAge = 0
+      return token
+    },
+    async session({ session, user, token }) {
+      return session
+    },
+  },
 }
 
 export default NextAuth(authOptions)
