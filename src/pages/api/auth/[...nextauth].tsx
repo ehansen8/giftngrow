@@ -19,9 +19,9 @@ interface SpecialUser extends DefaultUser {
 }
 const authOptions: AuthOptions = {
   // Configure one or more authentication providers
+  trustHost: true,
   providers: [
     CredentialsProvider({
-      trustHost: true
       id: 'google',
       name: 'Google',
       credentials: { credential: { type: 'text' } },
@@ -40,7 +40,6 @@ const authOptions: AuthOptions = {
       },
     }),
     CredentialsProvider({
-      trustHost: true,
       id: 'cognito',
       name: 'Cognito',
       credentials: {
