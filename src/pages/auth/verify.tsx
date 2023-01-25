@@ -41,7 +41,7 @@ function Verify() {
         code: code,
       })
       if (res.ok) {
-        router.push('/login')
+        router.push('/auth/login')
       }
       setErrorMessage(res.error)
     }
