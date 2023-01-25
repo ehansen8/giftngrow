@@ -18,8 +18,6 @@ interface SpecialUser extends DefaultUser {
   familyName?: string
 }
 const authOptions: AuthOptions = {
-  // Configure one or more authentication providers
-  trustHost: true,
   providers: [
     CredentialsProvider({
       id: 'google',
@@ -99,7 +97,6 @@ const authOptions: AuthOptions = {
       return session
     },
   },
-  secret: process.env.NEXTAUTH_SECRET,
 }
 
 export default NextAuth(authOptions)
