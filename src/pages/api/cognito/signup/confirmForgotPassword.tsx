@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { serverConfirmForgotPassword } from '../../../../../lib/cognitoManager'
+import { serverConfirmForgotPassword } from '../../../../lib/cognitoManager'
 
 export default async function handle(
   req: NextApiRequest,

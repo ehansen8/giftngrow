@@ -1,18 +1,16 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { serverConfirmSignUp } from '../../../../../lib/cognitoManager'
+import { serverSendCofirmationCode } from '../../../../lib/cognitoManager'
 
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  type ConfirmParams = {
+  type Params = {
     email: string
-    code: string
   }
-  const params = req.query as ConfirmParams
-
+  const params = req.query as Params
   try {
-    const data = await serverConfirmSignUp({ ...params })
+    const data = await serverSendCofirmationCode({ ...params })
     res.json({
       ok: true,
       error: '',

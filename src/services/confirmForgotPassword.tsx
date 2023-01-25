@@ -6,7 +6,7 @@ export async function confirmForgotPassword(params: {
   password: string
 }) {
   const { data } = await axios.get(
-    `/api/auth/cognito/signup/confirmForgotPassword`,
+    `/api/cognito/signup/confirmForgotPassword`,
     {
       params: { ...params },
     },

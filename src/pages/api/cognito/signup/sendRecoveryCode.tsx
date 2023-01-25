@@ -1,14 +1,16 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { SignUpParams } from '../../../../../../types/general'
-import { serverSignUp } from '../../../../../lib/cognitoManager'
+import { serverSendRecoveryCode } from '../../../../lib/cognitoManager'
 
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const params = req.query as SignUpParams
+  type Params = {
+    email: string
+  }
+  const params = req.query as Params
   try {
-    const data = await serverSignUp({ ...params })
+    const data = await serverSendRecoveryCode({ ...params })
     res.json({
       ok: true,
       error: '',
