@@ -118,7 +118,7 @@ const LoginForm = () => {
         type='email'
         autoComplete='email'
         onInput={(e) => setEmail((e.target as HTMLInputElement).value)}
-      ></TextField>
+      />
       <TextField
         InputProps={{ className: 'rounded-full' }}
         size='small'
@@ -126,7 +126,7 @@ const LoginForm = () => {
         type='password'
         autoComplete='current-password'
         onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
-      ></TextField>
+      />
       <div className='flex justify-between'>
         <FormControlLabel
           control={<Checkbox defaultChecked />}

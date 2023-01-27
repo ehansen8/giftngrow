@@ -67,7 +67,7 @@ export default function NavBar() {
           variant='h3'
           component='div'
           sx={{ flexGrow: 1, color: colors.light }}
-          className={ds.className}
+          className='logo' //ds.className
         >
           Gift 'n Grow
         </Typography>

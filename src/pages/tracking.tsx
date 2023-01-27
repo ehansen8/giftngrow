@@ -1,11 +1,5 @@
-import {
-  Typography,
-  Button,
-  Card,
-  CardContent,
-  Grid,
-  Alert,
-} from '@mui/material'
+import { Typography, Button, Card, CardContent, Grid } from '@mui/material'
+import Alert from '@mui/material/Alert'
 import { colors } from '../colors'
 import { useState } from 'react'
 import Timeline from '@mui/lab/Timeline'
@@ -20,7 +14,8 @@ import { TrackingCode } from '../lib/entities/trackingCode.entity'
 import { User } from '../lib/entities/user.entity'
 import fetchCodes from '../services/fetchCodes'
 import { getSession, useSession } from 'next-auth/react'
-import codes from './api/user/[user]/codes'
+import AddCodeModal from '../components/AddCodes/AddCodeModal'
+import { AppContext } from 'next/app'
 
 const cards = [
   {
@@ -46,7 +41,6 @@ const test_user = {
 export default function Tracking() {
   const { data: session } = useSession()
   const user = session?.user
-  //const user = test_user
   const [activeCode, setActiveCode] = useState<string | undefined>(undefined)
   const codesQuery = useQuery<TrackingCode[], AxiosError>(
     ['codes', user],
@@ -59,6 +53,8 @@ export default function Tracking() {
     { enabled: !!activeCode },
   )
 
+  const [open, setOpen] = useState(false)
+
   return (
     <>
       <TrackingAppBar
@@ -70,8 +66,14 @@ export default function Tracking() {
         style={{ backgroundColor: 'white' }}
       >
         <StatsGrid activeCode={activeCode} />
-        {(!codesQuery.data || codesQuery.data.length <= 0) && <NoBagsView />}
+        {(!codesQuery.data || codesQuery.data.length <= 0) && (
+          <NoBagsView handleClick={() => setOpen(true)} />
+        )}
         <BagTimeline entriesQuery={entriesQuery} />
+        <AddCodeModal
+          open={open}
+          setOpen={setOpen}
+        />
       </main>
     </>
   )
@@ -172,9 +174,14 @@ const StatsGrid = ({ activeCode }: { activeCode?: string }) => (
   </>
 )
 
-const NoBagsView = () => {
+const NoBagsView = ({ handleClick }: { handleClick: () => void }) => {
   return (
     <div className='flex flex-col items-center gap-3 mt-3'>
+      {
+        //Weird Hydration Error with this Alert.
+        //Fixed when strictmode is disabled
+        //Hmm seems to be fixed after a restart and strictmode is true again
+      }
       <Alert
         severity='info'
         variant='outlined'
@@ -183,7 +190,12 @@ const NoBagsView = () => {
         the button below!
       </Alert>
 
-      <Button variant='outlined'>Register Code</Button>
+      <Button
+        variant='outlined'
+        onClick={handleClick}
+      >
+        Register Code
+      </Button>
     </div>
   )
 }

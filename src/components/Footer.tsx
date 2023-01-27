@@ -6,10 +6,6 @@ import { colors } from '../colors'
 
 const links = [
   {
-    label: 'About Us',
-    url: '/about',
-  },
-  {
     label: 'Terms and Conditions',
     url: '/terms',
   },

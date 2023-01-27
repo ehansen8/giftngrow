@@ -8,7 +8,7 @@ import { User } from '../../../lib/entities/user.entity'
 import { ddbClient } from '../../../lib/ddbClient'
 import { entityManager } from '../../../lib/entityManager'
 import { serverInitiateAuth } from '../../../lib/cognitoManager'
-import { getToken, JWT } from 'next-auth/jwt'
+import { JWT } from 'next-auth/jwt'
 
 const adapter = DynamoDBAdapter(DynamoDBDocument.from(ddbClient), {
   tableName: 'giftngrow.dev',
@@ -70,7 +70,6 @@ const authOptions: AuthOptions = {
           familyName: profile.family_name,
           name: profile.given_name,
         }
-        user.name = user.givenName + ' ' + user.familyName
         return user
       },
     }),
@@ -90,7 +89,6 @@ const authOptions: AuthOptions = {
           entityManager.create(dbUser)
         }
       }
-      token.maxAge = 0
       return token
     },
     async session({ session, user, token }) {
