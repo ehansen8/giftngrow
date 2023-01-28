@@ -55,11 +55,16 @@ export default function Tracking() {
 
   const [open, setOpen] = useState(false)
 
+  function handleAddCode() {
+    setOpen(true)
+  }
+
   return (
     <>
       <TrackingAppBar
         codesQuery={codesQuery}
         handleMenuClick={(code: string) => setActiveCode(code)}
+        handleAddCode={handleAddCode}
       />
       <main
         className='py-4 rounded-md px-2'
@@ -67,7 +72,7 @@ export default function Tracking() {
       >
         <StatsGrid activeCode={activeCode} />
         {(!codesQuery.data || codesQuery.data.length <= 0) && (
-          <NoBagsView handleClick={() => setOpen(true)} />
+          <NoBagsView handleClick={handleAddCode} />
         )}
         <BagTimeline entriesQuery={entriesQuery} />
         <AddCodeModal
@@ -137,40 +142,52 @@ const StatsGrid = ({ activeCode }: { activeCode?: string }) => (
     >
       {activeCode ? 'Tracking Code: ' + activeCode : 'All Tracking Code Stats'}
     </Typography>
-    <Grid
+    <div
       className='mt-0'
-      container
-      justifyContent='space-around'
+      style={{
+        display: 'grid',
+        width: '100%',
+        height: 'max-content',
+        gridTemplateRows: 'repeat(1, auto)',
+        gridTemplateColumns: 'repeat(3, minmax(auto, max-content))',
+        justifyContent: 'space-around',
+      }}
     >
       {cards.map((card) => {
         return (
-          <Grid
+          <Card
             key={card.value}
-            item
-            xs={3}
-            className='w-auto'
+            sx={{
+              backgroundColor: '#41BEBB',
+              aspectRatio: '1/1',
+              height: '100%',
+            }}
+            elevation={4}
+            className='rounded-full'
           >
-            <Card
-              sx={{ backgroundColor: 'lightgrey' }}
-              elevation={3}
-            >
-              <CardContent className='!py-1 h-full'>
-                <div className='flex flex-col items-center'>
-                  <Typography variant='h6'>{card.value}</Typography>
-                  <Typography
-                    variant='body2'
-                    textAlign='center'
-                    noWrap
-                  >
-                    {card.body}
-                  </Typography>
-                </div>
-              </CardContent>
-            </Card>
-          </Grid>
+            <CardContent className='!p-2 h-full rounded-full'>
+              <div className='flex flex-col items-center h-full justify-center text-black'>
+                <Typography
+                  fontSize={18}
+                  variant='h6'
+                  className=''
+                >
+                  {card.value}
+                </Typography>
+                <Typography
+                  variant='body1'
+                  textAlign='center'
+                  noWrap
+                  className='mb-4'
+                >
+                  {card.body}
+                </Typography>
+              </div>
+            </CardContent>
+          </Card>
         )
       })}
-    </Grid>
+    </div>
   </>
 )
 
@@ -194,7 +211,12 @@ const NoBagsView = ({ handleClick }: { handleClick: () => void }) => {
         variant='outlined'
         onClick={handleClick}
       >
-        Register Code
+        <Typography
+          variant='button'
+          fontSize={15}
+        >
+          Add Code
+        </Typography>
       </Button>
     </div>
   )

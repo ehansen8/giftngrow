@@ -19,10 +19,10 @@ export default function GivingStep({
         label='First Name'
         type='text'
         autoComplete='off'
-        value={form.comment}
+        value={form.recipFN}
         onInput={(e) =>
           setForm((draft) => {
-            draft.comment = (e.target as HTMLInputElement).value
+            draft.recipFN = (e.target as HTMLInputElement).value
           })
         }
       />

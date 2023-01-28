@@ -3,6 +3,8 @@ import { Button, SxProps } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
 import { colors } from '../colors'
+import logo from '../../public/gng_logo.png'
+import logo_svg from '../../public/gng_logo.svg'
 
 const links = [
   {
@@ -28,30 +30,22 @@ const buttonStyle: SxProps = {
 export default function Footer() {
   return (
     <footer
-      className='flex flex-row justify-between mx-3 flex-wrap'
+      className='flex flex-row gap-3 flex-wrap pt-2 justify-around items-center'
       style={{ maxWidth: '1000px', margin: 'auto' }}
     >
-      <div className='flex mt-4 items-center gap-2 m-auto'>
+      <div className='flex  items-center gap-2 justify-center'>
         <Image
-          className='-mt-6'
-          src='/logo_footer.png'
+          className=''
+          src={logo_svg}
           alt="Gift 'n Grow"
-          width={84}
-          height={105}
+          height={90}
         />
-        <div className='flex flex-col m-auto text-center'>
+        <div className='flex flex-col text-center'>
           <h3 className='m-0'>Gift 'n Grow</h3>
           <p className='mt-2'>Delafield, WI</p>
         </div>
-        <Image
-          className='Gbsoa'
-          src='/GreenBusinessSealofApprovalTiny.png'
-          alt='Green Business Seal of Approval'
-          width={66}
-          height={74}
-        />
       </div>
-      <div className='flex flex-col items-center self-center m-auto'>
+      <div className='flex flex-col items-center self-center'>
         <div className='flex gap-1'>
           {links.map((link) => (
             <Button
@@ -69,6 +63,13 @@ export default function Footer() {
         </div>
         <p>Copyright © 2010 Gift ‘n Grow. All rights reserved.</p>
       </div>
+      <Image
+        className='Gbsoa'
+        src='/GreenBusinessSealofApprovalTiny.png'
+        alt='Green Business Seal of Approval'
+        width={66}
+        height={74}
+      />
     </footer>
   )
 }

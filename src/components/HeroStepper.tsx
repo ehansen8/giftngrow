@@ -9,20 +9,18 @@ const steps = [
   {
     label: 'Purchase',
     url: '/shop',
-    description:
-      'Eco-friendly, reusable gift bags and boxes. Made in USA from 100% recycled materials.',
+    description: 'Repurposed/upcycled, reusable gift wraps.',
   },
   {
-    label: 'Register',
+    label: 'Register Gift Wrap',
     url: '/tracking',
     description:
-      'Enter the ID found inside of a gift bag or gift box to record when you receive or gift it.',
+      'Enter the ID found inside of a gift wrap to record when you receive or give it.',
   },
   {
-    label: 'Watch it Grow!',
+    label: 'Videos',
     url: '#',
-    description:
-      'Follow the trail of your gift bag or gift box to see where it has been.',
+    description: 'View ways of wrapping with Gift ‘n Grow wrap.',
   },
 ]
 

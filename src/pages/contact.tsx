@@ -20,9 +20,10 @@ export default function Contact() {
       >
         <Button
           target='_top'
-          href='mailto:team@giftngrow.org'
+          href='mailto:team@giftngrow.com'
+          sx={{ textTransform: 'none' }}
         >
-          team@giftngrow.org
+          team@giftngrow.com
         </Button>
         <Divider>or</Divider>
         <TextField

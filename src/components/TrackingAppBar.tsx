@@ -13,8 +13,8 @@ import {
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import { colors } from '../colors'
 import { useState, useRef } from 'react'
-import ShoppingBagIcon from '@mui/icons-material/ShoppingBag'
 import PublicIcon from '@mui/icons-material/Public'
+import AddIcon from '@mui/icons-material/Add'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { UseQueryResult } from 'react-query'
 import { TrackingCode } from '../lib/entities/trackingCode.entity'
@@ -25,9 +25,11 @@ import Link from 'next/link'
 export default function TrackingAppBar({
   codesQuery,
   handleMenuClick,
+  handleAddCode,
 }: {
   codesQuery: UseQueryResult<TrackingCode[], AxiosError>
   handleMenuClick: (code: string) => void
+  handleAddCode: () => void
 }) {
   const { data: session } = useSession()
   const user = session?.user
@@ -48,7 +50,7 @@ export default function TrackingAppBar({
     >
       <Toolbar>
         <Box
-          className='flex justify-start gap-4'
+          className='flex justify-start gap-2'
           sx={{ flex: '1 1 0' }}
         >
           <Badge
@@ -80,6 +82,20 @@ export default function TrackingAppBar({
               <ExpandMoreIcon />
             </Button>
           </Badge>
+          <Button
+            className='border-black px-1'
+            onClick={handleAddCode}
+            variant='outlined'
+            sx={{
+              textTransform: 'none',
+              color: 'black',
+              borderColor: 'black',
+              '&:hover': { borderColor: 'black' },
+            }}
+          >
+            <AddIcon className='mr-1' />
+            Add Code
+          </Button>
         </Box>
         <Menu
           open={!!anchorEl}
