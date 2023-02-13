@@ -3,6 +3,8 @@ import {
   GetCommandInput,
   PutCommand,
   PutCommandInput,
+  QueryCommand,
+  QueryCommandInput,
 } from '@aws-sdk/lib-dynamodb'
 import { ddbDocClient } from './db'
 import { Model } from './entities/abcModel'
@@ -22,7 +24,20 @@ class EntityManager {
     const data = await ddbDocClient.send(new GetCommand(params))
     return data.Item as T
   }
-  find() {}
+
+  async find<T extends Model>(entity: T, useIndex = false) {
+    const params: QueryCommandInput = {
+      ...baseParams,
+      KeyConditionExpression: 'PK = :PK AND begins_with( SK, :SK)',
+      ExpressionAttributeValues: {
+        ':PK': entity.getPK(),
+        ':SK': entity.metadata.partialSortKey,
+      },
+    }
+
+    const data = await ddbDocClient.send(new QueryCommand(params))
+    return data.Items as T[]
+  }
 
   async create<T extends Model>(entity: T) {
     const params: PutCommandInput = {
@@ -31,12 +46,7 @@ class EntityManager {
       Item: entity.getDBObject(),
     }
 
-    try {
-      const data = await ddbDocClient.send(new PutCommand(params))
-    } catch (err) {
-      console.log(err)
-    }
-    return entity
+    return ddbDocClient.send(new PutCommand(params))
   }
 }
 

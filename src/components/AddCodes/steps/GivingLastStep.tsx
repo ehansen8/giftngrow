@@ -1,16 +1,12 @@
 import { TextField } from '@mui/material'
-import { Updater } from 'use-immer'
 import { AddCodeForm } from '../../../../types/general'
 import AddCodeContentWrapper from '../AddCodeContentWrapper'
+import { useForm } from '../AddCodeModal'
 
-export default function GivingStep({
-  form,
-  setForm,
-}: {
-  form: AddCodeForm
-  setForm: Updater<AddCodeForm>
-}) {
+export default function GivingStep() {
   const title = 'Who are you giving to?'
+  const { form, setForm, setValidationFn } = useForm()
+  setValidationFn(() => validate)
   return (
     <AddCodeContentWrapper title={title}>
       <TextField
@@ -96,4 +92,11 @@ export default function GivingStep({
       />
     </AddCodeContentWrapper>
   )
+}
+
+function validate(form: AddCodeForm) {
+  if (!form.recipFN) {
+    return 'Missing First Name'
+  }
+  return ''
 }

@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import Attribute from '../../utils/attribute.decorator'
+import Attribute, { AutoEpoch } from '../../utils/attribute.decorator'
 import PK from '../../utils/primaryKeyProperty'
 import { Model } from './abcModel'
 
@@ -12,6 +12,7 @@ export class User extends Model {
       name: 'user',
       partitionKey: 'USER#{{email}}',
       sortKey: 'USER#{{email}}',
+      partialSortKey: 'USER#',
     }
   }
 
@@ -28,9 +29,8 @@ export class User extends Model {
   @Attribute
   state?: string
 
-  /**@AutoGenerateAttribute({
-    strategy: AUTO_GENERATE_ATTRIBUTE_STRATEGY.EPOCH_DATE,
-  }) */
+  @Attribute
+  @AutoEpoch
   createdOn: number
 }
 

@@ -1,7 +1,6 @@
-import { create } from 'domain';
-import PK from '../../utils/primaryKeyProperty';
-import { Model } from './abcModel';
-
+import Attribute, { AutoEpoch } from '../../utils/attribute.decorator'
+import PK from '../../utils/primaryKeyProperty'
+import { Model } from './abcModel'
 
 /**@Entity({
   name: 'trackingCode', // name of the entity that will be added to each item as an attribute
@@ -18,23 +17,28 @@ import { Model } from './abcModel';
       }
     }
 }) */
-  
+/**Need Tracking code so user can sub/unsub from specifically tracking that code */
 export class TrackingCode extends Model {
+  constructor(code: string) {
+    super()
+    this.code = code
+    this.metadata = {
+      name: 'trackingCode',
+      partitionKey: 'BAG#{{code}}',
+      sortKey: 'USER#{{user}}',
+      partialSortKey: 'USER#',
+    }
+  }
 
   @PK
+  @Attribute
   code: string
 
   /** User PK */
+  @Attribute
   user: string // userEmail
 
-  /**@AutoGenerateAttribute({
-    strategy: AUTO_GENERATE_ATTRIBUTE_STRATEGY.EPOCH_DATE,
-  }) */
-  createdOn: number
-}
-
-type TrackingProps = {
-  code: string
-  user: string
+  @Attribute
+  @AutoEpoch
   createdOn: number
 }

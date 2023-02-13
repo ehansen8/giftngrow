@@ -4,7 +4,12 @@ import Script from 'next/script'
 export default function Document() {
   return (
     <Html>
-      <Head />
+      <Head>
+        <link
+          rel='icon'
+          href='/gng_logo.png'
+        />
+      </Head>
       <body>
         <Main />
         <NextScript />

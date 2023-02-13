@@ -1,38 +1,20 @@
 import {
-  Box,
-  Toolbar,
   Typography,
-  AppBar,
   IconButton,
-  Button,
-  Badge,
   Card,
   CardContent,
-  CardHeader,
   Grid,
-  Alert,
   Divider,
-  Chip,
 } from '@mui/material'
-import AccountCircle from '@mui/icons-material/AccountCircle'
-import { colors } from '../colors'
-import { useState } from 'react'
-import ShoppingBagIcon from '@mui/icons-material/ShoppingBag'
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { Bag } from '../lib/entities/bag.entity'
-import Timeline from '@mui/lab/Timeline'
 import TimelineItem from '@mui/lab/TimelineItem'
-import TimelineSeparator from '@mui/lab/TimelineSeparator'
-import TimelineConnector from '@mui/lab/TimelineConnector'
 import TimelineContent from '@mui/lab/TimelineContent'
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent'
 import TimelineDot from '@mui/lab/TimelineDot'
 import { Entry } from '../lib/entities/entry.entity'
-import { timelineOppositeContentClasses } from '@mui/lab/TimelineOppositeContent'
-import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism'
 import VolunteerActivismOutlinedIcon from '@mui/icons-material/VolunteerActivismOutlined'
-import CardGiftcardIcon from '@mui/icons-material/CardGiftcard'
+import { colors } from '../colors'
+import { TimelineSeparator, TimelineConnector } from '@mui/lab'
 import OverflowTip from './OverflowTip'
 
 type TimelineEntryProps = {

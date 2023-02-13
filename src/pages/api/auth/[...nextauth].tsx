@@ -1,6 +1,5 @@
 import NextAuth, { AuthOptions, DefaultUser } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import CognitoProvider from 'next-auth/providers/cognito'
 import { parseJWT } from '../../../utils/parseJWT'
 import { DynamoDBAdapter } from '@next-auth/dynamodb-adapter'
 import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb'

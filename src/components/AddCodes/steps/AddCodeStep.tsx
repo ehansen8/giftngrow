@@ -4,23 +4,22 @@ import {
   Radio,
   RadioGroup,
   TextField,
+  Typography,
 } from '@mui/material'
-import { Updater } from 'use-immer'
 import { AddCodeForm } from '../../../../types/general'
 import AddCodeContentWrapper from '../AddCodeContentWrapper'
+import { useForm } from '../AddCodeModal'
 
 export default function AddCodeStep({
-  form,
-  setForm,
   isGiving,
   handleGiving,
 }: {
-  form: AddCodeForm
-  setForm: Updater<AddCodeForm>
   isGiving: boolean
   handleGiving: (val: string) => void
 }) {
   const title = 'Start Tracking!'
+  const { form, setForm, setValidationFn } = useForm()
+  setValidationFn(() => validate)
   return (
     <AddCodeContentWrapper title={title}>
       <TextField
@@ -29,10 +28,10 @@ export default function AddCodeStep({
         label='Tracking Code'
         type='text'
         autoComplete='off'
-        value={form.bagId}
+        value={form.code}
         onInput={(e) =>
           setForm((draft) => {
-            draft.bagId = (e.target as HTMLInputElement).value
+            draft.code = (e.target as HTMLInputElement).value
           })
         }
       ></TextField>
@@ -59,4 +58,14 @@ export default function AddCodeStep({
       </FormControl>
     </AddCodeContentWrapper>
   )
+}
+
+function validate(form: AddCodeForm) {
+  if (!form.code) {
+    return 'Missing Code'
+  }
+  if (form.code.length != 6) {
+    return 'Code Must Be 6 Characters'
+  }
+  return ''
 }

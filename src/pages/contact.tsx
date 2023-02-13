@@ -1,4 +1,5 @@
 import { Button, Divider, Grid, TextField, Typography } from '@mui/material'
+import { sendEmail } from '../services/sendEmail'
 
 export default function Contact() {
   const style = { className: 'rounded-full' }
@@ -60,6 +61,10 @@ export default function Contact() {
           className='rounded-full m-auto'
           variant='contained'
           type='submit'
+          onClick={async () => {
+            const data = await sendEmail()
+            console.log(data)
+          }}
         >
           Send Message
         </Button>

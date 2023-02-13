@@ -5,7 +5,6 @@ import { createTheme } from '@mui/material/styles'
 import { StyledEngineProvider } from '@mui/material/styles'
 import Layout from '../components/Layout'
 import { colors } from '../colors'
-import Script from 'next/script'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { SessionProvider } from 'next-auth/react'
 

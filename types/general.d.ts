@@ -6,7 +6,7 @@ export type SignUpParams = {
 }
 
 export type AddCodeForm = {
-  bagId: string
+  code: string
   giverFN: string
   giverCity: string
   giverState: string
@@ -16,4 +16,10 @@ export type AddCodeForm = {
   occasion: string
   gift: string
   comment: string
+}
+
+export type ApiRes<T> = {
+  ok: boolean
+  error: string
+  data: T | ''
 }

@@ -1,16 +1,12 @@
-import { TextField } from '@mui/material'
-import { Updater } from 'use-immer'
+import { TextField, Typography } from '@mui/material'
 import { AddCodeForm } from '../../../../types/general'
 import AddCodeContentWrapper from '../AddCodeContentWrapper'
+import { useForm } from '../AddCodeModal'
 
-export default function GivingUserStep({
-  form,
-  setForm,
-}: {
-  form: AddCodeForm
-  setForm: Updater<AddCodeForm>
-}) {
+export default function GivingUserStep() {
   const title = 'About Yourself'
+  const { form, setForm, setValidationFn } = useForm()
+  setValidationFn(() => validate)
   return (
     <AddCodeContentWrapper title={title}>
       <TextField
@@ -56,4 +52,11 @@ export default function GivingUserStep({
       </div>
     </AddCodeContentWrapper>
   )
+}
+
+function validate(form: AddCodeForm) {
+  if (!form.giverFN) {
+    return 'Missing First Name'
+  }
+  return ''
 }

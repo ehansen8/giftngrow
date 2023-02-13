@@ -1,32 +1,62 @@
+import 'reflect-metadata'
+import { AddCodeForm } from '../../../types/general'
+import Attribute, { AutoEpoch } from '../../utils/attribute.decorator'
 import PK from '../../utils/primaryKeyProperty'
 import { Model } from './abcModel'
+import { Item } from './item.entity'
 
-/**@Entity({
-  name: 'entry', // name of the entity that will be added to each item as an attribute
-  // primary key
-  primaryKey: {
-    partitionKey: 'BAG#{{bagId}}',
-    sortKey: 'ENTRY#{{regDate}}',
-    },
-}) */
+export class Entry extends Model {
+  constructor() {
+    super()
+    //this.code = code
+    this.metadata = {
+      name: 'entry',
+      partitionKey: 'BAG#{{code}}',
+      sortKey: 'ENTRY#{{regDate}}',
+      partialSortKey: 'ENTRY#',
+    }
+  }
 
-export class Entry extends Model{
+  fromObject(obj: AddCodeForm) {
+    Object.assign(this, obj)
+  }
+
+  getItem() {
+    return new Item(this.code)
+  }
+
   @PK
-  bagId: string  // BagCode
+  @Attribute
+  code: string // BagCode
 
-  /**AutoGen EPOCH */
- /** @AutoGenerateAttribute({
-    strategy: AUTO_GENERATE_ATTRIBUTE_STRATEGY.EPOCH_DATE,
-  }) */
+  @Attribute
+  @AutoEpoch
   regDate: number
 
+  @Attribute
   giverFN: string
+
+  @Attribute
   giverCity: string
+
+  @Attribute
   giverState: string
+
+  @Attribute
   recipFN: string
+
+  @Attribute
   recipCity: string
+
+  @Attribute
   recipState: string
+
+  @Attribute
   occasion: string
+
+  @Attribute
   gift: string
+
+  @Attribute
   comment: string
 }

@@ -1,14 +1,28 @@
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import Button from '@mui/material/Button'
-import { useState } from 'react'
-import { useImmer } from 'use-immer'
+import { useState, createContext, useContext } from 'react'
+import { Updater, useImmer } from 'use-immer'
 import { AddCodeForm } from '../../../types/general'
 import AddCodeStep from './steps/AddCodeStep'
 import GivingUserStep from './steps/GivingUserStep'
 import ReceivingUserStep from './steps/ReceivingUserStep'
 import GivingLastStep from './steps/GivingLastStep'
 import ReceivingLastStep from './steps/ReceivingLastStep'
+import { createEntry } from '../../services/createEntry'
+
+type ContextType = {
+  form: AddCodeForm
+  setForm: Updater<AddCodeForm>
+  error: string
+  setValidationFn: Updater<(form: AddCodeForm) => string>
+}
+
+const FormContext = createContext<ContextType | null>(null)
+
+export function useForm() {
+  return useContext(FormContext)!
+}
 
 export default function AddCodeModal({
   open,
@@ -17,21 +31,57 @@ export default function AddCodeModal({
   open: boolean
   setOpen: (isOpen: boolean) => void
 }) {
+  const [form, setForm] = useImmer(defaultForm)
+  const [error, setError] = useImmer('')
+  const [validationFn, setValidationFn] = useImmer<
+    (form: AddCodeForm) => string
+  >(() => () => {
+    return 'hi'
+  })
   const [step, setStep] = useState(0)
   const maxSteps = 2
+
+  function validateForm() {
+    const err = validationFn(form)
+    setError(err)
+    return err === ''
+  }
+
+  function handleClose() {
+    setStep(0)
+    setForm(defaultForm)
+    setOpen(false)
+  }
+
+  function handleStep() {
+    if (validateForm()) {
+      setStep((s) => s + 1)
+    }
+  }
+
+  async function handleSubmit() {
+    if (validateForm()) {
+      const { ok, error, data } = await createEntry(form)
+      console.log(data)
+      if (ok) {
+        handleClose()
+      } else {
+        setError(error)
+      }
+    }
+  }
 
   return (
     <Dialog
       open={open}
-      onClose={() => {
-        setStep(0)
-        setOpen(false)
-      }}
+      onClose={handleClose}
       fullWidth={false}
       maxWidth='sm'
       PaperProps={{ className: 'rounded-xl' }}
     >
-      <FormStepper step={step} />
+      <FormContext.Provider value={{ form, setForm, error, setValidationFn }}>
+        <FormStepper step={step} />
+      </FormContext.Provider>
       <DialogActions className='m-auto'>
         {step > 0 && (
           <Button
@@ -41,17 +91,22 @@ export default function AddCodeModal({
             Back
           </Button>
         )}
-        {step < maxSteps && (
-          <Button onClick={() => setStep((s) => s + 1)}>Next</Button>
+        {step < maxSteps && <Button onClick={handleStep}>Next</Button>}
+        {step == maxSteps && (
+          <Button
+            onClick={handleSubmit}
+            variant='contained'
+          >
+            Confirm
+          </Button>
         )}
-        {step == maxSteps && <Button variant='contained'>Confirm</Button>}
       </DialogActions>
     </Dialog>
   )
 }
 
 const defaultForm: AddCodeForm = {
-  bagId: '',
+  code: '',
   giverFN: '',
   giverCity: '',
   giverState: '',
@@ -64,56 +119,33 @@ const defaultForm: AddCodeForm = {
 }
 
 function FormStepper({ step }: { step: number }) {
-  const [form, setForm] = useImmer(defaultForm)
   const [isGiving, setIsGiving] = useState(true)
-
+  const { form, setForm } = useForm()
   function handleIsGiving(val: string) {
     //reset form on switch except code
     setIsGiving(val === 'true')
-    setForm({ ...defaultForm, bagId: form.bagId })
+    setForm({ ...defaultForm, code: form.code })
   }
 
   if (step == 0) {
     return (
       <AddCodeStep
-        form={form}
-        setForm={setForm}
         isGiving={isGiving}
         handleGiving={handleIsGiving}
       />
     )
   }
   if (step == 1 && isGiving) {
-    return (
-      <GivingUserStep
-        form={form}
-        setForm={setForm}
-      />
-    )
+    return <GivingUserStep />
   }
   if (step == 1 && !isGiving) {
-    return (
-      <ReceivingUserStep
-        form={form}
-        setForm={setForm}
-      />
-    )
+    return <ReceivingUserStep />
   }
   if (step == 2 && isGiving) {
-    return (
-      <GivingLastStep
-        form={form}
-        setForm={setForm}
-      />
-    )
+    return <GivingLastStep />
   }
   if (step == 2 && !isGiving) {
-    return (
-      <ReceivingLastStep
-        form={form}
-        setForm={setForm}
-      />
-    )
+    return <ReceivingLastStep />
   }
   return <div></div>
 }

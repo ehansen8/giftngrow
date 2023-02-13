@@ -1,16 +1,10 @@
 import { TextField } from '@mui/material'
-import { Updater } from 'use-immer'
-import { AddCodeForm } from '../../../../types/general'
 import AddCodeContentWrapper from '../AddCodeContentWrapper'
+import { useForm } from '../AddCodeModal'
 
-export default function ReceivingLastStep({
-  form,
-  setForm,
-}: {
-  form: AddCodeForm
-  setForm: Updater<AddCodeForm>
-}) {
+export default function ReceivingLastStep() {
   const title = 'Write a comment for others to see!'
+  const { form, setForm } = useForm()
   return (
     <AddCodeContentWrapper title={title}>
       <TextField
