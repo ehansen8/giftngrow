@@ -7,20 +7,18 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Tabs,
   TextField,
   Typography,
 } from '@mui/material'
-import { useSession, getSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import * as React from 'react'
 import Box from '@mui/material/Box'
 import Tab from '@mui/material/Tab'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { createBulkCodes } from '../services/createBulkCodes'
-import { URL } from 'url'
 import Link from 'next/link'
 
 //TODO: add valid users to DB
