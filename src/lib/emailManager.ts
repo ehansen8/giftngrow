@@ -2,10 +2,7 @@ import { emailClient } from './ddbClient'
 import {
   BulkEmailDestination,
   BulkEmailDestinationStatus,
-  MessageRejected,
   SendBulkTemplatedEmailCommand,
-  SendBulkTemplatedEmailCommandOutput,
-  SendEmailCommand,
   SESServiceException,
 } from '@aws-sdk/client-ses'
 
