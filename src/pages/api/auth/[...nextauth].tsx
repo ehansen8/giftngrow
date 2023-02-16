@@ -5,7 +5,9 @@ import { User } from '../../../lib/entities/user.entity'
 import { entityManager } from '../../../lib/entityManager'
 import { serverInitiateAuth } from '../../../lib/cognitoManager'
 import { JWT } from 'next-auth/jwt'
+import { Logger } from 'aws-amplify'
 
+const logger = new Logger('giftngrow')
 interface SpecialUser extends DefaultUser {
   givenName?: string
   familyName?: string
@@ -17,6 +19,7 @@ const authOptions: AuthOptions = {
       name: 'Google',
       credentials: { credential: { type: 'text' } },
       authorize: async (credentials) => {
+        logger.debug(credentials)
         const token = credentials?.credential
         const data = parseJWT(token as string)
         const { email, name, given_name, family_name } = data
