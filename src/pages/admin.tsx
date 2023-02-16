@@ -13,7 +13,6 @@ import {
   Typography,
 } from '@mui/material'
 import { useSession } from 'next-auth/react'
-import * as React from 'react'
 import Box from '@mui/material/Box'
 import Tab from '@mui/material/Tab'
 import TabContext from '@mui/lab/TabContext'
@@ -59,7 +58,7 @@ export default function Admin() {
     const fileURL = window.URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = fileURL
-    link.download = 'TrackingCodes1.pdf'
+    link.download = 'TrackingCodes.pdf'
     link.click()
     window.URL.revokeObjectURL(fileURL)
   }
