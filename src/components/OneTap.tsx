@@ -23,10 +23,14 @@ const useOneTapSignin = (
       response: google.accounts.id.CredentialResponse,
     ) => {
       setIsLoading(true)
-      const res = await signIn('google', {
-        credential: response.credential,
-        redirect: false,
-      })
+      try {
+        const res = await signIn('google', {
+          credential: response.credential,
+          redirect: false,
+        })
+      } catch (e) {
+        console.log(e)
+      }
       //TODO: error handling
       router.push('/tracking')
       setIsLoading(false)

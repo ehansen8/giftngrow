@@ -5,7 +5,8 @@ import { entityManager } from '../../../lib/entityManager'
 import { serverInitiateAuth } from '../../../lib/cognitoManager'
 import { JWT } from 'next-auth/jwt'
 import jwtDecode from 'jwt-decode'
-
+import { Logger } from 'aws-amplify'
+const logger = new Logger('login', 'INFO')
 interface SpecialUser extends DefaultUser {
   givenName?: string
   familyName?: string
@@ -18,7 +19,9 @@ const authOptions: AuthOptions = {
       credentials: { credential: { type: 'text' } },
       authorize: async (credentials) => {
         const token = credentials?.credential
-        const data = jwtDecode(token as string, { header: true }) as any
+        const header = jwtDecode(token as string, { header: true }) as any
+        const data = jwtDecode(token as string) as any
+        logger.info(header, data)
         const { email, name, given_name, family_name } = data
         const user: SpecialUser = {
           id: '',
