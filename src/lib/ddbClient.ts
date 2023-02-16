@@ -8,6 +8,7 @@ const config: DynamoDBClientConfig | SESClientConfig = {
     secretAccessKey: process.env.DB_SECRET_ACCESS_KEY,
   },
   region: 'us-east-2',
+  maxAttempts: 10,
 }
 
 const emailClient = new SESClient(config as SESClientConfig)

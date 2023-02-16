@@ -14,6 +14,12 @@ function getEpoch() {
   return Math.floor(Date.now() / 1000)
 }
 
+/**
+ * Automatically stores the unix epoch in Milliseconds
+ * Generated when getDBObject() is called
+ * @param target  Object Class
+ * @param key Attribute Name
+ */
 export function AutoEpoch(target: any, key: string) {
   if (!target.hasOwnProperty('auto')) {
     Object.defineProperty(target, 'auto', {

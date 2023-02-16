@@ -194,11 +194,6 @@ const StatsGrid = ({ activeCode }: { activeCode?: string }) => (
 const NoBagsView = ({ handleClick }: { handleClick: () => void }) => {
   return (
     <div className='flex flex-col items-center gap-3 mt-3'>
-      {
-        //Weird Hydration Error with this Alert.
-        //Fixed when strictmode is disabled
-        //Hmm seems to be fixed after a restart and strictmode is true again
-      }
       <Alert
         severity='info'
         variant='outlined'

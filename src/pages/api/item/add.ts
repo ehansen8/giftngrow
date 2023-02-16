@@ -17,8 +17,7 @@ export default async function handle(
   }
 
   const data = req.body as AddCodeForm
-  const entry = new Entry()
-  entry.fromObject(data)
+  const entry = Entry.fromObject(data)
   // Check that the Code exists in DB by checking the entry parent
   const parentItem = await entityManager.findOne(entry.getItem())
   // Failed to find match
