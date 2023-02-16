@@ -1,5 +1,5 @@
 import { DynamoDBClient, DynamoDBClientConfig } from '@aws-sdk/client-dynamodb'
-import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses'
+import { SESClient } from '@aws-sdk/client-ses'
 import { SESClientConfig } from '@aws-sdk/client-ses/dist-types/SESClient'
 
 const config: DynamoDBClientConfig | SESClientConfig = {

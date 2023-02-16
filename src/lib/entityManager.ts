@@ -11,19 +11,19 @@ import {
 import { ddbDocClient } from './db'
 import { Model } from './entities/abcModel'
 
-const baseParams = { TableName: 'giftngrow.dev' }
+const baseParams = { TableName: process.env.TABLE_NAME }
 type FindOptions = {
   useIndex?: boolean
   limit?: number
   ascendingOrder?: boolean
   /**
-   *  Response contains the
+   *  Response will be up to date with all previous DB writes
    */
   consistantRead?: boolean
 }
 
 class EntityManager {
-  async findOne<T extends Model>(entity: T, options: FindOptions) {
+  async findOne<T extends Model>(entity: T, options: FindOptions = {}) {
     const params: GetCommandInput = {
       ...baseParams,
       Key: {
@@ -37,7 +37,7 @@ class EntityManager {
     return data.Item as T | undefined
   }
 
-  async find<T extends Model>(entity: T, options: FindOptions) {
+  async find<T extends Model>(entity: T, options: FindOptions = {}) {
     const expressionNames = {
       '#PK': options.useIndex ? 'GSI1PK' : 'PK',
       '#SK': options.useIndex ? 'GSI1SK' : 'SK',

@@ -1,4 +1,4 @@
-import { Button, Divider, Grid, TextField, Typography } from '@mui/material'
+import { Button, Divider, TextField, Typography } from '@mui/material'
 import { sendEmail } from '../services/sendEmail'
 
 export default function Contact() {

@@ -8,7 +8,7 @@ export default async function handle(
 ) {
   //TODO: convert to entity Manager query
   const params: QueryCommandInput = {
-    TableName: 'giftngrow.dev',
+    TableName: process.env.TABLE_NAME,
     KeyConditionExpression: 'PK = :PK and begins_with(SK, :SK)',
     ExpressionAttributeValues: {
       ':PK': `ITEM#${req.query.id}`,

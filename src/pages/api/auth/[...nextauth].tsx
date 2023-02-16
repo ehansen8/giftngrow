@@ -1,17 +1,11 @@
 import NextAuth, { AuthOptions, DefaultUser } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { parseJWT } from '../../../utils/parseJWT'
-import { DynamoDBAdapter } from '@next-auth/dynamodb-adapter'
-import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb'
 import { User } from '../../../lib/entities/user.entity'
-import { ddbClient } from '../../../lib/ddbClient'
 import { entityManager } from '../../../lib/entityManager'
 import { serverInitiateAuth } from '../../../lib/cognitoManager'
 import { JWT } from 'next-auth/jwt'
 
-const adapter = DynamoDBAdapter(DynamoDBDocument.from(ddbClient), {
-  tableName: 'giftngrow.dev',
-})
 interface SpecialUser extends DefaultUser {
   givenName?: string
   familyName?: string
