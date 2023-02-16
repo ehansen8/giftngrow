@@ -23,7 +23,6 @@ const useOneTapSignin = (
       response: google.accounts.id.CredentialResponse,
     ) => {
       setIsLoading(true)
-      console.log(response)
       try {
         const res = await signIn('google', {
           credential: response.credential,

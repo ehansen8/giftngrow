@@ -5,25 +5,6 @@ import { entityManager } from '../../../lib/entityManager'
 import { serverInitiateAuth } from '../../../lib/cognitoManager'
 import { JWT } from 'next-auth/jwt'
 import jwtDecode from 'jwt-decode'
-import { AWSCloudWatchProvider, Logger } from 'aws-amplify'
-
-const config: {
-  logGroupName?: string
-  logStreamName?: string
-  region?: string
-  credentials?: any
-  endpoint?: string
-} = {
-  logGroupName: 'GNG',
-  logStreamName: 'logging',
-  credentials: {
-    accessKeyId: process.env.DB_ACCESS_KEY_ID,
-    secretAccessKey: process.env.DB_SECRET_ACCESS_KEY,
-  },
-  region: 'us-east-2',
-}
-const logger = new Logger('login', 'INFO')
-logger.addPluggable(new AWSCloudWatchProvider(config))
 
 interface SpecialUser extends DefaultUser {
   givenName?: string
@@ -36,11 +17,9 @@ const authOptions: AuthOptions = {
       name: 'Google',
       credentials: { credential: { type: 'text' } },
       authorize: async (credentials) => {
-        logger.info(credentials)
         const token = credentials?.credential
         const header = jwtDecode(token as string, { header: true }) as any
         const data = jwtDecode(token as string) as any
-        logger.info(header, data)
         const { email, name, given_name, family_name } = data
         const user: SpecialUser = {
           id: '',
@@ -49,6 +28,7 @@ const authOptions: AuthOptions = {
           familyName: family_name,
           name: given_name,
         }
+        console.log(user)
         return user
       },
     }),
@@ -92,6 +72,7 @@ const authOptions: AuthOptions = {
   debug: true,
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
+      console.log('Sign In Callback')
       return true
     },
     async jwt({ token, user }: { token: JWT; user?: SpecialUser }) {
