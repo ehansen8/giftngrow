@@ -53,7 +53,7 @@ const authOptions: AuthOptions = {
           family_name?: string
           email?: string
         }
-        const profile: Profile = parseJWT(
+        const profile: Profile = jwtDecode(
           res.AuthenticationResult?.IdToken as string,
         )
         const user: SpecialUser = {
