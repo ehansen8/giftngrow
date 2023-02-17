@@ -5,6 +5,7 @@ import { entityManager } from '../../../lib/entityManager'
 import { serverInitiateAuth } from '../../../lib/cognitoManager'
 import { JWT } from 'next-auth/jwt'
 import jwtDecode from 'jwt-decode'
+import { logger } from '../../../lib/logger'
 
 interface SpecialUser extends DefaultUser {
   givenName?: string
@@ -17,6 +18,7 @@ const authOptions: AuthOptions = {
       name: 'Google',
       credentials: { credential: { type: 'text' } },
       authorize: async (credentials) => {
+        logger.info({ credentials }, 'test log')
         const token = credentials?.credential
         const header = jwtDecode(token as string, { header: true }) as any
         const data = jwtDecode(token as string) as any
@@ -28,7 +30,6 @@ const authOptions: AuthOptions = {
           familyName: family_name,
           name: given_name,
         }
-        console.log(user)
         return user
       },
     }),
