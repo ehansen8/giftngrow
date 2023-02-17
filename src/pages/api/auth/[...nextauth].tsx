@@ -12,6 +12,7 @@ interface SpecialUser extends DefaultUser {
   familyName?: string
 }
 const authOptions: AuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       id: 'google',

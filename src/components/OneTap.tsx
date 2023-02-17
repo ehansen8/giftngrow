@@ -28,12 +28,12 @@ const useOneTapSignin = (
           credential: response.credential,
           redirect: false,
         })
+        router.push('/tracking')
+        setIsLoading(false)
       } catch (e) {
         console.log(e)
       }
       //TODO: error handling
-      router.push('/tracking')
-      setIsLoading(false)
     }
 
     if (!isLoading) {
