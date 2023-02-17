@@ -1,4 +1,5 @@
 import { pino } from 'pino'
+import '@serdnam/pino-cloudwatch-transport'
 
 const transport = pino.transport({
   target: '@serdnam/pino-cloudwatch-transport',
