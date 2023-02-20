@@ -9,5 +9,6 @@ declare namespace NodeJS {
     NEXTAUTH_SECRET: string
     TABLE_NAME: string
     AWS_BRANCH: string
+    NEXT_PUBLIC_BRANCH: string
   }
 }

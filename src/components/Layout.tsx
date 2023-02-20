@@ -5,13 +5,7 @@ import Footer from './Footer'
 import NavBar from './NavBar'
 import { OneTap } from './OneTap'
 
-export default function Layout({
-  children,
-  branch,
-}: {
-  children: ReactNode
-  branch: string
-}) {
+export default function Layout({ children }: { children: ReactNode }) {
   return (
     <>
       <Head>
@@ -27,7 +21,7 @@ export default function Layout({
       </Head>
       <OneTap />
       <NavBar />
-      {branch !== 'prod' && (
+      {process.env.NEXT_PUBLIC_BRANCH !== 'prod' && (
         <Alert
           severity='warning'
           variant='filled'
@@ -48,11 +42,4 @@ export default function Layout({
       <Footer />
     </>
   )
-}
-
-export async function getServerSideProps() {
-  const branch = process.env.AWS_BRANCH
-  return {
-    props: { branch }, // will be passed to the page component as props
-  }
 }
