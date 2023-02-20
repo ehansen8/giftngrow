@@ -34,7 +34,7 @@ const validUsers = [
   'team@giftngrow.com',
   'ecmtsmartin5@gmail.com',
 ]
-export default function Admin({ branch }: { branch: string }) {
+export default function Admin() {
   const { data: session, status } = useSession()
   const [tab, setTab] = useState('codes')
   const handleTabChange = (event: React.SyntheticEvent, newTab: string) => {
@@ -209,11 +209,4 @@ function TestTable() {
       </Table>
     </TableContainer>
   )
-}
-
-export async function getServerSideProps() {
-  const branch = process.env.AWS_BRANCH
-  return {
-    props: { branch }, // will be passed to the page component as props
-  }
 }

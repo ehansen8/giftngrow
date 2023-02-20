@@ -5,7 +5,13 @@ import Footer from './Footer'
 import NavBar from './NavBar'
 import { OneTap } from './OneTap'
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default function Layout({
+  children,
+  branch,
+}: {
+  children: ReactNode
+  branch: string
+}) {
   return (
     <>
       <Head>
@@ -21,23 +27,32 @@ export default function Layout({ children }: { children: ReactNode }) {
       </Head>
       <OneTap />
       <NavBar />
-      <Alert
-        severity='warning'
-        variant='filled'
-        className='w-full mt-0 -mb-2'
-        sx={{
-          '& .MuiAlert-message': {
-            width: '100%',
-            textAlign: 'center',
-          },
-        }}
-      >
-        <Typography fontSize={20}>
-          This is a Test Site, codes and data are for testing purposes only
-        </Typography>
-      </Alert>
+      {branch !== 'prod' && (
+        <Alert
+          severity='warning'
+          variant='filled'
+          className='w-full mt-0 -mb-2'
+          sx={{
+            '& .MuiAlert-message': {
+              width: '100%',
+              textAlign: 'center',
+            },
+          }}
+        >
+          <Typography fontSize={20}>
+            This is a Test Site, codes and data are for testing purposes only
+          </Typography>
+        </Alert>
+      )}
       {children}
       <Footer />
     </>
   )
+}
+
+export async function getServerSideProps() {
+  const branch = process.env.AWS_BRANCH
+  return {
+    props: { branch }, // will be passed to the page component as props
+  }
 }

@@ -72,9 +72,6 @@ class CodeGenerator {
     const width = 120 //1.5": 108
     const height = 156 //144
     const image_width = 54
-    const qr_png = await QRCode.toDataURL(`https://giftngrow.com`, {
-      margin: 0,
-    })
 
     for (let i = 0; i < pages.length; i++) {
       const page = pages[i]
@@ -89,6 +86,13 @@ class CodeGenerator {
           const spacing = (width - image_width) / 2
           const image_x = x_off + spacing
           const image_y = y_off + spacing
+
+          const qr_png = await QRCode.toDataURL(
+            `https://giftngrow.com/tracking?code=${code}`,
+            {
+              margin: 0,
+            },
+          )
 
           doc.image(qr_png, image_x, image_y, {
             width: image_width,

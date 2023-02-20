@@ -26,7 +26,10 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
       const data = await entityManager.createBatch(items)
       //Update the Count using the last item in the page
       await entityManager.create(IndexCounter.fromItem(items[24])) //all batches are 25 in length
-      if (data.UnprocessedItems) {
+      if (
+        data.UnprocessedItems &&
+        Object.keys(data.UnprocessedItems).length > 0
+      ) {
         logger.fatal(
           data.UnprocessedItems,
           'UnprocessedItems during code generation',
