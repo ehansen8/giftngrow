@@ -19,7 +19,6 @@ const authOptions: AuthOptions = {
       name: 'Google',
       credentials: { credential: { type: 'text' } },
       authorize: async (credentials) => {
-        logger.info({ credentials }, 'test log')
         const token = credentials?.credential
         const header = jwtDecode(token as string, { header: true }) as any
         const data = jwtDecode(token as string) as any
