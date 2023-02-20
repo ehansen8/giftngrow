@@ -9,7 +9,7 @@ frontend:
         - env | grep -e DB_ACCESS_KEY_ID -e DB_SECRET_ACCESS_KEY -e TABLE_NAME>> .env.production
         - env | grep -e NEXTAUTH_SECRET -e NEXTAUTH_URL -e COGNITO_CLIENT_ID -e COGNITO_USER_POOL_ID  >> .env.production
         - env | grep -e NEXT_PUBLIC_ >> .env.production
-        - NEXT_PUBLIC_BRANCH=${AWS_BRANCH} >> .env.production
+        - NEXT_PUBLIC_BRANCH=${AWS_BRANCH}
         - npm run build
   artifacts:
     baseDirectory: .next

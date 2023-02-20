@@ -34,7 +34,8 @@ export default function Layout({ children }: { children: ReactNode }) {
           }}
         >
           <Typography fontSize={20}>
-            This is a Test Site, codes and data are for testing purposes only
+            This is a Test Site, codes and data are for testing purposes only{' '}
+            {process.env.NEXT_PUBLIC_BRANCH}
           </Typography>
         </Alert>
       )}
