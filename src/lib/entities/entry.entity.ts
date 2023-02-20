@@ -11,14 +11,14 @@ export class Entry extends Model {
     //this.code = code
     this.metadata = {
       name: 'entry',
-      partitionKey: 'BAG#{{code}}',
+      partitionKey: 'ITEM#{{code}}',
       sortKey: 'ENTRY#{{regDate}}',
       partialSortKey: 'ENTRY#',
     }
   }
 
-  fromObject(obj: AddCodeForm) {
-    Object.assign(this, obj)
+  static fromObject(obj: AddCodeForm) {
+    return Object.assign(new Entry(), obj) as Entry
   }
 
   getItem() {

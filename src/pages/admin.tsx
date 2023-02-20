@@ -1,5 +1,7 @@
 import {
   Button,
+  CircularProgress,
+  Dialog,
   Paper,
   Table,
   TableBody,
@@ -11,7 +13,6 @@ import {
   Typography,
 } from '@mui/material'
 import { useSession } from 'next-auth/react'
-import * as React from 'react'
 import Box from '@mui/material/Box'
 import Tab from '@mui/material/Tab'
 import TabContext from '@mui/lab/TabContext'
@@ -20,8 +21,10 @@ import TabPanel from '@mui/lab/TabPanel'
 import { useState } from 'react'
 import { createBulkCodes } from '../services/createBulkCodes'
 import Link from 'next/link'
+import { useQuery } from 'react-query'
+import { AxiosError } from 'axios'
+import { logger } from '../lib/logger'
 
-//TODO: add valid users to DB
 // Also probably SSR this page
 
 const validUsers = [
@@ -38,25 +41,42 @@ export default function Admin() {
     setTab(newTab)
   }
   const maxPages = 10
-  //const [code, getCode] = useGetCode()
-  const [numPages, setNumPages] = useState(1)
+  const [numPages, setNumPages] = useState<number | undefined>(1)
+  const [errorMessage, setErrorMessage] = useState('')
+  //Need to use refetch since the query is only triggered onClick
+  const { isFetching, refetch } = useQuery<Blob, AxiosError>(
+    'fetchCodePDF',
+    () => createBulkCodes(numPages as number),
+    {
+      enabled: false,
+      onSuccess: downloadCodes,
+      onError: (err) => setErrorMessage(err.message),
+    },
+  )
 
-  async function downloadCodes() {
-    const data = await createBulkCodes(numPages)
-    console.log(data)
-    const blob = new Blob([data])
+  function downloadCodes(pdfData: Blob) {
+    const blob = new Blob([pdfData], { type: 'application/pdf' })
     const fileURL = window.URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = fileURL
-    link.download = 'TrackingCodes1.pdf'
+    link.download = 'TrackingCodes.pdf'
     link.click()
     window.URL.revokeObjectURL(fileURL)
   }
 
+  function handleClickDownload() {
+    logger.info({ numPages }, 'Codes were downloaded')
+    if (numPages && numPages >= 1) refetch()
+    else {
+      setErrorMessage('You need a value between 1 and 10')
+    }
+  }
+
   function handleSetPages(e: React.ChangeEvent<HTMLInputElement>) {
+    setErrorMessage('')
     const value = parseInt(e.target.value)
     if (isNaN(value)) {
-      setNumPages(1)
+      setNumPages(undefined)
       return
     }
     if (value < 1) {
@@ -98,28 +118,58 @@ export default function Admin() {
         </Box>
         <TabPanel value={'codes'}>
           <div className='flex flex-col gap-3'>
+            <Dialog
+              open={isFetching}
+              PaperProps={{
+                style: {
+                  backgroundColor: 'transparent',
+                  boxShadow: 'none',
+                  overflow: 'hidden',
+                },
+              }}
+            >
+              <CircularProgress
+                sx={{
+                  position: 'fixed',
+                  top: '25%',
+                  left: '50%',
+                  marginTop: '-20px',
+                  marginLeft: '-20px',
+                }}
+              />
+            </Dialog>
+
             <Typography width={400}>
               Enter how many pages of codes you'd like to download below. Each
               page contains 25 codes. The max number of pages you can download
               at once is 10 (for now).
             </Typography>
             <TextField
-              onChange={handleSetPages}
-              value={numPages}
-              className='text-center'
-              type='number'
               label='Number of Pages'
+              type='number'
+              value={numPages}
+              InputProps={{ inputProps: { min: 0, max: 10 } }}
+              className='text-center'
               size='small'
+              onChange={handleSetPages}
             ></TextField>
             <Button
               className='w-full'
               LinkComponent={Link}
-              href={`/api/getCodes?pages=${numPages}`}
+              href='#'
+              //href={`/api/items/generate?pages=${numPages}`}
               variant='contained'
-              //onClick={downloadCodes}
+              onClick={handleClickDownload}
             >
-              Download {!isNaN(numPages) && 25 * numPages} Codes
+              Download {numPages && 25 * numPages} Codes
             </Button>
+            <Typography
+              color='error'
+              fontSize={12}
+              textAlign='center'
+            >
+              {errorMessage}
+            </Typography>
           </div>
         </TabPanel>
         <TabPanel value={'entries'}>
@@ -160,30 +210,3 @@ function TestTable() {
     </TableContainer>
   )
 }
-
-// const gen = BigInt(13) ** BigInt(11)
-// const mod = BigInt(7) ** BigInt(19)
-// const possibleChars = '01GHJKLMNPQRSTVWXYZ'
-
-// function useGetCode(): [string, () => void] {
-//   const [previous, setPrevious] = useState(BigInt(333341833290882))
-//   const [code, setCode] = useState('')
-
-//   function getNextCode() {
-//     const next = (previous + gen) % mod
-//     let temp = next
-//     let output = ''
-//     for (let i = 0; i < 6; i++) {
-//       const index = temp % BigInt(19)
-//       output += possibleChars[Number(index)]
-//       temp = temp / BigInt(19)
-//     }
-//     setPrevious(next)
-//     setCode(output)
-//     console.log(next.toString(), output)
-//   }
-
-//   useEffect(() => getNextCode(), [])
-
-//   return [code, getNextCode]
-// }

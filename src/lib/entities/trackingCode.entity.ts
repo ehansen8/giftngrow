@@ -22,9 +22,11 @@ export class TrackingCode extends Model {
   constructor(code: string) {
     super()
     this.code = code
+
+    //TODO: convert to PK and SK and partialSK
     this.metadata = {
       name: 'trackingCode',
-      partitionKey: 'BAG#{{code}}',
+      partitionKey: 'ITEM#{{code}}',
       sortKey: 'USER#{{user}}',
       partialSortKey: 'USER#',
     }

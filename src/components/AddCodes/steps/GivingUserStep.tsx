@@ -1,4 +1,4 @@
-import { TextField, Typography } from '@mui/material'
+import { TextField } from '@mui/material'
 import { AddCodeForm } from '../../../../types/general'
 import AddCodeContentWrapper from '../AddCodeContentWrapper'
 import { useForm } from '../AddCodeModal'

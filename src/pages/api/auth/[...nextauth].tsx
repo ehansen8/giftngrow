@@ -1,30 +1,28 @@
 import NextAuth, { AuthOptions, DefaultUser } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { parseJWT } from '../../../utils/parseJWT'
-import { DynamoDBAdapter } from '@next-auth/dynamodb-adapter'
-import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb'
 import { User } from '../../../lib/entities/user.entity'
-import { ddbClient } from '../../../lib/ddbClient'
 import { entityManager } from '../../../lib/entityManager'
 import { serverInitiateAuth } from '../../../lib/cognitoManager'
 import { JWT } from 'next-auth/jwt'
+import jwtDecode from 'jwt-decode'
+import { logger } from '../../../lib/logger'
 
-const adapter = DynamoDBAdapter(DynamoDBDocument.from(ddbClient), {
-  tableName: 'giftngrow.dev',
-})
 interface SpecialUser extends DefaultUser {
   givenName?: string
   familyName?: string
 }
 const authOptions: AuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       id: 'google',
       name: 'Google',
       credentials: { credential: { type: 'text' } },
       authorize: async (credentials) => {
+        logger.info({ credentials }, 'test log')
         const token = credentials?.credential
-        const data = parseJWT(token as string)
+        const header = jwtDecode(token as string, { header: true }) as any
+        const data = jwtDecode(token as string) as any
         const { email, name, given_name, family_name } = data
         const user: SpecialUser = {
           id: '',
@@ -59,7 +57,7 @@ const authOptions: AuthOptions = {
           family_name?: string
           email?: string
         }
-        const profile: Profile = parseJWT(
+        const profile: Profile = jwtDecode(
           res.AuthenticationResult?.IdToken as string,
         )
         const user: SpecialUser = {
@@ -76,6 +74,7 @@ const authOptions: AuthOptions = {
   debug: true,
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
+      console.log('Sign In Callback')
       return true
     },
     async jwt({ token, user }: { token: JWT; user?: SpecialUser }) {

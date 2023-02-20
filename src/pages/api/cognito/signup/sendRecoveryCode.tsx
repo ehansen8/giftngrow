@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { serverSendRecoveryCode } from '../../../../lib/cognitoManager'
+import { logger } from '../../../../lib/logger'
 
 export default async function handle(
   req: NextApiRequest,
@@ -17,6 +18,7 @@ export default async function handle(
       data: data,
     })
   } catch (err) {
+    logger.warn(err, 'Send Recovery Code error')
     res.json({
       ok: false,
       //@ts-ignore

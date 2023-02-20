@@ -1,5 +1,5 @@
 import { DynamoDBClient, DynamoDBClientConfig } from '@aws-sdk/client-dynamodb'
-import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses'
+import { SESClient } from '@aws-sdk/client-ses'
 import { SESClientConfig } from '@aws-sdk/client-ses/dist-types/SESClient'
 
 const config: DynamoDBClientConfig | SESClientConfig = {
@@ -8,6 +8,7 @@ const config: DynamoDBClientConfig | SESClientConfig = {
     secretAccessKey: process.env.DB_SECRET_ACCESS_KEY,
   },
   region: 'us-east-2',
+  maxAttempts: 10,
 }
 
 const emailClient = new SESClient(config as SESClientConfig)

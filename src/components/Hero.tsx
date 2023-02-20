@@ -1,4 +1,4 @@
-import { Grid, Stack, Button, Box } from '@mui/material'
+import { Grid } from '@mui/material'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import HeroStepper from './HeroStepper'

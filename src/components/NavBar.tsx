@@ -20,10 +20,8 @@ const ds = Dancing_Script({
 })
 
 const pages = [
-  { label: 'Home', url: '/' },
-  { label: 'Shop', url: '/shop' },
-  { label: 'Wholesale', url: '/wholesale' },
-  { label: 'Stores', url: '/stores' },
+  { label: 'Home', url: 'https://giftngrow.square.site/' },
+  { label: 'Admin', url: '/admin' },
   { label: 'Track Codes', url: '/tracking' },
 ]
 

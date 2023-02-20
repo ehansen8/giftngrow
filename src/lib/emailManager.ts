@@ -5,6 +5,7 @@ import {
   SendBulkTemplatedEmailCommand,
   SESServiceException,
 } from '@aws-sdk/client-ses'
+import { logger } from './logger'
 
 function splitEmails(emails: string[]) {
   const pages: Array<string[]> = []
@@ -51,6 +52,7 @@ class EmailManager {
         const data = await emailClient.send(sendCommand)
         output.push(data.Status!)
       } catch (e) {
+        logger.error(e, 'Tracking Email Batch Failed')
         output.push(e as SESServiceException)
       }
     }

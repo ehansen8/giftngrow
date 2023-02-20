@@ -7,6 +7,7 @@ import { emailManager } from '../../../lib/emailManager'
 import { Entry } from '../../../lib/entities/entry.entity'
 import { TrackingCode } from '../../../lib/entities/trackingCode.entity'
 import { entityManager } from '../../../lib/entityManager'
+import { logger } from '../../../lib/logger'
 
 export default async function handle(
   req: NextApiRequest,
@@ -17,8 +18,7 @@ export default async function handle(
   }
 
   const data = req.body as AddCodeForm
-  const entry = new Entry()
-  entry.fromObject(data)
+  const entry = Entry.fromObject(data)
   // Check that the Code exists in DB by checking the entry parent
   const parentItem = await entityManager.findOne(entry.getItem())
   // Failed to find match
@@ -36,12 +36,15 @@ export default async function handle(
   try {
     response = await entityManager.create(entry)
   } catch (e: any) {
-    //DynamoDBServiceException
-    res.json({
-      ok: false,
-      error: e.message,
-      data: '',
-    })
+    if (e instanceof DynamoDBServiceException) {
+      logger.warn(e, 'DDB Service Exception error')
+      res.json({
+        ok: false,
+        error: e.message,
+        data: '',
+      })
+      logger.fatal(e, 'Uncaught PutCommandOutput Error')
+    }
     return
   }
 
