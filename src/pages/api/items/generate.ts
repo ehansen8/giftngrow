@@ -4,6 +4,7 @@ import { codeGenerator } from '../../../lib/codeGenerator'
 import { IndexCounter } from '../../../lib/entities/indexCounter.entity'
 import { Item } from '../../../lib/entities/item.entity'
 import { entityManager } from '../../../lib/entityManager'
+import { logger } from '../../../lib/logger'
 
 export default async function index(req: NextApiRequest, res: NextApiResponse) {
   const numPages = parseInt(req.query.pages as string)
@@ -25,11 +26,19 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
       const data = await entityManager.createBatch(items)
       //Update the Count using the last item in the page
       await entityManager.create(IndexCounter.fromItem(items[24])) //all batches are 25 in length
+      if (data.UnprocessedItems) {
+        logger.fatal(
+          data.UnprocessedItems,
+          'UnprocessedItems during code generation',
+        )
+      }
       pagesSaved++
     }
   } catch (e) {
     if (e instanceof ProvisionedThroughputExceededException) {
+      logger.warn(e, 'Throughput Exceeded')
     } else {
+      logger.error(e, 'Uncaught code generation error')
       throw e
     }
   }

@@ -8,5 +8,6 @@ declare namespace NodeJS {
     COGNITO_USER_POOL_ID: string
     NEXTAUTH_SECRET: string
     TABLE_NAME: string
+    AWS_BRANCH: string
   }
 }

@@ -23,6 +23,7 @@ import { createBulkCodes } from '../services/createBulkCodes'
 import Link from 'next/link'
 import { useQuery } from 'react-query'
 import { AxiosError } from 'axios'
+import { logger } from '../lib/logger'
 
 // Also probably SSR this page
 
@@ -33,7 +34,7 @@ const validUsers = [
   'team@giftngrow.com',
   'ecmtsmartin5@gmail.com',
 ]
-export default function Admin() {
+export default function Admin({ branch }: { branch: string }) {
   const { data: session, status } = useSession()
   const [tab, setTab] = useState('codes')
   const handleTabChange = (event: React.SyntheticEvent, newTab: string) => {
@@ -64,6 +65,7 @@ export default function Admin() {
   }
 
   function handleClickDownload() {
+    logger.info({ numPages }, 'Codes were downloaded')
     if (numPages && numPages >= 1) refetch()
     else {
       setErrorMessage('You need a value between 1 and 10')
@@ -207,4 +209,11 @@ function TestTable() {
       </Table>
     </TableContainer>
   )
+}
+
+export async function getServerSideProps() {
+  const branch = process.env.AWS_BRANCH
+  return {
+    props: { branch }, // will be passed to the page component as props
+  }
 }

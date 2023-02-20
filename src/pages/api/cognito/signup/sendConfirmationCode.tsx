@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { serverSendCofirmationCode } from '../../../../lib/cognitoManager'
+import { logger } from '../../../../lib/logger'
 type Params = {
   email: string
 }
@@ -18,6 +19,7 @@ export default async function handle(
       data: data,
     })
   } catch (err) {
+    logger.warn(err, 'Send Confirmation Code error')
     res.json({
       ok: false,
       //@ts-ignore

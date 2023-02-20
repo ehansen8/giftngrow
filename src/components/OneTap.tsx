@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSession, signIn, SignInOptions } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { logger } from '../lib/logger'
 
 interface OneTapSigninOptions {
   parentContainerId?: string
@@ -31,7 +32,7 @@ const useOneTapSignin = (
         router.push('/tracking')
         setIsLoading(false)
       } catch (e) {
-        console.log(e)
+        logger.fatal(e, 'Google Sign In Failed')
       }
       //TODO: error handling
     }

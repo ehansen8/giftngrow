@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { SignUpParams } from '../../../../../types/general'
 import { serverSignUp } from '../../../../lib/cognitoManager'
+import { logger } from '../../../../lib/logger'
 
 export default async function handle(
   req: NextApiRequest,
@@ -15,6 +16,7 @@ export default async function handle(
       data: data,
     })
   } catch (err) {
+    logger.warn(err, 'User Sign Up Error')
     res.json({
       ok: false,
       //@ts-ignore

@@ -32,12 +32,6 @@ const cards = [
   },
 ]
 
-const test_user = {
-  email: 'cmtsmartin@hotmail.com',
-  firstName: 'Evan',
-  city: 'Flagstaff',
-  state: 'AZ',
-}
 export default function Tracking() {
   const { data: session } = useSession()
   const user = session?.user
