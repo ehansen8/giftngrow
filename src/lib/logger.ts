@@ -1,16 +1,27 @@
-import { pino } from 'pino'
-import '@serdnam/pino-cloudwatch-transport'
+import pino from 'pino'
+import { createPinoBrowserSend, createWriteStream } from 'pino-logflare'
 
-const transport = pino.transport({
-  target: '@serdnam/pino-cloudwatch-transport',
-  options: {
-    logGroupName: 'pino-cloudwatch-test',
-    logStreamName: 'pino-cloudwatch-test-stream',
-    awsRegion: 'us-east-2',
-    awsAccessKeyId: process.env.DB_ACCESS_KEY_ID,
-    awsSecretAccessKey: process.env.DB_SECRET_ACCESS_KEY,
-    interval: 1_000, // this is the default
-  },
+// create pino-logflare stream
+const stream = createWriteStream({
+  apiKey: 'fH6XRYbngjDH',
+  sourceToken: '709af0bc-f2e5-41ea-b3e5-12a751dd512d',
 })
-const logger = pino(transport)
+
+// create pino-logflare browser stream
+const send = createPinoBrowserSend({
+  apiKey: 'fH6XRYbngjDH',
+  sourceToken: '709af0bc-f2e5-41ea-b3e5-12a751dd512d',
+})
+
+// create pino loggger
+const logger = pino(
+  {
+    browser: {
+      transmit: {
+        send: send,
+      },
+    },
+  },
+  stream,
+)
 export { logger }
