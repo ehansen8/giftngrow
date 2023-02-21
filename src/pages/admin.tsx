@@ -59,7 +59,12 @@ export default function Admin() {
     const fileURL = window.URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = fileURL
-    link.download = 'TrackingCodes.pdf'
+    if (process.env.NEXT_PUBLIC_BRANCH == 'prod') {
+      link.download = 'ProductionCodes.pdf'
+    } else {
+      link.download = 'TestCodes.pdf'
+    }
+
     link.click()
     window.URL.revokeObjectURL(fileURL)
   }
