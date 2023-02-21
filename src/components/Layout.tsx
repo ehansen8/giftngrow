@@ -25,7 +25,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <Alert
           severity='warning'
           variant='filled'
-          className='w-full mt-0 -mb-2'
+          className='mt-0 -mb-2'
           sx={{
             '& .MuiAlert-message': {
               width: '100%',

@@ -11,9 +11,9 @@ export class Entry extends Model {
     //this.code = code
     this.metadata = {
       name: 'entry',
-      partitionKey: 'ITEM#{{code}}',
-      sortKey: 'ENTRY#{{regDate}}',
-      partialSortKey: 'ENTRY#',
+      PK: 'ITEM#{{code}}',
+      SK: 'ENTRY#{{regDate}}',
+      partialSK: 'ENTRY#',
     }
   }
 

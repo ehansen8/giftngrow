@@ -5,13 +5,12 @@ import { entityManager } from '../../../lib/entityManager'
 import { serverInitiateAuth } from '../../../lib/cognitoManager'
 import { JWT } from 'next-auth/jwt'
 import jwtDecode from 'jwt-decode'
-import { logger } from '../../../lib/logger'
 
 interface SpecialUser extends DefaultUser {
   givenName?: string
   familyName?: string
 }
-const authOptions: AuthOptions = {
+export const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
@@ -19,9 +18,8 @@ const authOptions: AuthOptions = {
       name: 'Google',
       credentials: { credential: { type: 'text' } },
       authorize: async (credentials) => {
-        logger.info({ credentials }, 'test log')
         const token = credentials?.credential
-        const header = jwtDecode(token as string, { header: true }) as any
+        //const header = jwtDecode(token as string, { header: true }) as any
         const data = jwtDecode(token as string) as any
         const { email, name, given_name, family_name } = data
         const user: SpecialUser = {
@@ -71,7 +69,7 @@ const authOptions: AuthOptions = {
       },
     }),
   ],
-  debug: true,
+  debug: process.env.AWS_BRANCH === 'prod' ? false : true,
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       console.log('Sign In Callback')

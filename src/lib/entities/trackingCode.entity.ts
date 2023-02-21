@@ -19,26 +19,37 @@ import { Model } from './abcModel'
 }) */
 /**Need Tracking code so user can sub/unsub from specifically tracking that code */
 export class TrackingCode extends Model {
-  constructor(code: string) {
+  constructor(code?: string, email?: string) {
     super()
-    this.code = code
+    if (code) this.code = code
+    if (email) this.user = email
 
     //TODO: convert to PK and SK and partialSK
     this.metadata = {
-      name: 'trackingCode',
-      partitionKey: 'ITEM#{{code}}',
-      sortKey: 'USER#{{user}}',
-      partialSortKey: 'USER#',
+      name: 'tracking_code',
+      PK: 'ITEM#{{code}}',
+      SK: 'USER#{{user}}',
+      partialSK: 'USER#',
+      index: {
+        name: 'GSI1',
+        PK: 'USER#{{user}}',
+        SK: 'ITEM#{{code}}',
+        partialSK: 'ITEM#',
+      },
     }
+  }
+
+  static forUser(email: string) {
+    return new TrackingCode('', email)
   }
 
   @PK
   @Attribute
   code: string
 
-  /** User PK */
+  /** User Email */
   @Attribute
-  user: string // userEmail
+  user: string
 
   @Attribute
   @AutoEpoch

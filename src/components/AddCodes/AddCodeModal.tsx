@@ -27,9 +27,11 @@ export function useForm() {
 export default function AddCodeModal({
   open,
   setOpen,
+  onAdd,
 }: {
   open: boolean
   setOpen: (isOpen: boolean) => void
+  onAdd: () => void
 }) {
   const [form, setForm] = useImmer(defaultForm)
   const [error, setError] = useImmer('')
@@ -62,9 +64,9 @@ export default function AddCodeModal({
   async function handleSubmit() {
     if (validateForm()) {
       const { ok, error, data } = await createEntry(form)
-      console.log(data)
       if (ok) {
         handleClose()
+        onAdd()
       } else {
         setError(error)
       }

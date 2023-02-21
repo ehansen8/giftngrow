@@ -6,9 +6,9 @@ export interface Model {
   auto: { key: string; fn: () => any }[]
   metadata: {
     name: string
-    partitionKey: string
-    sortKey: string
-    partialSortKey: string
+    PK: string
+    SK: string
+    partialSK: string
     index?: {
       name: string
       PK: string
@@ -20,13 +20,13 @@ export interface Model {
 
 export abstract class Model {
   getPK() {
-    const match = this.metadata.partitionKey.match(/{{(.*?)}}/)
+    const match = this.metadata.PK.match(/{{(.*?)}}/)
     if (!match) {
-      return this.metadata.partitionKey
+      return this.metadata.PK
     }
     const attr = match[1]
     //@ts-ignore
-    return this.metadata.partitionKey.replace(`{{${attr}}}`, this[attr])
+    return this.metadata.PK.replace(`{{${attr}}}`, this[attr])
   }
 
   getIndexPK() {
@@ -43,13 +43,13 @@ export abstract class Model {
   }
 
   getSK() {
-    const match = this.metadata.sortKey.match(/{{(.*?)}}/)
+    const match = this.metadata.SK.match(/{{(.*?)}}/)
     if (!match) {
-      return this.metadata.sortKey
+      return this.metadata.SK
     }
     const attr = match[1]
     //@ts-ignore
-    return this.metadata.sortKey.replace(`{{${attr}}}`, this[attr])
+    return this.metadata.SK.replace(`{{${attr}}}`, this[attr])
   }
 
   getIndexSK() {

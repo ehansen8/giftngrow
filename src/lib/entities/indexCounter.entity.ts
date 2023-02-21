@@ -10,9 +10,9 @@ export class IndexCounter extends Model {
     this.code = code
     this.metadata = {
       name: 'index_counter',
-      partitionKey: 'INDEX#',
-      sortKey: 'INDEX#',
-      partialSortKey: 'INDEX#',
+      PK: 'INDEX#',
+      SK: 'INDEX#',
+      partialSK: 'INDEX#',
     }
   }
 

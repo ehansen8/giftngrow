@@ -11,9 +11,9 @@ export class Item extends Model {
     this.index = index
     this.metadata = {
       name: 'item',
-      partitionKey: 'ITEM#{{id}}',
-      sortKey: 'CREATED#{{createdAt}}',
-      partialSortKey: 'CREATED#',
+      PK: 'ITEM#{{id}}',
+      SK: 'CREATED#{{createdAt}}',
+      partialSK: 'CREATED#',
       // index: {
       //   name: 'GSI1',
       //   PK: 'INDEX#',

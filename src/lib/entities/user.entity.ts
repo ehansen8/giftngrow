@@ -10,9 +10,9 @@ export class User extends Model {
     this.email = email
     this.metadata = {
       name: 'user',
-      partitionKey: 'USER#{{email}}',
-      sortKey: 'USER#{{email}}',
-      partialSortKey: 'USER#',
+      PK: 'USER#{{email}}',
+      SK: 'USER#{{email}}',
+      partialSK: 'USER#',
     }
   }
 

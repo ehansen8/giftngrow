@@ -1,8 +1,8 @@
 import { DynamoDBServiceException } from '@aws-sdk/client-dynamodb'
 import { PutCommandOutput } from '@aws-sdk/lib-dynamodb'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { Retryer } from 'react-query/types/core/retryer'
-import { AddCodeForm, ApiRes } from '../../../../types/general'
+import { getSession } from 'next-auth/react'
+import { AddCodeForm } from '../../../../types/general'
 import { emailManager } from '../../../lib/emailManager'
 import { Entry } from '../../../lib/entities/entry.entity'
 import { TrackingCode } from '../../../lib/entities/trackingCode.entity'
@@ -16,13 +16,14 @@ export default async function handle(
   if (req.method !== 'POST') {
     return
   }
-
+  const session = await getSession({ req })
+  console.log(session)
   const data = req.body as AddCodeForm
   const entry = Entry.fromObject(data)
   // Check that the Code exists in DB by checking the entry parent
-  const parentItem = await entityManager.findOne(entry.getItem())
+  const parentItem = await entityManager.find(entry.getItem(), { limit: 1 })
   // Failed to find match
-  if (!parentItem) {
+  if (!parentItem || parentItem.length == 0) {
     res.json({
       ok: false,
       error: 'Invalid Code',
@@ -48,22 +49,36 @@ export default async function handle(
     return
   }
 
-  //Successful Create
+  try {
+    const code = new TrackingCode(data.code)
+    let subscribers = await entityManager.find(code)
+    //only send emails to gng if not in prod
+    if (process.env.AWS_BRANCH !== 'prod') {
+      subscribers = [{ user: 'no-reply@giftngrow.com' }] as TrackingCode[]
+    }
 
-  //TODO: Trigger emails to subscribers
-  const code = new TrackingCode(data.code)
-  const tmp_subscribers = await entityManager.find(code)
-  const subscribers = [{ user: 'no-reply@giftngrow.com' }] as TrackingCode[]
-  const emailData = await emailManager.sendTrackingUpdates(
-    subscribers.map((user) => user.user),
-    data.code,
-  )
+    //Add new tracking code for the user
+    if (session && session.user?.email) {
+      code.user = session.user.email
+      entityManager.create(code)
+    }
 
-  console.log(emailData)
+    const emailData = await emailManager.sendTrackingUpdates(
+      subscribers.map((user) => user.user),
+      data.code,
+    )
 
-  res.json({
-    ok: true,
-    error: '',
-    data: { createResponse: response, emailResponse: emailData },
-  })
+    res.json({
+      ok: true,
+      error: '',
+      data: { createResponse: response, emailResponse: emailData },
+    })
+  } catch (e) {
+    logger.error(e, 'Tracking update email errored in some way')
+    res.json({
+      ok: true,
+      error: '',
+      data: { createResponse: response, emailResponse: '' },
+    })
+  }
 }

@@ -78,12 +78,14 @@ export default function TrackingAppBar({
               }}
             >
               <PublicIcon className='mr-1' />
-              Code History
+              <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+                Code History
+              </Box>
               <ExpandMoreIcon />
             </Button>
           </Badge>
           <Button
-            className='border-black px-1'
+            className='border-black'
             onClick={handleAddCode}
             variant='outlined'
             sx={{
@@ -94,32 +96,24 @@ export default function TrackingAppBar({
             }}
           >
             <AddIcon className='mr-1' />
-            Add Code
+            <Box sx={{ display: { xs: 'none', md: 'block' } }}>Add Code</Box>
           </Button>
+          <Menu
+            open={!!anchorEl}
+            onClose={handleCloseDropdown}
+            anchorEl={anchorEl}
+            //keepMounted={true}
+          >
+            {/** //TODO- center buttons  */}
+            <CodeList
+              codesQuery={codesQuery}
+              handleClick={handleMenuClick}
+            />
+          </Menu>
         </Box>
-        <Menu
-          open={!!anchorEl}
-          onClose={handleCloseDropdown}
-          anchorEl={anchorEl}
-          //keepMounted={true}
-        >
-          {/** //TODO- center buttons  */}
-          <MenuItem className='m-auto'>
-            <Typography
-              textAlign='center'
-              width='100%'
-            >
-              Add Code
-            </Typography>
-          </MenuItem>
-          <Divider variant='middle' />
-          <CodeList
-            codesQuery={codesQuery}
-            handleClick={handleMenuClick}
-          />
-        </Menu>
+
         <Typography
-          sx={{ flex: '1 1 0' }}
+          sx={{ flex: '1 1 0', display: { xs: 'none', sm: 'block' } }}
           variant='h6'
           noWrap
           component='div'
@@ -185,8 +179,15 @@ function CodeList({
   if (isError) {
     return <span>Error: {error.message}</span>
   }
-  if (!data) {
-    return <></>
+  if (!data || data.length == 0) {
+    return (
+      <span
+        className='text-center'
+        style={{ width: '100px', display: 'block' }}
+      >
+        No Codes
+      </span>
+    )
   }
 
   return (

@@ -46,9 +46,8 @@ class EntityManager {
       ':PK': options.useIndex ? entity.getIndexPK() : entity.getPK(),
       ':SK': options.useIndex
         ? entity.metadata.index?.partialSK
-        : entity.metadata.partialSortKey,
+        : entity.metadata.partialSK,
     }
-    console.log(expressionValues)
     const params: QueryCommandInput = {
       ...baseParams,
       KeyConditionExpression: '#PK = :PK AND begins_with( #SK, :SK)',

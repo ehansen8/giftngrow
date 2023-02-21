@@ -1,4 +1,4 @@
-import { Typography, Button, Card, CardContent, Grid } from '@mui/material'
+import { Typography, Button, Card, CardContent, Snackbar } from '@mui/material'
 import Alert from '@mui/material/Alert'
 import { colors } from '../colors'
 import { useState } from 'react'
@@ -13,24 +13,8 @@ import fetchEntries from '../services/fetchEntries'
 import { TrackingCode } from '../lib/entities/trackingCode.entity'
 import { User } from '../lib/entities/user.entity'
 import fetchCodes from '../services/fetchCodes'
-import { getSession, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import AddCodeModal from '../components/AddCodes/AddCodeModal'
-import { AppContext } from 'next/app'
-
-const cards = [
-  {
-    value: 43,
-    body: 'Cities',
-  },
-  {
-    value: 15,
-    body: 'States',
-  },
-  {
-    value: 1003,
-    body: 'Times Gifted',
-  },
-]
 
 export default function Tracking() {
   const { data: session } = useSession()
@@ -48,6 +32,7 @@ export default function Tracking() {
   )
 
   const [open, setOpen] = useState(false)
+  const [openToast, setOpenToast] = useState(false)
 
   function handleAddCode() {
     setOpen(true)
@@ -64,7 +49,10 @@ export default function Tracking() {
         className='py-4 rounded-md px-2'
         style={{ backgroundColor: 'white' }}
       >
-        <StatsGrid activeCode={activeCode} />
+        <StatsGrid
+          activeCode={activeCode}
+          entriesQuery={entriesQuery}
+        />
         {(!codesQuery.data || codesQuery.data.length <= 0) && (
           <NoBagsView handleClick={handleAddCode} />
         )}
@@ -72,7 +60,20 @@ export default function Tracking() {
         <AddCodeModal
           open={open}
           setOpen={setOpen}
+          onAdd={() => setOpenToast(true)}
         />
+        <Snackbar
+          open={openToast}
+          autoHideDuration={4000}
+          onClose={() => setOpenToast(false)}
+        >
+          <Alert
+            onClose={() => setOpenToast(false)}
+            severity='info'
+          >
+            {`New entry successfully added!`}
+          </Alert>
+        </Snackbar>
       </main>
     </>
   )
@@ -120,70 +121,101 @@ const BagTimeline = ({
   )
 }
 
-const StatsGrid = ({ activeCode }: { activeCode?: string }) => (
-  <>
-    <Typography
-      className='rounded-full mb-3 border-solid border-2'
-      variant='h6'
-      textAlign='center'
-      sx={{
-        borderColor: colors.green,
-        backgroundColor: 'inherit',
-        width: '75%',
-        margin: 'auto',
-        color: colors.dark,
-      }}
-    >
-      {activeCode ? 'Tracking Code: ' + activeCode : 'All Tracking Code Stats'}
-    </Typography>
-    <div
-      className='mt-0'
-      style={{
-        display: 'grid',
-        width: '100%',
-        height: 'max-content',
-        gridTemplateRows: 'repeat(1, auto)',
-        gridTemplateColumns: 'repeat(3, minmax(auto, max-content))',
-        justifyContent: 'space-around',
-      }}
-    >
-      {cards.map((card) => {
-        return (
-          <Card
-            key={card.value}
-            sx={{
-              backgroundColor: '#41BEBB',
-              aspectRatio: '1/1',
-              height: '100%',
-            }}
-            elevation={4}
-            className='rounded-full'
-          >
-            <CardContent className='!p-2 h-full rounded-full'>
-              <div className='flex flex-col items-center h-full justify-center text-black'>
-                <Typography
-                  fontSize={18}
-                  variant='h6'
-                  className=''
-                >
-                  {card.value}
-                </Typography>
-                <Typography
-                  variant='body1'
-                  textAlign='center'
-                  noWrap
-                  className='mb-4'
-                >
-                  {card.body}
-                </Typography>
-              </div>
-            </CardContent>
-          </Card>
-        )
-      })}
-    </div>
-  </>
-)
+const cards = [
+  {
+    value: 43,
+    body: 'Cities',
+  },
+  {
+    value: 15,
+    body: 'States',
+  },
+  {
+    value: 1003,
+    body: 'Times Gifted',
+  },
+]
+
+const StatsGrid = ({
+  activeCode,
+  entriesQuery,
+}: {
+  activeCode?: string
+  entriesQuery: UseQueryResult<Entry[], AxiosError>
+}) => {
+  const { data, isLoading, isError, error } = entriesQuery
+  let statCards: { value: number; body: string }[] = []
+  if (data) {
+    statCards = getStats(data)
+  }
+
+  return (
+    <>
+      <Typography
+        className='rounded-full mb-3 border-solid border-2'
+        variant='h6'
+        textAlign='center'
+        sx={{
+          borderColor: colors.green,
+          backgroundColor: 'inherit',
+          width: '75%',
+          margin: 'auto',
+          color: colors.dark,
+        }}
+      >
+        {activeCode
+          ? 'Tracking Code: ' + activeCode
+          : 'All Tracking Code Stats'}
+      </Typography>
+      <div
+        className='mt-0'
+        style={{
+          display: 'grid',
+          width: '100%',
+          height: 'max-content',
+          gridTemplateRows: 'repeat(1, auto)',
+          gridTemplateColumns: 'repeat(3, minmax(auto, max-content))',
+          justifyContent: 'space-around',
+        }}
+      >
+        {statCards.map((card) => {
+          return (
+            <Card
+              key={card.value}
+              sx={{
+                backgroundColor: '#41BEBB',
+                aspectRatio: '1/1',
+                height: '100%',
+              }}
+              elevation={4}
+              className='rounded-full'
+            >
+              <CardContent className='!p-2 h-full rounded-full'>
+                <div className='flex flex-col items-center h-full justify-center text-black'>
+                  <Typography
+                    fontSize={18}
+                    variant='h6'
+                    className=''
+                  >
+                    {card.value}
+                  </Typography>
+                  <Typography
+                    variant='body1'
+                    textAlign='center'
+                    noWrap
+                    className='mb-4'
+                  >
+                    {card.body}
+                  </Typography>
+                </div>
+              </CardContent>
+            </Card>
+          )
+        })}
+      </div>
+    </>
+  )
+}
 
 const NoBagsView = ({ handleClick }: { handleClick: () => void }) => {
   return (
@@ -209,4 +241,21 @@ const NoBagsView = ({ handleClick }: { handleClick: () => void }) => {
       </Button>
     </div>
   )
+}
+
+function getStats(entries: Entry[]) {
+  const cities = new Set()
+  const states = new Set()
+  entries.forEach((entry) => {
+    if (entry.giverCity) cities.add(entry.giverCity)
+    if (entry.recipCity) cities.add(entry.recipCity)
+    if (entry.giverState) states.add(entry.giverState)
+    if (entry.recipState) states.add(entry.recipState)
+  })
+
+  return [
+    { value: cities.size, body: 'Cities' },
+    { value: states.size, body: 'States' },
+    { value: entries.length, body: 'Times Gifted' },
+  ]
 }
