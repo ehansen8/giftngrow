@@ -25,8 +25,8 @@ export function BaseTable<T extends Model>({
       <Table sx={{ width: 'max-content' }}>
         <TableHead>
           <TableRow>
-            {headers.map(({ display }) => (
-              <TableCell>{display}</TableCell>
+            {headers.map(({ display }, idx) => (
+              <TableCell key={idx}>{display}</TableCell>
             ))}
           </TableRow>
         </TableHead>
@@ -34,7 +34,7 @@ export function BaseTable<T extends Model>({
           {data?.map((row) => (
             <TableRow>
               {headers.map(({ index }) => (
-                <TableCell>{(row as any)[index]}</TableCell>
+                <TableCell key={index}>{(row as any)[index]}</TableCell>
               ))}
             </TableRow>
           ))}
