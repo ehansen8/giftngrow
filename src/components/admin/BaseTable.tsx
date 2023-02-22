@@ -31,8 +31,8 @@ export function BaseTable<T extends Model>({
           </TableRow>
         </TableHead>
         <TableBody>
-          {data?.map((row) => (
-            <TableRow>
+          {data?.map((row, idx) => (
+            <TableRow key={idx}>
               {headers.map(({ index }) => (
                 <TableCell key={index}>{(row as any)[index]}</TableCell>
               ))}
