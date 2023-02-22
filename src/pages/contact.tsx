@@ -1,4 +1,5 @@
 import { Button, Divider, TextField, Typography } from '@mui/material'
+import { logger } from '../lib/logger'
 import { sendEmail } from '../services/sendEmail'
 
 export default function Contact() {
@@ -63,7 +64,7 @@ export default function Contact() {
           type='submit'
           onClick={async () => {
             const data = await sendEmail()
-            console.log(data)
+            logger.info(data, 'Contact Email Sent')
           }}
         >
           Send Message

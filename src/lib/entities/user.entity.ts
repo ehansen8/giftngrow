@@ -13,6 +13,12 @@ export class User extends Model {
       PK: 'USER#{{email}}',
       SK: 'USER#{{email}}',
       partialSK: 'USER#',
+      index: {
+        name: 'GSI1',
+        PK: 'USER#',
+        SK: 'USER#{{email}}',
+        partialSK: 'USER#',
+      },
     }
   }
 
@@ -32,11 +38,12 @@ export class User extends Model {
   @Attribute
   @AutoEpoch
   createdOn: number
-}
 
-type UserProps = {
-  email: string
-  firstName: string
-  city: string
-  state: string
+  static Headers = [
+    { index: 'email', display: 'Email' },
+    { index: 'firstName', display: 'Name' },
+    { index: 'city', display: 'City' },
+    { index: 'state', display: 'State' },
+    { index: 'createdOn', display: 'Created On' },
+  ]
 }

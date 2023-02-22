@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { QueryCommand, QueryCommandInput } from '@aws-sdk/lib-dynamodb'
 import { ddbDocClient } from '../../../lib/db'
+import { entityManager } from '../../../lib/entityManager'
 
 export default async function handle(
   req: NextApiRequest,
@@ -15,7 +16,6 @@ export default async function handle(
       ':SK': 'ENTRY#',
     },
   }
-
   const { Items } = await ddbDocClient.send(new QueryCommand(params))
 
   res.json(Items)

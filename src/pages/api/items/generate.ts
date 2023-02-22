@@ -11,7 +11,6 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
   const latest = await entityManager.findOne(new IndexCounter(), {
     consistantRead: true,
   })
-  console.log(latest)
   const pages = codeGenerator.getCodes(numPages, latest)
 
   /**
@@ -21,7 +20,6 @@ export default async function index(req: NextApiRequest, res: NextApiResponse) {
   let pagesSaved = 0
   try {
     for (let page of pages) {
-      //TODO: log unprocessedItems
       const items = Item.fromPage(page)
       const data = await entityManager.createBatch(items)
       //Update the Count using the last item in the page

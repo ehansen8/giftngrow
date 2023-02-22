@@ -10,6 +10,8 @@ import {
 } from '@aws-sdk/lib-dynamodb'
 import { ddbDocClient } from './db'
 import { Model } from './entities/abcModel'
+import { Entry } from './entities/entry.entity'
+import { User } from './entities/user.entity'
 
 const baseParams = { TableName: process.env.TABLE_NAME }
 type FindOptions = {
@@ -83,6 +85,39 @@ class EntityManager {
     }
 
     return ddbDocClient.send(new BatchWriteCommand(params), {})
+  }
+  async allEntries(limit?: number) {
+    const expressionValues = {
+      ':PK': 'ENTRY#',
+      ':SK': 'ENTRY#',
+    }
+    const params: QueryCommandInput = {
+      ...baseParams,
+      KeyConditionExpression: 'GSI1PK = :PK AND begins_with( GSI1SK, :SK)',
+      ExpressionAttributeValues: expressionValues,
+      IndexName: 'GSI1',
+      Limit: limit,
+    }
+
+    const data = await ddbDocClient.send(new QueryCommand(params))
+    return data.Items as Entry[]
+  }
+
+  async allUsers(limit?: number) {
+    const expressionValues = {
+      ':PK': 'USER#',
+      ':SK': 'USER#',
+    }
+    const params: QueryCommandInput = {
+      ...baseParams,
+      KeyConditionExpression: 'GSI1PK = :PK AND begins_with( GSI1SK, :SK)',
+      ExpressionAttributeValues: expressionValues,
+      IndexName: 'GSI1',
+      Limit: limit,
+    }
+
+    const data = await ddbDocClient.send(new QueryCommand(params))
+    return data.Items as User[]
   }
 }
 

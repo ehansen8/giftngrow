@@ -17,7 +17,6 @@ export default async function handle(
     return
   }
   const session = await getSession({ req })
-  console.log(session)
   const data = req.body as AddCodeForm
   const entry = Entry.fromObject(data)
   // Check that the Code exists in DB by checking the entry parent

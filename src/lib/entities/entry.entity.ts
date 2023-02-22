@@ -14,6 +14,12 @@ export class Entry extends Model {
       PK: 'ITEM#{{code}}',
       SK: 'ENTRY#{{regDate}}',
       partialSK: 'ENTRY#',
+      index: {
+        name: 'GSI1',
+        PK: 'ENTRY#',
+        SK: 'ENTRY#{{regDate}}',
+        partialSK: 'ENTRY#',
+      },
     }
   }
 
@@ -59,4 +65,18 @@ export class Entry extends Model {
 
   @Attribute
   comment: string
+
+  static Headers = [
+    { index: 'code', display: 'Code' },
+    { index: 'regDate', display: 'Reg. Date' },
+    { index: 'giverFN', display: 'Giver Name' },
+    { index: 'giverCity', display: 'Giver City' },
+    { index: 'giverState', display: 'Giver State' },
+    { index: 'recipFN', display: 'Recip Name' },
+    { index: 'recipCity', display: 'Recip City' },
+    { index: 'recipState', display: 'Recip State' },
+    { index: 'occasion', display: 'Occasion' },
+    { index: 'gift', display: 'Gift' },
+    { index: 'comment', display: 'Comment' },
+  ]
 }

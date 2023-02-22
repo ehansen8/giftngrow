@@ -31,8 +31,6 @@ function createTrackingUpdateCommand(addresses: string[], code: string) {
     code: code,
   }
 
-  console.log(JSON.stringify(templateData))
-
   return new SendBulkTemplatedEmailCommand({
     Template: 'YamlEmailTemplate3',
     Destinations: destinations,

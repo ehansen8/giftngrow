@@ -21,9 +21,15 @@ import TabPanel from '@mui/lab/TabPanel'
 import { useState } from 'react'
 import { createBulkCodes } from '../services/createBulkCodes'
 import Link from 'next/link'
-import { useQuery } from 'react-query'
+import { useQuery, UseQueryResult } from 'react-query'
 import { AxiosError } from 'axios'
 import { logger } from '../lib/logger'
+import getAllEntries from '../services/getAllEntries'
+import { Entry } from '../lib/entities/entry.entity'
+import { Model } from '../lib/entities/abcModel'
+import { User } from '../lib/entities/user.entity'
+import { BaseTable } from '../components/admin/BaseTable'
+import getAllUsers from '../services/getAllUsers'
 
 // Also probably SSR this page
 
@@ -41,6 +47,13 @@ export default function Admin() {
     setTab(newTab)
   }
   const maxPages = 10
+  const entriesQuery = useQuery<Entry[], AxiosError>(['all_entries'], () =>
+    getAllEntries(),
+  )
+  const usersQuery = useQuery<User[], AxiosError>(['all_users'], () =>
+    getAllUsers(),
+  )
+
   const [numPages, setNumPages] = useState<number | undefined>(1)
   const [errorMessage, setErrorMessage] = useState('')
   //Need to use refetch since the query is only triggered onClick
@@ -99,7 +112,7 @@ export default function Admin() {
     return <main>Access Denied</main>
   }
   return (
-    <main className='p-4 rounded-md mt-4 flex flex-col items-center bg-white'>
+    <main className='p-4 rounded-md mt-4 flex flex-col items-center bg-white max-w-full'>
       <h1 className='m-0'>Welcome to the Admin Page</h1>
       <TabContext value={tab}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -177,41 +190,29 @@ export default function Admin() {
             </Typography>
           </div>
         </TabPanel>
-        <TabPanel value={'entries'}>
-          <TestTable />
+        <TabPanel
+          value={'entries'}
+          className='w-full p-0'
+        >
+          {entriesQuery.data && (
+            <BaseTable
+              data={entriesQuery.data}
+              headers={Entry.Headers}
+            />
+          )}
         </TabPanel>
-        <TabPanel value={'users'}>
-          <TestTable />
+        <TabPanel
+          value={'users'}
+          className='w-full p-0'
+        >
+          {usersQuery.data && (
+            <BaseTable
+              data={usersQuery.data}
+              headers={User.Headers}
+            />
+          )}
         </TabPanel>
       </TabContext>
     </main>
-  )
-}
-
-function TestTable() {
-  return (
-    <TableContainer component={Paper}>
-      <Table
-        sx={{ minWidth: 650 }}
-        aria-label='simple table'
-      >
-        <TableHead>
-          <TableRow>
-            <TableCell>Dessert</TableCell>
-            <TableCell>Calories</TableCell>
-            <TableCell>Fat&nbsp;(g)</TableCell>
-            <TableCell>Carbs&nbsp;(g)</TableCell>
-            <TableCell>Protein&nbsp;(g)</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableCell>Dessert</TableCell>
-          <TableCell>Calories</TableCell>
-          <TableCell>Fat&nbsp;(g)</TableCell>
-          <TableCell>Carbs&nbsp;(g)</TableCell>
-          <TableCell>Protein&nbsp;(g)</TableCell>
-        </TableBody>
-      </Table>
-    </TableContainer>
   )
 }

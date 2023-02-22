@@ -72,7 +72,6 @@ export const authOptions: AuthOptions = {
   debug: process.env.AWS_BRANCH === 'prod' ? false : true,
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      console.log('Sign In Callback')
       return true
     },
     async jwt({ token, user }: { token: JWT; user?: SpecialUser }) {
