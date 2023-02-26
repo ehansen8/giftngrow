@@ -23,6 +23,7 @@ const pages = [
   { label: 'Home', url: 'https://giftngrow.square.site/' },
   { label: 'Admin', url: '/admin' },
   { label: 'Track Codes', url: '/tracking' },
+  { label: 'Login', url: '/auth/login' },
 ]
 
 const buttonStyle = {
