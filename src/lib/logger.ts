@@ -3,14 +3,14 @@ import { createPinoBrowserSend, createWriteStream } from 'pino-logflare'
 
 // create pino-logflare stream
 const stream = createWriteStream({
-  apiKey: 'fH6XRYbngjDH',
-  sourceToken: '709af0bc-f2e5-41ea-b3e5-12a751dd512d',
+  apiKey: process.env.NEXT_PUBLIC_LOG_KEY,
+  sourceToken: process.env.NEXT_PUBLIC_LOG_TOKEN,
 })
 
 // create pino-logflare browser stream
 const send = createPinoBrowserSend({
-  apiKey: 'fH6XRYbngjDH',
-  sourceToken: '709af0bc-f2e5-41ea-b3e5-12a751dd512d',
+  apiKey: process.env.NEXT_PUBLIC_LOG_KEY,
+  sourceToken: process.env.NEXT_PUBLIC_LOG_TOKEN,
 })
 
 // create pino loggger

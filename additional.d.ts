@@ -10,5 +10,7 @@ declare namespace NodeJS {
     TABLE_NAME: string
     AWS_BRANCH: string
     NEXT_PUBLIC_BRANCH: string
+    NEXT_PUBLIC_LOG_KEY: string
+    NEXT_PUBLIC_LOG_TOKEN: string
   }
 }
