@@ -62,8 +62,6 @@ const LoginForm = () => {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
-    //TODO: if error -> display error and retry
-    // Else: redirect to tracking or home page or wherever
 
     const error = verifyLoginForm(email, password)
     setErrorMessage(error)

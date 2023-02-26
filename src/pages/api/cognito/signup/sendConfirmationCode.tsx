@@ -11,7 +11,6 @@ export default async function handle(
 ) {
   const params = req.query as Params
   try {
-    //TODO: wrap the ok, error, data in some sort of handler
     const data = await serverSendCofirmationCode({ ...params })
     res.json({
       ok: true,

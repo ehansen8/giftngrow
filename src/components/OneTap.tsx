@@ -34,7 +34,6 @@ const useOneTapSignin = (
       } catch (e) {
         logger.fatal(e, 'Google Sign In Failed')
       }
-      //TODO: error handling
     }
 
     if (!isLoading) {

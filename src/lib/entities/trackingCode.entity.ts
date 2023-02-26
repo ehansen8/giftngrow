@@ -24,7 +24,6 @@ export class TrackingCode extends Model {
     if (code) this.code = code
     if (email) this.user = email
 
-    //TODO: convert to PK and SK and partialSK
     this.metadata = {
       name: 'tracking_code',
       PK: 'ITEM#{{code}}',

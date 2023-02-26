@@ -98,8 +98,6 @@ const BagTimeline = ({
   const entries = data
 
   return (
-    //TODO: why is this like this??
-    //@ts-ignore
     <Timeline
       className='px-0'
       position='right'
@@ -236,7 +234,7 @@ const NoBagsView = ({ handleClick }: { handleClick: () => void }) => {
           variant='button'
           fontSize={15}
         >
-          Add Code
+          Enter Code
         </Typography>
       </Button>
     </div>

@@ -6,7 +6,6 @@ import {
   IconButton,
   Button,
   Badge,
-  Divider,
   MenuItem,
   Menu,
 } from '@mui/material'
@@ -96,7 +95,7 @@ export default function TrackingAppBar({
             }}
           >
             <AddIcon className='mr-1' />
-            <Box sx={{ display: { xs: 'none', md: 'block' } }}>Add Code</Box>
+            <Box sx={{ display: { xs: 'none', md: 'block' } }}>Enter Code</Box>
           </Button>
           <Menu
             open={!!anchorEl}
@@ -104,7 +103,6 @@ export default function TrackingAppBar({
             anchorEl={anchorEl}
             //keepMounted={true}
           >
-            {/** //TODO- center buttons  */}
             <CodeList
               codesQuery={codesQuery}
               handleClick={handleMenuClick}

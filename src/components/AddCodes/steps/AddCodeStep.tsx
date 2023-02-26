@@ -30,7 +30,7 @@ export default function AddCodeStep({
         value={form.code}
         onInput={(e) =>
           setForm((draft) => {
-            draft.code = (e.target as HTMLInputElement).value
+            draft.code = (e.target as HTMLInputElement).value.toUpperCase()
           })
         }
       ></TextField>
