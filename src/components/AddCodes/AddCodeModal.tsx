@@ -31,7 +31,7 @@ export default function AddCodeModal({
 }: {
   open: boolean
   setOpen: (isOpen: boolean) => void
-  onAdd: () => void
+  onAdd: (code: string) => void
 }) {
   const [form, setForm] = useImmer(defaultForm)
   const [error, setError] = useImmer('')
@@ -66,7 +66,7 @@ export default function AddCodeModal({
       const { ok, error, data } = await createEntry(form)
       if (ok) {
         handleClose()
-        onAdd()
+        onAdd(form.code)
       } else {
         setError(error)
       }

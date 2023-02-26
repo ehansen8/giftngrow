@@ -38,6 +38,11 @@ export default function Tracking() {
     setOpen(true)
   }
 
+  function handleSuccessfulAddCode(code: string) {
+    setOpenToast(true)
+    setActiveCode(code)
+    codesQuery.refetch()
+  }
   return (
     <>
       <TrackingAppBar
@@ -60,7 +65,7 @@ export default function Tracking() {
         <AddCodeModal
           open={open}
           setOpen={setOpen}
-          onAdd={() => setOpenToast(true)}
+          onAdd={handleSuccessfulAddCode}
         />
         <Snackbar
           open={openToast}
