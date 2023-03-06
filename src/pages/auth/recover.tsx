@@ -111,7 +111,7 @@ function Recover() {
           <Button
             className='rounded-full'
             variant='contained'
-            color='info'
+            color='secondary'
             onClick={handleNewCode}
           >
             Get Code

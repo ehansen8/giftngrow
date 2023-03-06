@@ -1,4 +1,11 @@
-import { Typography, Button, TextField } from '@mui/material'
+import {
+  Typography,
+  Button,
+  TextField,
+  Checkbox,
+  FormControlLabel,
+  Link,
+} from '@mui/material'
 import dynamic from 'next/dynamic'
 import { FormEvent, useState } from 'react'
 import { useRouter } from 'next/router'
@@ -6,7 +13,7 @@ import { createUser } from '../../services/createUser'
 import NewPasswordField from '../../components/auth/NewPasswordField'
 
 function SignUp() {
-  const buttonWidth = '250'
+  const buttonWidth = '300'
   return (
     <main
       className='p-4 rounded-md mt-4'
@@ -35,6 +42,7 @@ const SignUpForm = () => {
   const [isValid, setIsValid] = useState(false)
   const [given_name, setGivenName] = useState('')
   const [family_name, setFamilyName] = useState('')
+  const [agreement, setAgreement] = useState(false)
   const router = useRouter()
 
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
@@ -44,7 +52,13 @@ const SignUpForm = () => {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
 
-    const error = verifySignupForm(email, given_name, password, isValid)
+    const error = verifySignupForm(
+      email,
+      given_name,
+      password,
+      isValid,
+      agreement,
+    )
     setErrorMessage(error)
     if (!error) {
       const res = await createUser({
@@ -103,6 +117,23 @@ const SignUpForm = () => {
         setPassword={setPassword}
         setIsValid={setIsValid}
       />
+      <FormControlLabel
+        name='Terms'
+        onInput={(e) => setAgreement((e.target as HTMLInputElement).checked)}
+        control={<Checkbox />}
+        label={
+          <Typography fontSize={12}>
+            I am 13 years of age or older and agree to the{' '}
+            <Link href='https://giftngrow.square.site/privacy-policy'>
+              privacy policy
+            </Link>{' '}
+            and{' '}
+            <Link href='https://giftngrow.square.site/privacy-policy'>
+              terms of use
+            </Link>
+          </Typography>
+        }
+      />
 
       <Button
         className='rounded-full'
@@ -120,6 +151,7 @@ function verifySignupForm(
   given_name: string,
   password: string,
   isValid: boolean,
+  agreement: boolean,
 ) {
   if (!email) {
     return 'Missing Email'
@@ -134,6 +166,10 @@ function verifySignupForm(
 
   if (!isValid) {
     return 'Password Criteria Not Met'
+  }
+
+  if (!agreement) {
+    return 'Terms and Conditions Must Be Accepted'
   }
 }
 
