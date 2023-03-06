@@ -1,11 +1,17 @@
-import { Alert, Typography } from '@mui/material'
 import Head from 'next/head'
 import { ReactNode } from 'react'
 import Footer from './Footer'
 import NavBar from './NavBar'
 import { OneTap } from './OneTap'
+import TestSiteAlert from './TestSiteAlert'
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default function Layout({
+  children,
+  childNav,
+}: {
+  children: ReactNode
+  childNav: JSX.Element | undefined
+}) {
   return (
     <>
       <Head>
@@ -20,24 +26,8 @@ export default function Layout({ children }: { children: ReactNode }) {
         />
       </Head>
       <OneTap />
-      <NavBar />
-      {process.env.NEXT_PUBLIC_BRANCH !== 'prod' && (
-        <Alert
-          severity='warning'
-          variant='filled'
-          className='mt-0 -mb-2'
-          sx={{
-            '& .MuiAlert-message': {
-              width: '100%',
-              textAlign: 'center',
-            },
-          }}
-        >
-          <Typography fontSize={20}>
-            This is a Test Site, codes and data are for testing purposes only
-          </Typography>
-        </Alert>
-      )}
+      <NavBar childNav={childNav} />
+      <TestSiteAlert />
       {children}
       <Footer />
     </>

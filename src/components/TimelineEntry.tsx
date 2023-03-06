@@ -84,14 +84,30 @@ const EntryCard = ({ entry }: { entry: Entry }) => (
           </IconButton>
         </div>
       </div>
-      <Divider variant='middle' />
-      <Typography
-        className='rounded-md p-1 mr-1'
-        sx={{ backgroundColor: colors.lightGreen }}
-        variant='subtitle2'
-      >
-        {entry.gift} for {entry.occasion}
-      </Typography>
+      {entry.gift && (
+        <>
+          <Divider variant='middle' />
+          <Typography
+            className='rounded-md p-1 mr-1'
+            sx={{ backgroundColor: colors.lightGreen }}
+            variant='subtitle2'
+          >
+            {entry.gift}
+          </Typography>
+        </>
+      )}
+      {entry.occasion && (
+        <>
+          <Divider variant='middle' />
+          <Typography
+            className='rounded-md p-1 mr-1'
+            sx={{ backgroundColor: colors.lightGreen }}
+            variant='subtitle2'
+          >
+            {entry.occasion}
+          </Typography>
+        </>
+      )}
       {entry.comment && (
         <>
           <Divider variant='middle' />

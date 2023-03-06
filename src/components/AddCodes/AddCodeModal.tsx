@@ -43,8 +43,8 @@ export default function AddCodeModal({
   const [step, setStep] = useState(0)
   const maxSteps = 2
 
-  function validateForm() {
-    const err = validationFn(form)
+  async function validateForm() {
+    const err = await validationFn(form)
     setError(err)
     return err === ''
   }
@@ -55,14 +55,14 @@ export default function AddCodeModal({
     setOpen(false)
   }
 
-  function handleStep() {
-    if (validateForm()) {
+  async function handleStep() {
+    if (await validateForm()) {
       setStep((s) => s + 1)
     }
   }
 
   async function handleSubmit() {
-    if (validateForm()) {
+    if (await validateForm()) {
       const { ok, error, data } = await createEntry(form)
       if (ok) {
         handleClose()

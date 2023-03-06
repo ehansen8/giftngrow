@@ -7,34 +7,45 @@ import Layout from '../components/Layout'
 import { colors } from '../colors'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { SessionProvider } from 'next-auth/react'
+import { NextPage } from 'next'
+import { ReactElement, ReactNode } from 'react'
 
 const theme = createTheme({
   palette: {
     primary: {
       // Purple and green play nicely together.
-      main: colors.green,
+      main: colors.primary,
     },
     secondary: {
       // This is green.A700 as hex.
-      main: colors.dark,
+      main: colors.secondary,
     },
   },
 })
 
 const queryClient = new QueryClient()
 
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode
+}
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout
+}
+
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
-}: AppProps) {
+}: AppPropsWithLayout) {
+  const getLayout =
+    Component.getLayout ??
+    ((page) => <Layout childNav={undefined}>{page}</Layout>)
   return (
     <SessionProvider session={session}>
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>
           <QueryClientProvider client={queryClient}>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            {getLayout(<Component {...pageProps} />)}
           </QueryClientProvider>
         </ThemeProvider>
       </StyledEngineProvider>

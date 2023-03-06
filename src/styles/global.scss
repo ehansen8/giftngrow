@@ -38,6 +38,8 @@ $green: #66B539;
 $greenLightGreen: #A7D685;
 $lightGreen: #E8F7D0;
 $light: #EEF0F2;
+$primary: #41BEBB;
+$secondary: #58853E;
 
 body {
     background-color: $darkGreen;
@@ -72,33 +74,6 @@ h2 {
     font-family: 'Noto Serif', serif;
 }
 
-
-.hero {
-    background-color: #59923A;
-    max-width: 100%;
-}
-
-.hero-card {
-
-    border-radius: 1rem;
-    max-width: 100%;
-
-    @include md {
-        max-width: 335px;
-    }
-
-    background-color: $light;
-
-    transition-property: background-color;
-    transition-duration: 1.5s;
-    transition-timing-function: ease-out;
-}
-
-.hero-active {
-    background-color: transparent;
-    background-image: linear-gradient(to right, $green 0%, $greenLightGreen 71%);
-}
-
 main {
     background-color: $lightGreen;
     max-width: 1000px;
@@ -110,17 +85,6 @@ footer {
     color: white
 }
 
-@keyframes fadein {
-    0% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
-
-.toggleIn {
-    animation: fadein 1500ms;
-    opacity: 1;
+.tracking-bar {
+    background: linear-gradient(to left, $secondary, $primary);
 }

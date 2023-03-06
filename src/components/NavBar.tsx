@@ -1,11 +1,11 @@
 import {
   AppBar,
   Toolbar,
-  Typography,
   Button,
   Box,
   IconButton,
   Menu,
+  SxProps,
 } from '@mui/material'
 import { Dancing_Script } from '@next/font/google'
 import Link from 'next/link'
@@ -13,6 +13,7 @@ import { useRef, useState } from 'react'
 import { colors } from '../colors'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 
 const ds = Dancing_Script({
   weight: '400',
@@ -26,23 +27,27 @@ const pages = [
   { label: 'Login', url: '/auth/login' },
 ]
 
-const buttonStyle = {
-  color: colors.greenLightGreen,
+const buttonStyle: SxProps = {
   fontSize: 15,
+  // color: colors.greenLightGreen,
+  borderRadius: '0px',
   '&.active': {
-    color: 'white',
+    borderBottom: '2px solid!important',
   },
 }
 
-const menuStyle = {
-  color: colors.green,
+const menuButtonStyle: SxProps = {
   fontWeight: 'bold',
   '&.active': {
-    backgroundColor: colors.lightGreen,
+    border: '1px solid',
   },
 }
 
-export default function NavBar() {
+export default function NavBar({
+  childNav,
+}: {
+  childNav: JSX.Element | undefined
+}) {
   const router = useRouter()
   const activeLink = (url: string) => (router.pathname === url ? 'active' : '')
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
@@ -59,18 +64,28 @@ export default function NavBar() {
     <AppBar
       elevation={6}
       position='sticky'
-      sx={{ backgroundColor: '#355823' }}
+      sx={{ backgroundColor: 'white' }} //'#355823'
     >
-      <Toolbar disableGutters={false}>
-        <Typography
+      <Toolbar
+        disableGutters={false}
+        className='flex flex-row justify-between'
+      >
+        <Image
+          src='/gng_logo.svg'
+          alt='giftngrow logo'
+          width={80}
+          height={80}
+        />
+        {/* <Typography
           variant='h3'
           component='div'
-          sx={{ flexGrow: 1, color: colors.light }}
+          sx={{ flexGrow: 1, color: colors.primary }}
           //className='logo' //ds.className
           className={ds.className}
         >
           Gift 'n Grow
-        </Typography>
+        </Typography> */}
+
         <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
           <IconButton
             ref={navRef}
@@ -78,7 +93,7 @@ export default function NavBar() {
             aria-controls='menu-appbar'
             aria-haspopup='true'
             onClick={handleOpenNavMenu}
-            sx={{ color: colors.greenLightGreen }}
+            color='primary'
           >
             <MenuIcon />
           </IconButton>
@@ -113,7 +128,8 @@ export default function NavBar() {
                   onClick={handleCloseNavMenu}
                   LinkComponent={Link}
                   href={page.url}
-                  sx={menuStyle}
+                  sx={menuButtonStyle}
+                  target={page.label == 'Home' ? '_blank' : ''}
                 >
                   {page.label}
                 </Button>
@@ -132,12 +148,15 @@ export default function NavBar() {
               href={page.url}
               sx={buttonStyle}
               LinkComponent={Link}
+              color='primary'
+              target={page.label == 'Home' ? '_blank' : ''}
             >
               {page.label}
             </Button>
           ))}
         </Box>
       </Toolbar>
+      {childNav}
     </AppBar>
   )
 }

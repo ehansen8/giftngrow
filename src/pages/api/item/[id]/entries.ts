@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { QueryCommand, QueryCommandInput } from '@aws-sdk/lib-dynamodb'
-import { ddbDocClient } from '../../../lib/db'
-import { entityManager } from '../../../lib/entityManager'
+import { ddbDocClient } from '../../../../lib/db'
+import { entityManager } from '../../../../lib/entityManager'
+import { Item } from '../../../../lib/entities/item.entity'
 
 export default async function handle(
   req: NextApiRequest,

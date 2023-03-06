@@ -6,6 +6,7 @@ import {
   TextField,
 } from '@mui/material'
 import { AddCodeForm } from '../../../../types/general'
+import fetchItem from '../../../services/fetchItem'
 import AddCodeContentWrapper from '../AddCodeContentWrapper'
 import { useForm } from '../AddCodeModal'
 
@@ -59,12 +60,22 @@ export default function AddCodeStep({
   )
 }
 
-function validate(form: AddCodeForm) {
+async function validate(form: AddCodeForm) {
   if (!form.code) {
     return 'Missing Code'
   }
   if (form.code.length != 6) {
     return 'Code Must Be 6 Characters'
   }
+
+  const res = await fetchItem(form.code)
+  if (res.error) {
+    return res.error
+  }
+
+  if (!res.data) {
+    return 'Invalid Code'
+  }
+
   return ''
 }
