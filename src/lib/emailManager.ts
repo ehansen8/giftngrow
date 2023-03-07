@@ -29,6 +29,7 @@ function createTrackingUpdateCommand(addresses: string[], code: string) {
 
   const templateData = {
     code: code,
+    logo_url: process.env.NEXTAUTH_URL + '/gng_logo.png',
   }
 
   return new SendBulkTemplatedEmailCommand({
