@@ -47,9 +47,9 @@ function Login() {
           Why create an account?
         </Typography>
         <List>
-          {bullets.map((text) => {
+          {bullets.map((text, idx) => {
             return (
-              <ListItem>
+              <ListItem key={idx}>
                 <ListItemIcon>
                   <CheckIcon color='primary' />
                 </ListItemIcon>
