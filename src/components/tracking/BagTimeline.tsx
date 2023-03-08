@@ -4,6 +4,7 @@ import TimelineEntry from '../TimelineEntry'
 import { Entry } from '../../lib/entities/entry.entity'
 import { AxiosError } from 'axios'
 import { UseQueryResult } from 'react-query'
+import CircularProgress from '@mui/material/CircularProgress'
 
 export function BagTimeline({
   entriesQuery,
@@ -12,7 +13,11 @@ export function BagTimeline({
 }) {
   const { data, isLoading, isError, error } = entriesQuery
   if (isLoading) {
-    return <span>Loading...</span>
+    return (
+      <div className='flex justify-center'>
+        <CircularProgress />
+      </div>
+    )
   }
 
   if (isError) {

@@ -7,8 +7,11 @@ import {
   PutCommandInput,
   QueryCommand,
   QueryCommandInput,
+  UpdateCommand,
+  UpdateCommandInput,
 } from '@aws-sdk/lib-dynamodb'
 import { ddbDocClient } from './db'
+import { ddbClient } from './ddbClient'
 import { Model } from './entities/abcModel'
 import { Entry } from './entities/entry.entity'
 import { User } from './entities/user.entity'
@@ -118,6 +121,28 @@ class EntityManager {
 
     const data = await ddbDocClient.send(new QueryCommand(params))
     return data.Items as User[]
+  }
+
+  async updateStats(entry: Entry) {
+    const cities = [entry.recipCity, entry.giverCity].map((e) => e ?? '')
+    const states = [entry.recipState, entry.giverState].map((e) => e ?? '')
+
+    console.log(cities, states)
+    const params: UpdateCommandInput = {
+      ...baseParams,
+      Key: {
+        PK: 'STATS#',
+        SK: 'STATS#',
+      },
+      UpdateExpression: 'ADD cities :cities, states :states, times_gifted :inc',
+      ExpressionAttributeValues: {
+        ':cities': new Set(cities),
+        ':states': new Set(states),
+        ':inc': 1,
+      },
+    }
+
+    return ddbDocClient.send(new UpdateCommand(params))
   }
 }
 

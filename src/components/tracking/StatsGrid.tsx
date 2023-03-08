@@ -3,18 +3,26 @@ import { colors } from '../../colors'
 import { Entry } from '../../lib/entities/entry.entity'
 import { AxiosError } from 'axios'
 import { UseQueryResult } from 'react-query'
+import { StatsType } from '../../lib/entities/stats.entity'
+import { CONDITIONAL_TYPES } from '@babel/types'
 
 export function StatsGrid({
   activeCode,
   entriesQuery,
+  globalStatsQuery,
 }: {
   activeCode?: string
   entriesQuery: UseQueryResult<Entry[], AxiosError>
+  globalStatsQuery: UseQueryResult<StatsType, AxiosError>
 }) {
   const { data, isLoading, isError, error } = entriesQuery
+  const globalStats = globalStatsQuery.data
+
   let statCards: { value: number; body: string }[] = []
-  if (data) {
+  if (activeCode && data) {
     statCards = getStats(data)
+  } else if (globalStats) {
+    statCards = getGlobalStats(globalStats)
   }
 
   return (
@@ -51,15 +59,16 @@ export function StatsGrid({
             <Card
               key={card.value}
               sx={{
-                backgroundColor: '#41BEBB',
+                backgroundColor: '#4a607b',
                 aspectRatio: '1/1',
                 height: '100%',
+                color: 'white',
               }}
               elevation={4}
               className='rounded-full'
             >
               <CardContent className='!p-2 h-full rounded-full'>
-                <div className='flex flex-col items-center h-full justify-center text-black'>
+                <div className='flex flex-col items-center h-full justify-center'>
                   <Typography
                     fontSize={18}
                     variant='h6'
@@ -83,6 +92,14 @@ export function StatsGrid({
       </div>
     </>
   )
+}
+
+function getGlobalStats({ states, cities, times_gifted }: StatsType) {
+  return [
+    { value: cities, body: 'Cities' },
+    { value: states, body: 'States' },
+    { value: times_gifted, body: 'Times Gifted' },
+  ]
 }
 
 function getStats(entries: Entry[]) {

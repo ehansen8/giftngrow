@@ -5,6 +5,7 @@ import {
   CardContent,
   Grid,
   Divider,
+  CardHeader,
 } from '@mui/material'
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore'
 import TimelineItem from '@mui/lab/TimelineItem'
@@ -16,6 +17,7 @@ import VolunteerActivismOutlinedIcon from '@mui/icons-material/VolunteerActivism
 import { colors } from '../colors'
 import { TimelineSeparator, TimelineConnector } from '@mui/lab'
 import OverflowTip from './OverflowTip'
+import { lighten } from '@mui/material'
 
 type TimelineEntryProps = {
   entry: Entry
@@ -45,84 +47,65 @@ export default function TimelineEntry({ entry }: TimelineEntryProps) {
     </TimelineItem>
   )
 }
-const EntryCard = ({ entry }: { entry: Entry }) => (
-  <Card
-    sx={{ backgroundColor: colors.greenLightGreen }}
-    raised
-    elevation={2}
-  >
-    <CardContent className='flex flex-col gap-3 !p-2 pr-0'>
-      <div className='flex flex-row justify-between pt-1'>
-        <Grid
-          container
-          className='gap-2'
-          wrap='nowrap'
-        >
-          {entry.giverFN && (
-            <PersonCard
-              name={entry.giverFN}
-              city={entry.giverCity}
-              state={entry.giverState}
-            />
-          )}
-          <VolunteerActivismOutlinedIcon className='self-center' />
-          {entry.recipFN && (
-            <PersonCard
-              name={entry.recipFN}
-              city={entry.recipCity}
-              state={entry.recipState}
-            />
-          )}
-        </Grid>
-        <div className='self-center'>
-          <IconButton
-            sx={{
-              color: colors.dark,
-            }}
-          >
-            <UnfoldMoreIcon />
-          </IconButton>
+const EntryCard = ({ entry }: { entry: Entry }) => {
+  const giverLOC = formatLocation(entry.giverCity, entry.giverState)
+  const recipLOC = formatLocation(entry.recipCity, entry.recipState)
+  return (
+    <Card
+      className='entry-card'
+      //sx={{ backgroundColor: 'rgb' }}
+      raised
+      elevation={4}
+    >
+      <CardContent className='p-0 entry-card-content'>
+        <div className='entry-card-header'>
+          <h3>
+            {entry.giverFN} {giverLOC && <LOC location={giverLOC}></LOC>}
+          </h3>
         </div>
-      </div>
-      {entry.gift && (
-        <>
-          <Divider variant='middle' />
-          <Typography
-            className='rounded-md p-1 mr-1'
-            sx={{ backgroundColor: colors.lightGreen }}
-            variant='subtitle2'
-          >
-            {entry.gift}
-          </Typography>
-        </>
-      )}
-      {entry.occasion && (
-        <>
-          <Divider variant='middle' />
-          <Typography
-            className='rounded-md p-1 mr-1'
-            sx={{ backgroundColor: colors.lightGreen }}
-            variant='subtitle2'
-          >
-            {entry.occasion}
-          </Typography>
-        </>
-      )}
-      {entry.comment && (
-        <>
-          <Divider variant='middle' />
-          <Typography
-            className='rounded-md p-1 mr-1'
-            sx={{ backgroundColor: colors.lightGreen }}
-            variant='subtitle2'
-          >
-            {entry.comment}
-          </Typography>
-        </>
-      )}
-    </CardContent>
-  </Card>
-)
+        <div className='entry-card-body '>
+          <p>
+            <strong>To: </strong>
+            {entry.recipFN} {recipLOC && <LOC location={recipLOC}></LOC>}
+          </p>
+          {entry.gift && (
+            <p>
+              <strong>Gift:</strong> {entry.gift}
+            </p>
+          )}
+          {entry.occasion && (
+            <p>
+              <strong>Occasion:</strong> {entry.occasion}
+            </p>
+          )}
+          {entry.comment && (
+            <p>
+              <strong>Message:</strong> {entry.comment}
+            </p>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+const LOC = ({ location }: { location: string }) => {
+  return <>&bull; {location}</>
+}
+
+function formatLocation(city: string, state: string) {
+  let loc = ''
+  if (city) {
+    loc = city
+    if (state) {
+      loc += `, ${state}`
+    }
+  } else if (state) {
+    loc = state
+  }
+
+  return loc
+}
 
 type Person = {
   name: string
@@ -139,7 +122,7 @@ const PersonCard = ({ name, city, state }: Person) => {
       item
       className='rounded-md p-2 '
       sx={{
-        backgroundColor: colors.lightGreen,
+        backgroundColor: '#b9f296',
         flex: 1,
         maxWidth: 'max-content',
         width: 0,

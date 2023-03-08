@@ -1,28 +1,41 @@
+import { Set } from 'immutable'
 import 'reflect-metadata'
 import Attribute, { AutoEpoch } from '../../utils/attribute.decorator'
+import { entityManager } from '../entityManager'
 import { Model } from './abcModel'
-import { Item } from './item.entity'
 
 export class Stats extends Model {
-  constructor(index?: number, code?: string) {
+  constructor() {
     super()
-    this.index = index
-    this.code = code
     this.metadata = {
-      name: 'index_counter',
-      PK: 'INDEX#',
-      SK: 'INDEX#',
-      partialSK: 'INDEX#',
+      name: 'stats',
+      PK: 'STATS#',
+      SK: 'STATS#',
+      partialSK: 'STATS#',
     }
   }
+  @Attribute
+  cities: Set<string>
 
   @Attribute
-  index: number | undefined
+  states: Set<string>
 
   @Attribute
-  code: string | undefined
+  times_gifted: number
 
-  @Attribute
-  @AutoEpoch
-  updated: number
+  static async getStats(): Promise<StatsType> {
+    const stats = await entityManager.findOne(new Stats())
+
+    return {
+      times_gifted: stats?.times_gifted!,
+      cities: stats?.cities.size! - 1,
+      states: stats?.states.size! - 1,
+    }
+  }
+}
+
+export type StatsType = {
+  times_gifted: number
+  cities: number
+  states: number
 }

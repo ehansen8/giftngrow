@@ -48,6 +48,13 @@ export default async function handle(
     return
   }
 
+  //Update Global Stats
+  try {
+    entityManager.updateStats(entry)
+  } catch (e: any) {
+    logger.error({ err: e, entry: entry }, 'Global Stat Entry Update Error')
+  }
+
   try {
     const code = new TrackingCode(data.code)
     let subscribers = await entityManager.find(code)

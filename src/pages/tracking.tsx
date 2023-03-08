@@ -16,6 +16,8 @@ import { StatsGrid } from '../components/tracking/StatsGrid'
 import { NoBagsView } from '../components/tracking/NoBagsView'
 import { NextPageWithLayout } from './_app'
 import Layout from '../components/Layout'
+import { StatsType } from '../lib/entities/stats.entity'
+import getGlobalStats from '../services/getGlobalStats'
 
 const Tracking: NextPageWithLayout = () => {
   const { data: session } = useSession()
@@ -30,6 +32,10 @@ const Tracking: NextPageWithLayout = () => {
     ['entries', activeCode],
     () => fetchEntries(activeCode as string),
     { enabled: !!activeCode },
+  )
+
+  const statsQuery = useQuery<StatsType, AxiosError>(['global stats'], () =>
+    getGlobalStats(),
   )
 
   const [open, setOpen] = useState(false)
@@ -63,6 +69,7 @@ const Tracking: NextPageWithLayout = () => {
         <StatsGrid
           activeCode={activeCode}
           entriesQuery={entriesQuery}
+          globalStatsQuery={statsQuery}
         />
         {(!codesQuery.data || codesQuery.data.length <= 0) && (
           <NoBagsView handleClick={handleAddCode} />
