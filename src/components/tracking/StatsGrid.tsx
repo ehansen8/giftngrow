@@ -54,10 +54,11 @@ export function StatsGrid({
           justifyContent: 'space-around',
         }}
       >
-        {statCards.map((card) => {
+        {statCards.map((card, idx) => {
+          console.log(idx)
           return (
             <Card
-              key={card.value}
+              key={idx}
               sx={{
                 backgroundColor: '#4a607b',
                 aspectRatio: '1/1',
