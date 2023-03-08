@@ -128,7 +128,7 @@ const SignUpForm = () => {
               privacy policy
             </Link>{' '}
             and{' '}
-            <Link href='https://giftngrow.square.site/privacy-policy'>
+            <Link href='https://giftngrow.square.site/terms-of-use'>
               terms of use
             </Link>
           </Typography>

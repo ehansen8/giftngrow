@@ -1,4 +1,15 @@
-import { Typography, TextField } from '@mui/material'
+import {
+  Typography,
+  TextField,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material'
+import React from 'react'
+import CheckIcon from '@mui/icons-material/Check'
+import CloseIcon from '@mui/icons-material/Close'
+import { text } from 'pdfkit'
 
 const passwordChecks = [
   {
@@ -38,7 +49,16 @@ export default function NewPasswordField({
   setPassword: (pw: string) => void
   setIsValid: (b: boolean) => void
 }) {
-  setIsValid(true)
+  function handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newPassword = e.target.value
+    setPassword(newPassword)
+    const isPasswordValid = checkPasswordValidity(newPassword)
+    setIsValid(isPasswordValid)
+  }
+
+  const checkPasswordValidity = (password: string) => {
+    return passwordChecks.every((check) => check.test(password))
+  }
   return (
     <>
       <TextField
@@ -47,23 +67,44 @@ export default function NewPasswordField({
         label={label ?? 'Password'}
         type='password'
         autoComplete='new-password'
-        onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
-      ></TextField>
-      {passwordChecks.map((check, idx) => {
-        const pass = check.test(password)
-        if (!pass) {
-          setIsValid(false)
-        }
-        return (
-          <Typography
+        onInput={handlePasswordChange}
+      />
+      <List>
+        {passwordChecks.map((check, idx) => {
+          const color = check.test(password) ? 'success' : 'error'
+
+          return (
+            <ListItem
+              key={idx}
+              disablePadding
+            >
+              <ListItemIcon className='min-w-0 mr-3'>
+                {color == 'error' ? (
+                  <CloseIcon color={color} />
+                ) : (
+                  <CheckIcon color={color} />
+                )}
+              </ListItemIcon>
+              <ListItemText
+                primary={check.label}
+                color='error'
+                primaryTypographyProps={{ color: color }}
+              />
+            </ListItem>
+          )
+        })}
+      </List>
+    </>
+  )
+}
+
+{
+  /* <Typography
             key={idx}
             color={pass ? 'success' : 'error'}
             fontSize={12}
           >
+            <CloseIcon />
             {check.label}
-          </Typography>
-        )
-      })}
-    </>
-  )
+          </Typography> */
 }

@@ -7,7 +7,7 @@ import { confirmForgotPassword } from '../../services/confirmForgotPassword'
 import NewPasswordField from '../../components/auth/NewPasswordField'
 
 function Recover() {
-  const buttonWidth = '250'
+  const buttonWidth = '300'
   const router = useRouter()
   const defaultEmail = router.query.email as string | undefined
   const isMigrated = router.query.isMigrated as boolean | undefined
