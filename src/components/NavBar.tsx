@@ -10,10 +10,10 @@ import {
 import { Dancing_Script } from '@next/font/google'
 import Link from 'next/link'
 import { useRef, useState } from 'react'
-import { colors } from '../colors'
 import MenuIcon from '@mui/icons-material/Menu'
-import { useRouter } from 'next/router'
+import { NextRouter, useRouter } from 'next/router'
 import Image from 'next/image'
+import { signOut, useSession } from 'next-auth/react'
 
 const ds = Dancing_Script({
   weight: '400',
@@ -24,12 +24,10 @@ const pages = [
   { label: 'Home', url: 'https://giftngrow.square.site/' },
   { label: 'Admin', url: '/admin' },
   { label: 'Track Codes', url: '/tracking' },
-  { label: 'Login', url: '/auth/login' },
 ]
 
 const buttonStyle: SxProps = {
   fontSize: 15,
-  // color: colors.greenLightGreen,
   borderRadius: '0px',
   '&.active': {
     borderBottom: '2px solid!important',
@@ -48,6 +46,7 @@ export default function NavBar({
 }: {
   childNav: JSX.Element | undefined
 }) {
+  const { status } = useSession()
   const router = useRouter()
   const activeLink = (url: string) => (router.pathname === url ? 'active' : '')
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
@@ -154,9 +153,55 @@ export default function NavBar({
               {page.label}
             </Button>
           ))}
+          <AuthButton
+            router={router}
+            status={status}
+            activeClass={activeLink('/auth/login')}
+          />
         </Box>
       </Toolbar>
       {childNav}
     </AppBar>
+  )
+}
+
+const AuthButton = ({
+  router,
+  status,
+  activeClass,
+}: {
+  router: NextRouter
+  status: string
+  activeClass: string
+}) => {
+  if (status === 'authenticated') {
+    return (
+      <Button
+        className={activeClass}
+        sx={buttonStyle}
+        color='primary'
+        onClick={async () => {
+          const { url } = await signOut({
+            callbackUrl: '/auth/login',
+            redirect: false,
+          })
+          router.push(url)
+        }}
+      >
+        Logout
+      </Button>
+    )
+  }
+
+  return (
+    <Button
+      className={activeClass}
+      href={'/auth/login'}
+      sx={buttonStyle}
+      LinkComponent={Link}
+      color='primary'
+    >
+      Login
+    </Button>
   )
 }

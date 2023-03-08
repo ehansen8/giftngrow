@@ -4,7 +4,6 @@ import { Entry } from '../../lib/entities/entry.entity'
 import { AxiosError } from 'axios'
 import { UseQueryResult } from 'react-query'
 import { StatsType } from '../../lib/entities/stats.entity'
-import { CONDITIONAL_TYPES } from '@babel/types'
 
 export function StatsGrid({
   activeCode,

@@ -58,10 +58,12 @@ export default async function handle(
   try {
     const code = new TrackingCode(data.code)
     let subscribers = await entityManager.find(code)
+
+    //TODO: Consider if this is necessary in test
     //only send emails to gng if not in prod
-    if (process.env.AWS_BRANCH !== 'prod') {
-      subscribers = [{ user: 'no-reply@giftngrow.com' }] as TrackingCode[]
-    }
+    // if (process.env.AWS_BRANCH !== 'prod') {
+    //   subscribers = [{ user: 'no-reply@giftngrow.com' }] as TrackingCode[]
+    // }
 
     //Add new tracking code for the user
     if (session && session.user?.email) {
