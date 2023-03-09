@@ -18,11 +18,14 @@ import { NextPageWithLayout } from './_app'
 import Layout from '../components/Layout'
 import { StatsType } from '../lib/entities/stats.entity'
 import getGlobalStats from '../services/getGlobalStats'
-
-const Tracking: NextPageWithLayout = () => {
+import { GetServerSidePropsContext } from 'next'
+type urlQueryT = {
+  code?: string
+}
+const Tracking: NextPageWithLayout = ({ code }: urlQueryT) => {
   const { data: session } = useSession()
   const user = session?.user
-  const [activeCode, setActiveCode] = useState<string | undefined>(undefined)
+  const [activeCode, setActiveCode] = useState<string | undefined>(code)
   const codesQuery = useQuery<TrackingCode[], AxiosError>(
     ['codes', user],
     () => fetchCodes(user as User),
@@ -99,6 +102,12 @@ const Tracking: NextPageWithLayout = () => {
 
 Tracking.getLayout = function getLayout(page: ReactElement) {
   return page
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  return {
+    props: { code: context.query.code ?? null },
+  }
 }
 
 export default Tracking

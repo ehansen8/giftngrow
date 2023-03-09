@@ -30,6 +30,7 @@ function createTrackingUpdateCommand(addresses: string[], code: string) {
   const templateData = {
     code: code,
     track_root: process.env.NEXTAUTH_URL,
+    //TODO: update home_root to be a env or just remeber to change once site is live
     home_root: 'https://giftngrow.square.site',
   }
 
