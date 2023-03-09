@@ -59,6 +59,14 @@ export default async function handle(
     const code = new TrackingCode(data.code)
     let subscribers = await entityManager.find(code)
 
+    let sendingUser = ''
+    if (session && session.user?.email) {
+      sendingUser = session.user.email
+    }
+
+    // remove the sending user from sub list so sending user email will never receive an entry update that they created
+    subscribers.filter(({ user }) => user !== sendingUser)
+
     //TODO: Consider if this is necessary in test
     //only send emails to gng if not in prod
     // if (process.env.AWS_BRANCH !== 'prod') {
@@ -66,8 +74,8 @@ export default async function handle(
     // }
 
     //Add new tracking code for the user
-    if (session && session.user?.email) {
-      code.user = session.user.email
+    if (sendingUser !== '') {
+      code.user = sendingUser
       entityManager.create(code)
     }
 
