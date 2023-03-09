@@ -29,11 +29,12 @@ function createTrackingUpdateCommand(addresses: string[], code: string) {
 
   const templateData = {
     code: code,
-    logo_url: process.env.NEXTAUTH_URL + '/gng_logo.png',
+    track_root: process.env.NEXTAUTH_URL,
+    home_root: 'https://giftngrow.square.site',
   }
 
   return new SendBulkTemplatedEmailCommand({
-    Template: 'YamlEmailTemplate3',
+    Template: 'TrackingTemplateV2',
     Destinations: destinations,
     Source: "Gift 'n Grow <no-reply@giftngrow.com>",
     DefaultTemplateData: JSON.stringify(templateData),
