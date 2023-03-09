@@ -20,7 +20,7 @@ export default function AddCodeStep({
 }) {
   const title = 'Start Tracking!'
   const { form, setForm, setValidationFn } = useForm()
-  useEffect(() => setValidationFn(() => validate), [])
+  useEffect(() => setValidationFn(() => validate), [setValidationFn])
   return (
     <AddCodeContentWrapper title={title}>
       <TextField

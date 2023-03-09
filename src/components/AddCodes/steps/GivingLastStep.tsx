@@ -7,7 +7,7 @@ import { useForm } from '../AddCodeModal'
 export default function GivingStep() {
   const title = 'Who are you giving to?'
   const { form, setForm, setValidationFn } = useForm()
-  useEffect(() => setValidationFn(() => validate), [])
+  useEffect(() => setValidationFn(() => validate), [setValidationFn])
 
   return (
     <AddCodeContentWrapper title={title}>

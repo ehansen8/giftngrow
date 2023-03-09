@@ -7,7 +7,7 @@ import { useForm } from '../AddCodeModal'
 export default function ReceivingUserStep() {
   const title = 'About Yourself'
   const { form, setForm, setValidationFn } = useForm()
-  useEffect(() => setValidationFn(() => validate), [])
+  useEffect(() => setValidationFn(() => validate), [setValidationFn])
   return (
     <AddCodeContentWrapper title={title}>
       <TextField
