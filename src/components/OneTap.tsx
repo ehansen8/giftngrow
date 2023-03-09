@@ -29,7 +29,7 @@ const useOneTapSignin = (
           credential: response.credential,
           redirect: false,
         })
-        router.push('/tracking')
+        router.push('/')
         setIsLoading(false)
       } catch (e) {
         logger.fatal(e, 'Google Sign In Failed')

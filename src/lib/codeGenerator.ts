@@ -88,7 +88,7 @@ class CodeGenerator {
           const image_y = y_off + spacing
 
           const qr_png = await QRCode.toDataURL(
-            `https://giftngrow.com/tracking?code=${code}`,
+            `https://track.giftngrow.com/?code=${code}`,
             {
               margin: 0,
             },

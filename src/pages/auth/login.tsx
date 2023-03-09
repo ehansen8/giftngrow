@@ -110,7 +110,7 @@ const LoginForm = () => {
         redirect: false,
       })
       if (!res?.error) {
-        router.push('/tracking')
+        router.push('/')
         return
       }
       if (res?.error === 'User is not confirmed.') {

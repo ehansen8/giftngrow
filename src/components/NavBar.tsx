@@ -23,7 +23,7 @@ const ds = Dancing_Script({
 const pages = [
   { label: 'Home', url: 'https://giftngrow.square.site/' },
   { label: 'Admin', url: '/admin' },
-  { label: 'Track Codes', url: '/tracking' },
+  { label: 'Track Codes', url: '/' },
 ]
 
 const buttonStyle: SxProps = {
