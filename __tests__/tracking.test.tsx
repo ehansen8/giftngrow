@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
-import Tracking from '../src/pages/tracking'
+import Tracking from '../src/pages'
 
 describe('Tracking', () => {
   it('renders a heading', () => {

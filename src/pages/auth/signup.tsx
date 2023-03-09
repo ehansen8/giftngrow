@@ -42,7 +42,8 @@ const SignUpForm = () => {
   const [isValid, setIsValid] = useState(false)
   const [given_name, setGivenName] = useState('')
   const [family_name, setFamilyName] = useState('')
-  const [agreement, setAgreement] = useState(false)
+  const [ageAgreement, setAgeAgreement] = useState(false)
+  const [publicAgreement, setPublicAgreement] = useState(false)
   const router = useRouter()
 
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
@@ -57,7 +58,8 @@ const SignUpForm = () => {
       given_name,
       password,
       isValid,
-      agreement,
+      ageAgreement,
+      publicAgreement,
     )
     setErrorMessage(error)
     if (!error) {
@@ -119,7 +121,7 @@ const SignUpForm = () => {
       />
       <FormControlLabel
         name='Terms'
-        onInput={(e) => setAgreement((e.target as HTMLInputElement).checked)}
+        onInput={(e) => setAgeAgreement((e.target as HTMLInputElement).checked)}
         control={<Checkbox />}
         label={
           <Typography fontSize={12}>
@@ -129,8 +131,21 @@ const SignUpForm = () => {
             </Link>{' '}
             and{' '}
             <Link href='https://giftngrow.square.site/terms-of-use'>
-              terms of use
+              terms of use.
             </Link>
+          </Typography>
+        }
+      />
+      <FormControlLabel
+        name='Terms'
+        onInput={(e) =>
+          setPublicAgreement((e.target as HTMLInputElement).checked)
+        }
+        control={<Checkbox />}
+        label={
+          <Typography fontSize={12}>
+            I acknowledge that any messages I write on this platform will be
+            publicly viewable.
           </Typography>
         }
       />
@@ -151,7 +166,8 @@ function verifySignupForm(
   given_name: string,
   password: string,
   isValid: boolean,
-  agreement: boolean,
+  ageAgreement: boolean,
+  publicAgreement: boolean,
 ) {
   if (!email) {
     return 'Missing Email'
@@ -168,8 +184,12 @@ function verifySignupForm(
     return 'Password Criteria Not Met'
   }
 
-  if (!agreement) {
+  if (!ageAgreement) {
     return 'Terms and Conditions Must Be Accepted'
+  }
+
+  if (!publicAgreement) {
+    return 'Public Entry Agreement Must Be Accepted'
   }
 }
 

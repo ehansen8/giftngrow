@@ -97,7 +97,7 @@ function getGlobalStats({ states, cities, times_gifted }: StatsType) {
   return [
     { value: cities, body: 'Cities' },
     { value: states, body: 'States' },
-    { value: times_gifted, body: 'Times Gifted' },
+    { value: times_gifted, body: 'Total Entries' },
   ]
 }
 
@@ -114,6 +114,6 @@ function getStats(entries: Entry[]) {
   return [
     { value: cities.size, body: 'Cities' },
     { value: states.size, body: 'States' },
-    { value: entries.length, body: 'Times Gifted' },
+    { value: entries.length, body: 'Total Entries' },
   ]
 }
