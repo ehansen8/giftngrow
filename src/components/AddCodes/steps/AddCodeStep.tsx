@@ -5,6 +5,7 @@ import {
   RadioGroup,
   TextField,
 } from '@mui/material'
+import { useEffect } from 'react'
 import { AddCodeForm } from '../../../../types/general'
 import fetchItem from '../../../services/fetchItem'
 import AddCodeContentWrapper from '../AddCodeContentWrapper'
@@ -19,7 +20,7 @@ export default function AddCodeStep({
 }) {
   const title = 'Start Tracking!'
   const { form, setForm, setValidationFn } = useForm()
-  setValidationFn(() => validate)
+  useEffect(() => setValidationFn(() => validate), [])
   return (
     <AddCodeContentWrapper title={title}>
       <TextField

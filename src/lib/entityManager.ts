@@ -127,7 +127,6 @@ class EntityManager {
     const cities = [entry.recipCity, entry.giverCity].map((e) => e ?? '')
     const states = [entry.recipState, entry.giverState].map((e) => e ?? '')
 
-    console.log(cities, states)
     const params: UpdateCommandInput = {
       ...baseParams,
       Key: {

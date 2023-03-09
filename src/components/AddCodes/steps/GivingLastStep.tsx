@@ -1,4 +1,5 @@
 import { TextField } from '@mui/material'
+import { useEffect } from 'react'
 import { AddCodeForm } from '../../../../types/general'
 import AddCodeContentWrapper from '../AddCodeContentWrapper'
 import { useForm } from '../AddCodeModal'
@@ -6,7 +7,8 @@ import { useForm } from '../AddCodeModal'
 export default function GivingStep() {
   const title = 'Who are you giving to?'
   const { form, setForm, setValidationFn } = useForm()
-  setValidationFn(() => validate)
+  useEffect(() => setValidationFn(() => validate), [])
+
   return (
     <AddCodeContentWrapper title={title}>
       <TextField

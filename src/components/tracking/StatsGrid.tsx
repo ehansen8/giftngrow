@@ -54,7 +54,6 @@ export function StatsGrid({
         }}
       >
         {statCards.map((card, idx) => {
-          console.log(idx)
           return (
             <Card
               key={idx}

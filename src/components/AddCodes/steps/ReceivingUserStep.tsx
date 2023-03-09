@@ -1,4 +1,5 @@
 import { TextField } from '@mui/material'
+import { useEffect } from 'react'
 import { AddCodeForm } from '../../../../types/general'
 import AddCodeContentWrapper from '../AddCodeContentWrapper'
 import { useForm } from '../AddCodeModal'
@@ -6,7 +7,7 @@ import { useForm } from '../AddCodeModal'
 export default function ReceivingUserStep() {
   const title = 'About Yourself'
   const { form, setForm, setValidationFn } = useForm()
-  setValidationFn(() => validate)
+  useEffect(() => setValidationFn(() => validate), [])
   return (
     <AddCodeContentWrapper title={title}>
       <TextField
