@@ -86,7 +86,6 @@ export default function GoogleMaps({
           }
 
           if (results) {
-            console.log(results)
             newOptions = [...newOptions, ...results]
           }
 

@@ -65,7 +65,7 @@ export default async function handle(
     }
 
     // remove the sending user from sub list so sending user email will never receive an entry update that they created
-    subscribers.filter(({ user }) => user !== sendingUser)
+    subscribers = subscribers.filter(({ user }) => user !== sendingUser)
 
     //TODO: Consider if this is necessary in test
     //only send emails to gng if not in prod

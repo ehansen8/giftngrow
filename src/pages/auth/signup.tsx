@@ -144,8 +144,8 @@ const SignUpForm = () => {
         control={<Checkbox />}
         label={
           <Typography fontSize={12}>
-            I acknowledge that any messages I write on this platform will be
-            publicly viewable.
+            I acknowledge that the messages I write can be viewed by future
+            recipients of my wraps.
           </Typography>
         }
       />
