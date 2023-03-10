@@ -12,5 +12,6 @@ declare namespace NodeJS {
     NEXT_PUBLIC_BRANCH: string
     NEXT_PUBLIC_LOG_KEY: string
     NEXT_PUBLIC_LOG_TOKEN: string
+    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: string
   }
 }

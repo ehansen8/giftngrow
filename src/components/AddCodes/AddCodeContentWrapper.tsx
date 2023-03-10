@@ -18,13 +18,13 @@ export default function AddCodeContentWrapper({
       <DialogTitle
         color='white'
         textAlign='center'
-        sx={{ backgroundColor: colors.green }}
+        sx={{ bgcolor: 'primary.main' }}
       >
         {title}
       </DialogTitle>
       <DialogContent
         className='flex flex-col gap-3 !pt-3 m-auto'
-        sx={{ width: '250px' }}
+        sx={{ width: '300px' }}
       >
         <Typography
           color='error'

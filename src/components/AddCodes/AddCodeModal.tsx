@@ -5,11 +5,9 @@ import { useState, createContext, useContext } from 'react'
 import { Updater, useImmer } from 'use-immer'
 import { AddCodeForm } from '../../../types/general'
 import AddCodeStep from './steps/AddCodeStep'
-import GivingUserStep from './steps/GivingUserStep'
-import ReceivingUserStep from './steps/ReceivingUserStep'
-import GivingLastStep from './steps/GivingLastStep'
-import ReceivingLastStep from './steps/ReceivingLastStep'
 import { createEntry } from '../../services/createEntry'
+import GivingReviewStep from './steps/GivingReviewStep'
+import ReceivingReviewStep from './steps/ReceivingReviewStep'
 
 type ContextType = {
   form: AddCodeForm
@@ -41,7 +39,7 @@ export default function AddCodeModal({
     return 'hi'
   })
   const [step, setStep] = useState(0)
-  const maxSteps = 2
+  const maxSteps = 1
 
   async function validateForm() {
     const err = await validationFn(form)
@@ -138,16 +136,10 @@ function FormStepper({ step }: { step: number }) {
     )
   }
   if (step == 1 && isGiving) {
-    return <GivingUserStep />
+    return <GivingReviewStep />
   }
   if (step == 1 && !isGiving) {
-    return <ReceivingUserStep />
-  }
-  if (step == 2 && isGiving) {
-    return <GivingLastStep />
-  }
-  if (step == 2 && !isGiving) {
-    return <ReceivingLastStep />
+    return <ReceivingReviewStep />
   }
   return <div></div>
 }

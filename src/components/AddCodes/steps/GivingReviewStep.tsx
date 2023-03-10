@@ -1,16 +1,57 @@
-import { TextField } from '@mui/material'
+import { Divider, TextField, Typography } from '@mui/material'
 import { useEffect } from 'react'
 import { AddCodeForm } from '../../../../types/general'
+import GooglePlacesAutocomplete from '../../PlaceField'
 import AddCodeContentWrapper from '../AddCodeContentWrapper'
 import { useForm } from '../AddCodeModal'
 
-export default function GivingStep() {
-  const title = 'Who are you giving to?'
+export default function GivingReview() {
+  const title = 'Entry Details'
   const { form, setForm, setValidationFn } = useForm()
   useEffect(() => setValidationFn(() => validate), [setValidationFn])
 
   return (
     <AddCodeContentWrapper title={title}>
+      <Typography
+        textAlign='center'
+        color='primary.dark'
+        fontSize={18}
+      >
+        About yourself
+      </Typography>
+      <TextField
+        InputProps={{ className: 'rounded-full' }}
+        size='small'
+        label='First Name'
+        type='text'
+        autoComplete='given-name'
+        value={form.giverFN}
+        onInput={(e) =>
+          setForm((draft) => {
+            draft.giverFN = (e.target as HTMLInputElement).value
+          })
+        }
+      />
+      <GooglePlacesAutocomplete
+        setCity={(city) =>
+          setForm((draft) => {
+            draft.giverCity = city
+          })
+        }
+        setState={(state) =>
+          setForm((draft) => {
+            draft.giverState = state
+          })
+        }
+      />
+      <Divider />
+      <Typography
+        textAlign='center'
+        color='primary.dark'
+        fontSize={18}
+      >
+        Who are you giving to?
+      </Typography>
       <TextField
         InputProps={{ className: 'rounded-full' }}
         size='small'
@@ -24,34 +65,18 @@ export default function GivingStep() {
           })
         }
       />
-      <div className='flex flex-row gap-1'>
-        <TextField
-          InputProps={{ className: 'rounded-full' }}
-          size='small'
-          label='City'
-          type='text'
-          autoComplete='off'
-          value={form.recipCity}
-          onInput={(e) =>
-            setForm((draft) => {
-              draft.recipCity = (e.target as HTMLInputElement).value
-            })
-          }
-        />
-        <TextField
-          InputProps={{ className: 'rounded-full' }}
-          size='small'
-          label='State'
-          type='text'
-          autoComplete='off'
-          value={form.recipState}
-          onInput={(e) =>
-            setForm((draft) => {
-              draft.recipState = (e.target as HTMLInputElement).value
-            })
-          }
-        />
-      </div>
+      <GooglePlacesAutocomplete
+        setCity={(city) =>
+          setForm((draft) => {
+            draft.recipCity = city
+          })
+        }
+        setState={(state) =>
+          setForm((draft) => {
+            draft.recipState = state
+          })
+        }
+      />
       <TextField
         InputProps={{ className: 'rounded-full' }}
         size='small'
@@ -97,8 +122,11 @@ export default function GivingStep() {
 }
 
 function validate(form: AddCodeForm) {
+  if (!form.giverFN) {
+    return 'Missing Your First Name'
+  }
   if (!form.recipFN) {
-    return 'Missing First Name'
+    return 'Missing Recipient First Name'
   }
   return ''
 }

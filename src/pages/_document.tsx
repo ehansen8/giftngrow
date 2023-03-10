@@ -17,6 +17,10 @@ export default function Document() {
           src='https://accounts.google.com/gsi/client'
           strategy='beforeInteractive'
         />
+        <Script
+          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places&callback=Function.prototype`}
+          strategy='beforeInteractive'
+        />
       </body>
     </Html>
   )

@@ -4,7 +4,9 @@ import {
   Radio,
   RadioGroup,
   TextField,
+  Typography,
 } from '@mui/material'
+import { MuiOtpInput } from 'mui-one-time-password-input'
 import { useEffect } from 'react'
 import { AddCodeForm } from '../../../../types/general'
 import fetchItem from '../../../services/fetchItem'
@@ -18,12 +20,24 @@ export default function AddCodeStep({
   isGiving: boolean
   handleGiving: (val: string) => void
 }) {
-  const title = 'Start Tracking!'
+  const title = 'Enter Tracking Code'
   const { form, setForm, setValidationFn } = useForm()
   useEffect(() => setValidationFn(() => validate), [setValidationFn])
   return (
     <AddCodeContentWrapper title={title}>
-      <TextField
+      <MuiOtpInput
+        value={form.code}
+        length={6}
+        gap='2px'
+        onChange={(value) =>
+          setForm((draft) => {
+            draft.code = value.toUpperCase()
+          })
+        }
+        TextFieldsProps={{ autoComplete: 'off' }}
+      />
+
+      {/* <TextField
         InputProps={{ className: 'rounded-full' }}
         size='small'
         label='Tracking Code'
@@ -35,7 +49,7 @@ export default function AddCodeStep({
             draft.code = (e.target as HTMLInputElement).value.toUpperCase()
           })
         }
-      ></TextField>
+      ></TextField> */}
       <FormControl className=''>
         <RadioGroup
           className='m-auto'
