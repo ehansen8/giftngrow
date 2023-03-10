@@ -1,7 +1,7 @@
 import { Divider, TextField, Typography } from '@mui/material'
 import { useEffect } from 'react'
 import { AddCodeForm } from '../../../../types/general'
-import GooglePlacesAutocomplete from '../../PlaceField'
+import PlaceField from '../../PlaceField'
 import AddCodeContentWrapper from '../AddCodeContentWrapper'
 import { useForm } from '../AddCodeModal'
 
@@ -32,7 +32,7 @@ export default function GivingReview() {
           })
         }
       />
-      <GooglePlacesAutocomplete
+      <PlaceField
         setCity={(city) =>
           setForm((draft) => {
             draft.recipCity = city

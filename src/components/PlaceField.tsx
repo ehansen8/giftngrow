@@ -26,7 +26,7 @@ interface PlaceType {
   structured_formatting: StructuredFormatting
 }
 
-export default function GoogleMaps({
+export default function PlaceField({
   setCity,
   setState,
 }: {
@@ -106,7 +106,6 @@ export default function GoogleMaps({
     setState(newValue?.terms[1].value ?? '')
   }
 
-  //TODO: use terms to match city and state
   return (
     <Autocomplete
       getOptionLabel={(option) =>
