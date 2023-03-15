@@ -63,3 +63,6 @@ client_secret_980892827601-7qe4ofpqck1scd19tj2kjlvo06vh86pf.apps.googleuserconte
 CSVs/entries.csv
 CSVs/trackingCodes.csv
 src/utils/getEntriesFromCSV.js
+load_csv.py
+CSVs/Es.csv
+CSVs/old.csv

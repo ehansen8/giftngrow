@@ -1,10 +1,16 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { entityManager } from '../../../lib/entityManager'
+import { logger } from '../../../lib/logger'
 
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const entries = await entityManager.allEntries()
-  res.json(entries)
+  try {
+    const entries = await entityManager.allEntries()
+    res.json(entries)
+  } catch (err) {
+    logger.fatal(err, 'error fetching all entries')
+  }
+  res.json('')
 }

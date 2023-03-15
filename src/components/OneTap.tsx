@@ -47,7 +47,7 @@ const useOneTapSignin = (
 
         // Here we just console.log some error situations and reason why the google one tap
         // is not displayed. You may want to handle it depending on yuor application
-        if (needsSignIn) {
+        if (needsSignIn && process.env.NEXT_PUBLIC_BRANCH !== 'prod') {
           google.accounts.id.prompt((notification: any) => {
             if (notification.isNotDisplayed()) {
               console.log(notification.getNotDisplayedReason())

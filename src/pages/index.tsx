@@ -1,6 +1,6 @@
 import { Snackbar } from '@mui/material'
 import Alert from '@mui/material/Alert'
-import { useState, ReactElement } from 'react'
+import { useState, ReactElement, useEffect } from 'react'
 import TrackingAppBar from '../components/TrackingAppBar'
 import { Entry } from '../lib/entities/entry.entity'
 import { AxiosError } from 'axios'
@@ -19,6 +19,7 @@ import Layout from '../components/Layout'
 import { StatsType } from '../lib/entities/stats.entity'
 import getGlobalStats from '../services/getGlobalStats'
 import { GetServerSidePropsContext } from 'next'
+
 type urlQueryT = {
   code?: string
 }

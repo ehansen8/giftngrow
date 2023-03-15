@@ -7,22 +7,15 @@ import {
   Menu,
   SxProps,
 } from '@mui/material'
-import { Dancing_Script } from '@next/font/google'
 import Link from 'next/link'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import MenuIcon from '@mui/icons-material/Menu'
 import { NextRouter, useRouter } from 'next/router'
 import Image from 'next/image'
 import { signOut, useSession } from 'next-auth/react'
 
-const ds = Dancing_Script({
-  weight: '400',
-  subsets: ['latin'],
-})
-
 const pages = [
   { label: 'Home', url: 'https://giftngrow.square.site/' },
-  { label: 'Admin', url: '/admin' },
   { label: 'Track Codes', url: '/' },
 ]
 
@@ -41,16 +34,28 @@ const menuButtonStyle: SxProps = {
   },
 }
 
+const validUsers = [
+  'ehansen8@wisc.edu',
+  'evanjhans@gmail.com',
+  'cmtsmartin@hotmail.com',
+  'team@giftngrow.com',
+  'ecmtsmartin5@gmail.com',
+]
+
 export default function NavBar({
   childNav,
 }: {
+  isAdmin: boolean
   childNav: JSX.Element | undefined
 }) {
-  const { status } = useSession()
+  const { data: session, status } = useSession()
   const router = useRouter()
   const activeLink = (url: string) => (router.pathname === url ? 'active' : '')
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
   const navRef = useRef<HTMLButtonElement | null>(null)
+
+  const [isAdmin, setIsAdmin] = useState(false)
+
   const handleOpenNavMenu = () => {
     setAnchorElNav(navRef.current)
   }
@@ -58,6 +63,12 @@ export default function NavBar({
   const handleCloseNavMenu = () => {
     setAnchorElNav(null)
   }
+
+  useEffect(() => {
+    if (validUsers.includes(session?.user?.email as string)) {
+      setIsAdmin(true)
+    }
+  })
 
   return (
     <AppBar
@@ -75,15 +86,6 @@ export default function NavBar({
           width={80}
           height={80}
         />
-        {/* <Typography
-          variant='h3'
-          component='div'
-          sx={{ flexGrow: 1, color: colors.primary }}
-          //className='logo' //ds.className
-          className={ds.className}
-        >
-          Gift 'n Grow
-        </Typography> */}
 
         <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
           <IconButton
@@ -153,6 +155,18 @@ export default function NavBar({
               {page.label}
             </Button>
           ))}
+          {isAdmin && (
+            <Button
+              className={activeLink('/admin')}
+              key='admin'
+              href='/admin'
+              sx={buttonStyle}
+              LinkComponent={Link}
+              color='primary'
+            >
+              Admin
+            </Button>
+          )}
           <AuthButton
             router={router}
             status={status}

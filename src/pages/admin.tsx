@@ -216,3 +216,11 @@ export default function Admin() {
     </main>
   )
 }
+
+// export async function getServerSideProps(context: GetServerSidePropsContext) {
+//   return {
+//     props: {
+//       session: await getServerSession(context.req, context.res, authOptions),
+//     },
+//   }
+// }

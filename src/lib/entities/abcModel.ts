@@ -68,7 +68,9 @@ export abstract class Model {
   getDBObject() {
     if ('auto' in this) {
       this.auto.forEach(({ key, fn }) => {
-        ;(this as any)[key] = fn()
+        if (!(this as any)[key]) {
+          ;(this as any)[key] = fn()
+        }
       })
     }
 
