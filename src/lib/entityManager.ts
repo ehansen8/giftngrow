@@ -11,7 +11,6 @@ import {
   UpdateCommandInput,
 } from '@aws-sdk/lib-dynamodb'
 import { ddbDocClient } from './db'
-import { ddbClient } from './ddbClient'
 import { Model } from './entities/abcModel'
 import { Entry } from './entities/entry.entity'
 import { User } from './entities/user.entity'
