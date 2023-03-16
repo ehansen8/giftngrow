@@ -45,7 +45,6 @@ const validUsers = [
 export default function NavBar({
   childNav,
 }: {
-  isAdmin: boolean
   childNav: JSX.Element | undefined
 }) {
   const { data: session, status } = useSession()
@@ -68,7 +67,7 @@ export default function NavBar({
     if (validUsers.includes(session?.user?.email as string)) {
       setIsAdmin(true)
     }
-  })
+  }, [setIsAdmin, session?.user?.email])
 
   return (
     <AppBar
