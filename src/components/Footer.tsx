@@ -41,6 +41,7 @@ export default function Footer() {
         <a
           href='https://giftngrow.square.site/'
           target='_blank'
+          rel='noreferrer'
         >
           <Image
             className=''
@@ -66,6 +67,7 @@ export default function Footer() {
               sx={buttonStyle}
               className='text-center'
               target='_blank'
+              rel='noreferrer'
             >
               {link.label}
             </Button>

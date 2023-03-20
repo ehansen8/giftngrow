@@ -82,6 +82,7 @@ export default function NavBar({
         <a
           href='https://giftngrow.square.site/'
           target='_blank'
+          rel='noreferrer'
         >
           <Image
             src='/gng_logo.svg'
