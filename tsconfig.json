@@ -29,7 +29,6 @@
     "**/*.ts",
     "**/*.tsx",
     "jest.config.js",
-    "../old_stuff/old_pages/components/GivingLastStep.tsx",
   ],
   "exclude": [
     "node_modules"

@@ -125,7 +125,7 @@ export default function TrackingAppBar({
             textAlign='center'
             //color='primary'
           >
-            {user ? `Welcome, ${user?.name}` : '{No User Message}'}
+            {user ? `Welcome, ${user?.name}` : 'You are not logged in'}
           </Typography>
           <Box
             className='flex justify-end'

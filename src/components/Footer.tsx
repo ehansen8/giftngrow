@@ -8,22 +8,26 @@ import logo_svg from '../../public/gng_logo.svg'
 
 const links = [
   {
-    label: 'Terms and Conditions',
-    url: '/terms',
+    label: 'About',
+    url: 'https://giftngrow.square.site/about',
+  },
+  {
+    label: 'Conditions of Use',
+    url: 'https://giftngrow.square.site/terms-of-use',
   },
   {
     label: 'Privacy Policy',
-    url: '/privacy',
+    url: 'https://giftngrow.square.site/privacy-policy',
   },
   {
     label: 'Contact Us',
-    url: '/contact',
+    url: 'https://giftngrow.square.site/contact-us',
   },
 ]
 
 const buttonStyle: SxProps = {
   fontSize: '12px',
-  color: colors.greenLightGreen,
+  color: 'black',
   ':hover': { color: 'white' },
 }
 
@@ -34,13 +38,18 @@ export default function Footer() {
       style={{ maxWidth: '1000px', margin: 'auto' }}
     >
       <div className='flex  items-center gap-2 justify-center'>
-        <Image
-          className=''
-          src={logo_svg}
-          alt="Gift 'n Grow"
-          height={90}
-        />
-        <div className='flex flex-col text-center'>
+        <a
+          href='https://giftngrow.square.site/'
+          target='_blank'
+        >
+          <Image
+            className=''
+            src={logo_svg}
+            alt="Gift 'n Grow"
+            height={90}
+          />
+        </a>
+        <div className='flex flex-col text-center text-black'>
           <h3 className='m-0'>Gift 'n Grow</h3>
           <p className='mt-2'>Delafield, WI</p>
         </div>
@@ -56,12 +65,15 @@ export default function Footer() {
               LinkComponent={Link}
               sx={buttonStyle}
               className='text-center'
+              target='_blank'
             >
               {link.label}
             </Button>
           ))}
         </div>
-        <p>Copyright © 2010 Gift ‘n Grow. All rights reserved.</p>
+        <p className='text-black'>
+          Copyright © 2010 Gift 'n Grow. All rights reserved.
+        </p>
       </div>
       <Image
         className='Gbsoa'

@@ -79,12 +79,17 @@ export default function NavBar({
         disableGutters={false}
         className='flex flex-row justify-between'
       >
-        <Image
-          src='/gng_logo.svg'
-          alt='giftngrow logo'
-          width={80}
-          height={80}
-        />
+        <a
+          href='https://giftngrow.square.site/'
+          target='_blank'
+        >
+          <Image
+            src='/gng_logo.svg'
+            alt='giftngrow logo'
+            width={80}
+            height={80}
+          />
+        </a>
 
         <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
           <IconButton
