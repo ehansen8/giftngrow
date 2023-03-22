@@ -70,7 +70,7 @@ export default function GivingReview() {
 }
 
 function validate(form: AddCodeForm) {
-  if (!form.giverFN) {
+  if (!form.recipFN) {
     return 'Missing First Name'
   }
   return ''
