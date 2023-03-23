@@ -23,7 +23,6 @@ type urlQueryT = {
 }
 const Tracking: NextPageWithLayout = ({ code }: urlQueryT) => {
   const { activeCode, setActiveCode } = useTrackingStore((state) => state)
-
   const codesQuery = useGetCodesQuery()
   const entriesQuery = useQuery<Entry[], AxiosError>(
     ['entries', activeCode],

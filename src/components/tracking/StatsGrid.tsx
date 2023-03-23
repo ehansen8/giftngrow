@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   IconButton,
-  TextField,
   Snackbar,
   Alert,
 } from '@mui/material'
@@ -14,7 +13,7 @@ import { StatsType } from '../../lib/entities/stats.entity'
 import StarOutlineIcon from '@mui/icons-material/StarOutline'
 import CloseIcon from '@mui/icons-material/Close'
 import StarIcon from '@mui/icons-material/Star'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { useState } from 'react'
 import Box from '@mui/material/Box'
 import SearchIcon from '@mui/icons-material/Search'
 import Button from '@mui/material/Button'
@@ -24,6 +23,9 @@ import { useTrackingStore } from '../../stores/trackingStore'
 import { ClickAwayListener } from '@mui/base'
 import fetchItem from '../../services/fetchItem'
 import { useGetCodesQuery } from '../../queries/getCodesQuery'
+import deleteTrackingCode from '../../services/deleteTrackingCode'
+import { useSession } from 'next-auth/react'
+import addTrackingCode from '../../services/addTrackingCode'
 
 export function StatsGrid({
   entriesQuery,
@@ -121,9 +123,19 @@ function StatsTitle() {
 
 function ActiveCodeButton({ setSearching }: { setSearching: () => void }) {
   const { activeCode, setActiveCode } = useTrackingStore()
-  const { data: codes } = useGetCodesQuery()
+  const codesQuery = useGetCodesQuery()
+  const codes = codesQuery.data
+  const { data: session } = useSession()
+
   const isSaved = codes?.some(({ code }) => code === activeCode)
-  function handleSaveCode() {}
+  async function handleSaveCode() {
+    if (isSaved) {
+      await deleteTrackingCode(session?.user?.email!, activeCode)
+    } else {
+      await addTrackingCode(session?.user?.email!, activeCode)
+    }
+    codesQuery.refetch()
+  }
 
   return (
     <Box

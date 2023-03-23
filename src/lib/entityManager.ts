@@ -1,6 +1,8 @@
 import {
   BatchWriteCommand,
   BatchWriteCommandInput,
+  DeleteCommandInput,
+  DeleteCommand,
   GetCommand,
   GetCommandInput,
   PutCommand,
@@ -141,6 +143,17 @@ class EntityManager {
     }
 
     return ddbDocClient.send(new UpdateCommand(params))
+  }
+
+  async delete<T extends Model>(entity: T) {
+    const params: DeleteCommandInput = {
+      ...baseParams,
+      Key: {
+        PK: entity.getPK(),
+        SK: entity.getSK(),
+      },
+    }
+    return ddbDocClient.send(new DeleteCommand(params))
   }
 }
 
