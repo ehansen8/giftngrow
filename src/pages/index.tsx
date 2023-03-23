@@ -1,6 +1,6 @@
 import { Snackbar } from '@mui/material'
 import Alert from '@mui/material/Alert'
-import { useState, ReactElement } from 'react'
+import { useState, ReactElement, useEffect } from 'react'
 import TrackingAppBar from '../components/TrackingAppBar'
 import { Entry } from '../lib/entities/entry.entity'
 import { AxiosError } from 'axios'
@@ -23,6 +23,14 @@ type urlQueryT = {
 }
 const Tracking: NextPageWithLayout = ({ code }: urlQueryT) => {
   const { activeCode, setActiveCode } = useTrackingStore((state) => state)
+
+  // if the code exists, sets it in the store
+  useEffect(() => {
+    if (code) {
+      setActiveCode(code)
+    }
+  }, [setActiveCode, code])
+
   const codesQuery = useGetCodesQuery()
   const entriesQuery = useQuery<Entry[], AxiosError>(
     ['entries', activeCode],
@@ -97,7 +105,7 @@ Tracking.getLayout = function getLayout(page: ReactElement) {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
-    props: { code: context.query.code ?? null },
+    props: { code: context.query.code ?? '' },
   }
 }
 
