@@ -152,11 +152,17 @@ function ActiveCodeButton({ setSearching }: { setSearching: () => void }) {
     >
       <IconButton onClick={handleSaveCode}>
         {isSaved ? (
-          <Tooltip title='Remove from Saved Codes'>
+          <Tooltip
+            title='Remove from Saved Codes'
+            arrow
+          >
             <StarIcon color='primary' />
           </Tooltip>
         ) : (
-          <Tooltip title='Save This Code'>
+          <Tooltip
+            title='Save This Code'
+            arrow
+          >
             <StarOutlineIcon color='primary' />
           </Tooltip>
         )}
@@ -185,7 +191,12 @@ function ActiveCodeButton({ setSearching }: { setSearching: () => void }) {
         className='ml-4'
         onClick={() => setActiveCode('')}
       >
-        <CloseIcon sx={{ color: 'black' }} />
+        <Tooltip
+          title='Clear Code'
+          arrow
+        >
+          <CloseIcon sx={{ color: 'black' }} />
+        </Tooltip>
       </IconButton>
     </Box>
   )
@@ -287,10 +298,15 @@ function SearchCodeButton({ setSearching }: { setSearching: () => void }) {
           onKeyDown={({ key }) => handleEnter(key)}
         />
         <IconButton onClick={handleSearch}>
-          <SearchIcon
-            color='primary'
-            sx={{ height: '32px', width: '32px' }}
-          />
+          <Tooltip
+            title='Search'
+            arrow
+          >
+            <SearchIcon
+              color='primary'
+              sx={{ height: '32px', width: '32px' }}
+            />
+          </Tooltip>
         </IconButton>
         <Snackbar
           open={openToast}
