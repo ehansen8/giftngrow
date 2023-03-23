@@ -5,9 +5,9 @@ import { useState, createContext, useContext } from 'react'
 import { Updater, useImmer } from 'use-immer'
 import { AddCodeForm } from '../../../types/general'
 import AddCodeStep from './steps/AddCodeStep'
-import { createEntry } from '../../services/createEntry'
 import GivingReviewStep from './steps/GivingReviewStep'
 import ReceivingReviewStep from './steps/ReceivingReviewStep'
+import { CodeAPI } from '../../apis/CodeAPI'
 
 type ContextType = {
   form: AddCodeForm
@@ -25,11 +25,11 @@ export function useForm() {
 export default function AddCodeModal({
   open,
   setOpen,
-  onAdd,
+  onAddCode,
 }: {
   open: boolean
   setOpen: (isOpen: boolean) => void
-  onAdd: (code: string) => void
+  onAddCode: (code: string) => void
 }) {
   const [form, setForm] = useImmer(defaultForm)
   const [error, setError] = useImmer('')
@@ -61,12 +61,13 @@ export default function AddCodeModal({
 
   async function handleSubmit() {
     if (await validateForm()) {
-      const { ok, error, data } = await createEntry(form)
+      //Create Entry
+      const { ok, error } = await CodeAPI.addEntry(form)
       if (ok) {
         handleClose()
-        onAdd(form.code)
+        onAddCode(form.code)
       } else {
-        setError(error)
+        setError(error!.message)
       }
     }
   }

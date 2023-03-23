@@ -17,6 +17,7 @@ import getGlobalStats from '../services/getGlobalStats'
 import { GetServerSidePropsContext } from 'next'
 import { useTrackingStore } from '../stores/trackingStore'
 import { useGetCodesQuery } from '../queries/getCodesQuery'
+import { useUserAPI } from '../hooks/useUserAPI'
 
 type urlQueryT = {
   code?: string
@@ -31,6 +32,7 @@ const Tracking: NextPageWithLayout = ({ code }: urlQueryT) => {
     }
   }, [setActiveCode, code])
 
+  const userAPI = useUserAPI()
   const codesQuery = useGetCodesQuery()
   const entriesQuery = useQuery<Entry[], AxiosError>(
     ['entries', activeCode],
@@ -49,7 +51,9 @@ const Tracking: NextPageWithLayout = ({ code }: urlQueryT) => {
     setOpen(true)
   }
 
-  function handleSuccessfulAddCode(code: string) {
+  async function handleSuccessfulAddCode(code: string) {
+    //Subscribe User to newly added code
+    await userAPI.addTrackingCode(code)
     setOpenToast(true)
     setActiveCode(code)
     codesQuery.refetch()
@@ -80,7 +84,7 @@ const Tracking: NextPageWithLayout = ({ code }: urlQueryT) => {
         <AddCodeModal
           open={open}
           setOpen={setOpen}
-          onAdd={handleSuccessfulAddCode}
+          onAddCode={handleSuccessfulAddCode}
         />
         <Snackbar
           open={openToast}

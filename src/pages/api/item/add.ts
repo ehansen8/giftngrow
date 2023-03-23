@@ -73,11 +73,7 @@ export default async function handle(
     //   subscribers = [{ user: 'no-reply@giftngrow.com' }] as TrackingCode[]
     // }
 
-    //Add new tracking code for the user
-    if (sendingUser !== '') {
-      code.user = sendingUser
-      entityManager.create(code)
-    }
+    //Extracted adding a tracking code to the client logic, since not signed in Users can still add codes
 
     const emailData = await emailManager.sendTrackingUpdates(
       subscribers.map((user) => user.user),
