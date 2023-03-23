@@ -2,15 +2,14 @@ import { MenuItem } from '@mui/material'
 import { UseQueryResult } from 'react-query'
 import { TrackingCode } from '../../lib/entities/trackingCode.entity'
 import { AxiosError } from 'axios'
+import { useGetCodesQuery } from '../../queries/getCodesQuery'
 
 export function CodeList({
-  codesQuery,
   handleClick,
 }: {
-  codesQuery: UseQueryResult<TrackingCode[], AxiosError>
   handleClick: (code: string) => void
 }) {
-  const { data, isLoading, isError, error } = codesQuery
+  const { data, isLoading, isError, error } = useGetCodesQuery()
   if (isLoading) {
     return <span>Loading...</span>
   }

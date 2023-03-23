@@ -36,20 +36,6 @@ export default function AddCodeStep({
         }
         TextFieldsProps={{ autoComplete: 'off' }}
       />
-
-      {/* <TextField
-        InputProps={{ className: 'rounded-full' }}
-        size='small'
-        label='Tracking Code'
-        type='text'
-        autoComplete='off'
-        value={form.code}
-        onInput={(e) =>
-          setForm((draft) => {
-            draft.code = (e.target as HTMLInputElement).value.toUpperCase()
-          })
-        }
-      ></TextField> */}
       <FormControl className=''>
         <RadioGroup
           className='m-auto'

@@ -1,15 +1,11 @@
 import { Snackbar } from '@mui/material'
 import Alert from '@mui/material/Alert'
-import { useState, ReactElement, useEffect } from 'react'
+import { useState, ReactElement } from 'react'
 import TrackingAppBar from '../components/TrackingAppBar'
 import { Entry } from '../lib/entities/entry.entity'
 import { AxiosError } from 'axios'
 import { useQuery } from 'react-query'
 import fetchEntries from '../services/fetchEntries'
-import { TrackingCode } from '../lib/entities/trackingCode.entity'
-import { User } from '../lib/entities/user.entity'
-import fetchCodes from '../services/fetchCodes'
-import { useSession } from 'next-auth/react'
 import AddCodeModal from '../components/AddCodes/AddCodeModal'
 import { BagTimeline } from '../components/tracking/BagTimeline'
 import { StatsGrid } from '../components/tracking/StatsGrid'
@@ -19,19 +15,16 @@ import Layout from '../components/Layout'
 import { StatsType } from '../lib/entities/stats.entity'
 import getGlobalStats from '../services/getGlobalStats'
 import { GetServerSidePropsContext } from 'next'
+import { useTrackingStore } from '../stores/trackingStore'
+import { useGetCodesQuery } from '../queries/getCodesQuery'
 
 type urlQueryT = {
   code?: string
 }
 const Tracking: NextPageWithLayout = ({ code }: urlQueryT) => {
-  const { data: session } = useSession()
-  const user = session?.user
-  const [activeCode, setActiveCode] = useState<string | undefined>(code)
-  const codesQuery = useQuery<TrackingCode[], AxiosError>(
-    ['codes', user],
-    () => fetchCodes(user as User),
-    { enabled: !!user },
-  )
+  const { activeCode, setActiveCode } = useTrackingStore((state) => state)
+
+  const codesQuery = useGetCodesQuery()
   const entriesQuery = useQuery<Entry[], AxiosError>(
     ['entries', activeCode],
     () => fetchEntries(activeCode as string),
@@ -60,7 +53,6 @@ const Tracking: NextPageWithLayout = ({ code }: urlQueryT) => {
     <Layout
       childNav={
         <TrackingAppBar
-          codesQuery={codesQuery}
           handleMenuClick={(code: string) => setActiveCode(code)}
           handleAddCode={handleAddCode}
         />
@@ -71,7 +63,6 @@ const Tracking: NextPageWithLayout = ({ code }: urlQueryT) => {
         style={{ backgroundColor: 'white' }}
       >
         <StatsGrid
-          activeCode={activeCode}
           entriesQuery={entriesQuery}
           globalStatsQuery={statsQuery}
         />

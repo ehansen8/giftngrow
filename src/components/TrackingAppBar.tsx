@@ -21,18 +21,18 @@ import { AxiosError } from 'axios'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { CodeList } from './tracking/CodeList'
+import { useGetCodesQuery } from '../queries/getCodesQuery'
 
 export default function TrackingAppBar({
-  codesQuery,
   handleMenuClick,
   handleAddCode,
 }: {
-  codesQuery: UseQueryResult<TrackingCode[], AxiosError>
   handleMenuClick: (code: string) => void
   handleAddCode: () => void
 }) {
   const { data: session } = useSession()
   const user = session?.user
+  const { data } = useGetCodesQuery()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const anchorRef = useRef<HTMLButtonElement | null>(null)
   const handleOpenDropdown = () => {
@@ -44,98 +44,87 @@ export default function TrackingAppBar({
   }
 
   return (
-    <>
-      {/* <Divider
-        variant='fullWidth'
-        //sx={{ bgcolor: 'primary.main' }}
-      /> */}
-      <AppBar
-        className='tracking-bar'
-        position='static'
-        color='secondary'
-      >
-        <Toolbar>
-          <Box
-            className='flex justify-start gap-3'
-            sx={{ flex: '1 1 0' }}
+    <AppBar
+      className='tracking-bar'
+      position='static'
+      color='secondary'
+    >
+      <Toolbar>
+        <Box
+          className='flex justify-start gap-3'
+          sx={{ flex: '1 1 0' }}
+        >
+          <Badge
+            className=''
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            badgeContent={data?.length}
+            slotProps={{
+              badge: {
+                //@ts-ignore For some reason it doesn't like these properties
+                sx: { color: 'black', backgroundColor: 'white' },
+              },
+            }}
           >
-            <Badge
-              className=''
-              anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-              badgeContent={codesQuery.data?.length}
-              slotProps={{
-                badge: {
-                  //@ts-ignore For some reason it doesn't like these properties
-                  sx: { color: 'black', backgroundColor: 'white' },
-                },
-              }}
-            >
-              <Button
-                className='border-black px-1'
-                ref={anchorRef}
-                onClick={handleOpenDropdown}
-                variant='contained'
-                aria-haspopup='true'
-                sx={{
-                  bgcolor: 'primary.light',
-                  textTransform: 'none',
-                  color: 'black',
-                }}
-              >
-                <PublicIcon className='mr-1' />
-                <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-                  Code History
-                </Box>
-                <ExpandMoreIcon />
-              </Button>
-            </Badge>
             <Button
-              className='border-teal-500'
-              onClick={handleAddCode}
+              className='border-black px-1'
+              ref={anchorRef}
+              onClick={handleOpenDropdown}
               variant='contained'
+              aria-haspopup='true'
               sx={{
                 bgcolor: 'primary.light',
                 textTransform: 'none',
                 color: 'black',
               }}
             >
-              <AddIcon className='mr-1' />
+              <PublicIcon className='mr-1' />
               <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-                Enter Code
+                Code History
               </Box>
+              <ExpandMoreIcon />
             </Button>
-            <Menu
-              open={!!anchorEl}
-              onClose={handleCloseDropdown}
-              anchorEl={anchorEl}
-              //keepMounted={true}
-            >
-              <CodeList
-                codesQuery={codesQuery}
-                handleClick={handleMenuClick}
-              />
-            </Menu>
-          </Box>
+          </Badge>
+          <Button
+            className='border-teal-500'
+            onClick={handleAddCode}
+            variant='contained'
+            sx={{
+              bgcolor: 'primary.light',
+              textTransform: 'none',
+              color: 'black',
+            }}
+          >
+            <AddIcon className='mr-1' />
+            <Box sx={{ display: { xs: 'none', md: 'block' } }}>Enter Code</Box>
+          </Button>
+          <Menu
+            open={!!anchorEl}
+            onClose={handleCloseDropdown}
+            anchorEl={anchorEl}
+            //keepMounted={true}
+          >
+            <CodeList handleClick={handleMenuClick} />
+          </Menu>
+        </Box>
 
-          <Typography
-            sx={{ flex: '1 1 0', display: { xs: 'none', sm: 'block' } }}
-            variant='h6'
-            noWrap
-            component='div'
-            textAlign='center'
-            //color='primary'
-          >
-            {user ? `Welcome, ${user?.name}` : 'You are not logged in'}
-          </Typography>
-          <Box
-            className='flex justify-end'
-            sx={{ flex: '1 1 0' }}
-          >
-            {user ? <AccountButton /> : <LoginButton />}
-          </Box>
-        </Toolbar>
-      </AppBar>
-    </>
+        <Typography
+          sx={{ flex: '1 1 0', display: { xs: 'none', sm: 'block' } }}
+          variant='h6'
+          noWrap
+          component='div'
+          textAlign='center'
+          //color='primary'
+        >
+          {user ? `Welcome, ${user?.name}` : 'You are not logged in'}
+        </Typography>
+        <Box
+          className='flex justify-end'
+          sx={{ flex: '1 1 0' }}
+        >
+          {user ? <AccountButton /> : <LoginButton />}
+        </Box>
+      </Toolbar>
+    </AppBar>
   )
 }
 
@@ -149,7 +138,6 @@ const buttonStyle = {
 
 const LoginButton = () => (
   <Button
-    className='rounded-full'
     variant='contained'
     LinkComponent={Link}
     href={'/auth/login'}
