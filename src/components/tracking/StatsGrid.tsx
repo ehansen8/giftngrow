@@ -23,9 +23,7 @@ import { useTrackingStore } from '../../stores/trackingStore'
 import { ClickAwayListener } from '@mui/base'
 import fetchItem from '../../services/fetchItem'
 import { useGetCodesQuery } from '../../queries/getCodesQuery'
-import deleteTrackingCode from '../../services/deleteTrackingCode'
-import { useSession } from 'next-auth/react'
-import addTrackingCode from '../../services/addTrackingCode'
+import { useUserAPI } from '../../hooks/useUserAPI'
 
 export function StatsGrid({
   entriesQuery,
@@ -125,14 +123,14 @@ function ActiveCodeButton({ setSearching }: { setSearching: () => void }) {
   const { activeCode, setActiveCode } = useTrackingStore()
   const codesQuery = useGetCodesQuery()
   const codes = codesQuery.data
-  const { data: session } = useSession()
+  const userAPI = useUserAPI()
 
   const isSaved = codes?.some(({ code }) => code === activeCode)
   async function handleSaveCode() {
     if (isSaved) {
-      await deleteTrackingCode(session?.user?.email!, activeCode)
+      await userAPI.deleteTrackingCode(activeCode)
     } else {
-      await addTrackingCode(session?.user?.email!, activeCode)
+      await userAPI.addTrackingCode(activeCode)
     }
     codesQuery.refetch()
   }

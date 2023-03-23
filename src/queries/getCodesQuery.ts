@@ -1,18 +1,16 @@
 import { AxiosError } from 'axios'
 import { useQuery } from 'react-query'
-import axios from 'axios'
-import { TrackingCode } from '../lib/entities/trackingCode.entity'
-import { useSession } from 'next-auth/react'
+import { ITrackingCode } from '../lib/entities/trackingCode.entity'
+import { useUserAPI } from '../hooks/useUserAPI'
 
 function useGetCodesQuery() {
-  const { data: session } = useSession()
-  const email = session?.user?.email
-  return useQuery<TrackingCode[], AxiosError>(['codes', email], async () => {
-    const { data } = await axios.get<TrackingCode[]>(
-      `/api/users/${email}/codes`,
-    )
-    return data
-  })
+  const userAPI = useUserAPI()
+  return useQuery<ITrackingCode[], AxiosError>(
+    ['codes', userAPI.email],
+    async () => {
+      return userAPI.getTrackingCodes()
+    },
+  )
 }
 
 export { useGetCodesQuery }

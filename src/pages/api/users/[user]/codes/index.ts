@@ -4,6 +4,10 @@ import { entityManager } from '../../../../../lib/entityManager'
 
 export default async function codes(req: NextApiRequest, res: NextApiResponse) {
   const email = req.query.user as string
+  if (email == 'undefined') {
+    res.status(400).send('Email is undefined')
+    return
+  }
   if (req.method == 'GET') {
     // List User Tracking Codes
     const codes = await entityManager.find(TrackingCode.forUser(email), {
@@ -15,6 +19,7 @@ export default async function codes(req: NextApiRequest, res: NextApiResponse) {
     const code = req.body.code as string
     if (!code) {
       res.status(400).send('Code is required')
+      return
     }
     const trackingCode = new TrackingCode(code, email)
     entityManager.create(trackingCode)

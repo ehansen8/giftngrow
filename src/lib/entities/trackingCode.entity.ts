@@ -8,8 +8,8 @@ import { Model } from './abcModel'
 export interface ITrackingCode {
   code: string
   /** User Email */
-  user: string
-  createdOn: number
+  user?: string
+  createdOn?: number
 }
 export class TrackingCode extends Model {
   constructor(code?: string, email?: string) {
