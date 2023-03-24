@@ -23,11 +23,7 @@ export default async function handle(
   const parentItem = await entityManager.find(entry.getItem(), { limit: 1 })
   // Failed to find match
   if (!parentItem || parentItem.length == 0) {
-    res.json({
-      ok: false,
-      error: 'Invalid Code',
-      data: '',
-    })
+    res.status(400).send('Invalid Code')
     return
   }
 
@@ -38,13 +34,10 @@ export default async function handle(
   } catch (e: any) {
     if (e instanceof DynamoDBServiceException) {
       logger.warn(e, 'DDB Service Exception error')
-      res.json({
-        ok: false,
-        error: e.message,
-        data: '',
-      })
-      logger.fatal(e, 'Uncaught PutCommandOutput Error')
+      res.status(500).send(e.message)
+      return
     }
+    logger.fatal(e, 'Uncaught PutCommandOutput Error')
     return
   }
 
@@ -52,6 +45,7 @@ export default async function handle(
   try {
     entityManager.updateStats(entry)
   } catch (e: any) {
+    // Log but don't return error
     logger.error({ err: e, entry: entry }, 'Global Stat Entry Update Error')
   }
 
@@ -80,17 +74,9 @@ export default async function handle(
       data.code,
     )
 
-    res.json({
-      ok: true,
-      error: '',
-      data: { createResponse: response, emailResponse: emailData },
-    })
+    res.json({ createResponse: response, emailResponse: emailData })
   } catch (e) {
     logger.error(e, 'Tracking update email errored in some way')
-    res.json({
-      ok: true,
-      error: '',
-      data: { createResponse: response, emailResponse: '' },
-    })
+    res.json({ createResponse: response, emailResponse: '' })
   }
 }

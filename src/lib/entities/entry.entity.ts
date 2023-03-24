@@ -1,5 +1,6 @@
 import 'reflect-metadata'
-import { AddCodeForm } from '../../../types/general'
+import * as general from '../../../types/general'
+import type { Coords } from '../../../types/general'
 import Attribute, { AutoEpoch } from '../../utils/attribute.decorator'
 import PK from '../../utils/primaryKeyProperty'
 import { Model } from './abcModel'
@@ -23,7 +24,7 @@ export class Entry extends Model {
     }
   }
 
-  static fromObject(obj: AddCodeForm) {
+  static fromObject(obj: general.AddCodeForm) {
     return Object.assign(new Entry(), obj) as Entry
   }
 
@@ -49,6 +50,9 @@ export class Entry extends Model {
   giverState: string
 
   @Attribute
+  giverCoords: Coords
+
+  @Attribute
   recipFN: string
 
   @Attribute
@@ -56,6 +60,9 @@ export class Entry extends Model {
 
   @Attribute
   recipState: string
+
+  @Attribute
+  recipCoords: Coords
 
   @Attribute
   occasion: string

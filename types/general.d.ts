@@ -4,15 +4,21 @@ export type SignUpParams = {
   given_name: string
   family_name: string
 }
+export type Coords = {
+  lat?: number
+  lng?: number
+}
 
 export type AddCodeForm = {
   code: string
   giverFN: string
   giverCity: string
   giverState: string
+  giverCoords: Coords
   recipFN: string
   recipCity: string
   recipState: string
+  recipCoords: Coords
   occasion: string
   gift: string
   comment: string

@@ -18,6 +18,7 @@ import { GetServerSidePropsContext } from 'next'
 import { useTrackingStore } from '../stores/trackingStore'
 import { useGetCodesQuery } from '../queries/getCodesQuery'
 import { useUserAPI } from '../hooks/useUserAPI'
+import GoogleMap from '../components/GoogleMap'
 
 type urlQueryT = {
   code?: string
@@ -77,6 +78,7 @@ const Tracking: NextPageWithLayout = ({ code }: urlQueryT) => {
           entriesQuery={entriesQuery}
           globalStatsQuery={statsQuery}
         />
+        <GoogleMap />
         {(!codesQuery.data || codesQuery.data.length <= 0) && (
           <NoBagsView handleClick={handleAddCode} />
         )}

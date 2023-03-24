@@ -1,4 +1,3 @@
-import * as React from 'react'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import Autocomplete from '@mui/material/Autocomplete'
@@ -7,9 +6,13 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import parse from 'autosuggest-highlight/parse'
 import { debounce } from '@mui/material/utils'
+import { useEffect, useMemo, useState } from 'react'
+import { Coords } from '../../types/general'
 
 type service = { current: null | google.maps.places.AutocompleteService }
+type geocoderType = { current: null | google.maps.Geocoder }
 const autocompleteService: service = { current: null }
+const geocoder: geocoderType = { current: null }
 
 interface MainTextMatchedSubstrings {
   offset: number
@@ -21,6 +24,7 @@ interface StructuredFormatting {
   main_text_matched_substrings?: readonly MainTextMatchedSubstrings[]
 }
 interface PlaceType {
+  place_id: string
   description: string
   terms: { value: string }[]
   structured_formatting: StructuredFormatting
@@ -29,15 +33,17 @@ interface PlaceType {
 export default function PlaceField({
   setCity,
   setState,
+  setCoords,
 }: {
   setCity: (city: string) => void
   setState: (state: string) => void
+  setCoords: (coords: Coords) => void
 }) {
-  const [value, setValue] = React.useState<PlaceType | null>(null)
-  const [inputValue, setInputValue] = React.useState('')
-  const [options, setOptions] = React.useState<readonly PlaceType[]>([])
-
-  const fetch = React.useMemo(
+  const [value, setValue] = useState<PlaceType | null>(null)
+  const [inputValue, setInputValue] = useState('')
+  const [options, setOptions] = useState<readonly PlaceType[]>([])
+  const [placeId, setPlaceId] = useState<string>('')
+  const fetch = useMemo(
     () =>
       debounce(
         (
@@ -54,7 +60,41 @@ export default function PlaceField({
     [],
   )
 
-  React.useEffect(() => {
+  const getCoords = useMemo(
+    () =>
+      (
+        placeId: string,
+        callback: (results: null | google.maps.GeocoderResult[]) => void,
+      ) => {
+        if (geocoder.current) {
+          geocoder.current?.geocode({ placeId }, callback)
+        }
+      },
+    [],
+  )
+
+  // Creates the Geocoder Service if not already created
+  // Sets location coordinates when placeId changes
+  useEffect(() => {
+    if (!geocoder.current && window.google) {
+      geocoder.current = new window.google.maps.Geocoder()
+    }
+    if (!geocoder.current) {
+      return undefined
+    }
+
+    if (placeId === '') {
+      return undefined
+    }
+    getCoords(placeId, (results) => {
+      if (results) {
+        const { geometry } = results[0]
+        setCoords(geometry.location.toJSON())
+      }
+    })
+  }, [placeId, getCoords])
+
+  useEffect(() => {
     let active = true
 
     if (!autocompleteService.current && window.google) {
@@ -104,6 +144,7 @@ export default function PlaceField({
     setValue(newValue)
     setCity(newValue?.terms[0].value ?? '')
     setState(newValue?.terms[1].value ?? '')
+    setPlaceId(newValue?.place_id ?? '')
   }
 
   return (

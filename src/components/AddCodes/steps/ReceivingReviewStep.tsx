@@ -43,6 +43,11 @@ export default function GivingReview() {
             draft.recipState = state
           })
         }
+        setCoords={(coords) =>
+          setForm((draft) => {
+            draft.recipCoords = coords
+          })
+        }
       />
       <Divider />
       <Typography
