@@ -6,6 +6,21 @@ import PK from '../../utils/primaryKeyProperty'
 import { Model } from './abcModel'
 import { Item } from './item.entity'
 
+export interface IEntry {
+  code: string
+  regDate: number
+  giverFN: string
+  giverCity: string
+  giverState: string
+  giverCoords?: Coords
+  recipFN: string
+  recipCity: string
+  recipState: string
+  recipCoords?: Coords
+  occasion: string
+  gift: string
+  comment: string
+}
 export class Entry extends Model {
   constructor() {
     super()

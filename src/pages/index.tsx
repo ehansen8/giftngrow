@@ -2,10 +2,8 @@ import { Snackbar } from '@mui/material'
 import Alert from '@mui/material/Alert'
 import { useState, ReactElement, useEffect } from 'react'
 import TrackingAppBar from '../components/TrackingAppBar'
-import { Entry } from '../lib/entities/entry.entity'
 import { AxiosError } from 'axios'
 import { useQuery } from 'react-query'
-import fetchEntries from '../services/fetchEntries'
 import AddCodeModal from '../components/AddCodes/AddCodeModal'
 import { BagTimeline } from '../components/tracking/BagTimeline'
 import { StatsGrid } from '../components/tracking/StatsGrid'
@@ -19,12 +17,13 @@ import { useTrackingStore } from '../stores/trackingStore'
 import { useGetCodesQuery } from '../queries/getCodesQuery'
 import { useUserAPI } from '../hooks/useUserAPI'
 import GoogleMap from '../components/GoogleMap'
+import { useGetEntriesQuery } from '../queries/getEntriesQuery'
 
 type urlQueryT = {
   code?: string
 }
 const Tracking: NextPageWithLayout = ({ code }: urlQueryT) => {
-  const { activeCode, setActiveCode } = useTrackingStore((state) => state)
+  const setActiveCode = useTrackingStore((state) => state.setActiveCode)
 
   // if the code exists, sets it in the store
   useEffect(() => {
@@ -35,11 +34,7 @@ const Tracking: NextPageWithLayout = ({ code }: urlQueryT) => {
 
   const userAPI = useUserAPI()
   const codesQuery = useGetCodesQuery()
-  const entriesQuery = useQuery<Entry[], AxiosError>(
-    ['entries', activeCode],
-    () => fetchEntries(activeCode as string),
-    { enabled: !!activeCode },
-  )
+  const entriesQuery = useGetEntriesQuery()
 
   const statsQuery = useQuery<StatsType, AxiosError>(['global stats'], () =>
     getGlobalStats(),
@@ -74,15 +69,12 @@ const Tracking: NextPageWithLayout = ({ code }: urlQueryT) => {
         className='py-4 rounded-md px-2'
         style={{ backgroundColor: 'white' }}
       >
-        <StatsGrid
-          entriesQuery={entriesQuery}
-          globalStatsQuery={statsQuery}
-        />
+        <StatsGrid globalStatsQuery={statsQuery} />
         <GoogleMap />
         {(!codesQuery.data || codesQuery.data.length <= 0) && (
           <NoBagsView handleClick={handleAddCode} />
         )}
-        <BagTimeline entriesQuery={entriesQuery} />
+        <BagTimeline />
         <AddCodeModal
           open={open}
           setOpen={setOpen}

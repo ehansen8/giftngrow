@@ -1,16 +1,15 @@
 import { Typography, Card, CardContent, Grid } from '@mui/material'
-import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore'
 import TimelineItem from '@mui/lab/TimelineItem'
 import TimelineContent from '@mui/lab/TimelineContent'
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent'
 import TimelineDot from '@mui/lab/TimelineDot'
-import { Entry } from '../lib/entities/entry.entity'
+import { IEntry } from '../lib/entities/entry.entity'
 import { colors } from '../colors'
 import { TimelineSeparator, TimelineConnector } from '@mui/lab'
 import OverflowTip from './OverflowTip'
 
 type TimelineEntryProps = {
-  entry: Entry
+  entry: IEntry
 }
 export default function TimelineEntry({ entry }: TimelineEntryProps) {
   const dt = new Date(entry.regDate * 1000)
@@ -38,7 +37,7 @@ export default function TimelineEntry({ entry }: TimelineEntryProps) {
   )
 }
 
-const EntryCard = ({ entry }: { entry: Entry }) => {
+const EntryCard = ({ entry }: { entry: IEntry }) => {
   const giverLOC = formatLocation(entry.giverCity, entry.giverState)
   const recipLOC = formatLocation(entry.recipCity, entry.recipState)
   return (

@@ -6,7 +6,7 @@ import {
   Snackbar,
   Alert,
 } from '@mui/material'
-import { Entry } from '../../lib/entities/entry.entity'
+import { IEntry } from '../../lib/entities/entry.entity'
 import { AxiosError } from 'axios'
 import { UseQueryResult } from 'react-query'
 import { StatsType } from '../../lib/entities/stats.entity'
@@ -24,16 +24,15 @@ import { ClickAwayListener } from '@mui/base'
 import fetchItem from '../../services/fetchItem'
 import { useGetCodesQuery } from '../../queries/getCodesQuery'
 import { useUserAPI } from '../../hooks/useUserAPI'
+import { useGetEntriesQuery } from '../../queries/getEntriesQuery'
 
 export function StatsGrid({
-  entriesQuery,
   globalStatsQuery,
 }: {
-  entriesQuery: UseQueryResult<Entry[], AxiosError>
   globalStatsQuery: UseQueryResult<StatsType, AxiosError>
 }) {
   const activeCode = useTrackingStore((state) => state.activeCode)
-  const { data } = entriesQuery
+  const { data } = useGetEntriesQuery()
   const globalStats = globalStatsQuery.data
 
   let statCards: { value: number; body: string }[] = []
@@ -353,7 +352,7 @@ function getGlobalStats({ states, cities, times_gifted }: StatsType) {
   ]
 }
 
-function getStats(entries: Entry[]) {
+function getStats(entries: IEntry[]) {
   const cities = new Set()
   const states = new Set()
   entries.forEach((entry) => {
