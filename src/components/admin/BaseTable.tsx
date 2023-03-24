@@ -33,9 +33,15 @@ export function BaseTable<T extends Model>({
         <TableBody>
           {data?.map((row, idx) => (
             <TableRow key={idx}>
-              {headers.map(({ index }) => (
-                <TableCell key={index}>{(row as any)[index]}</TableCell>
-              ))}
+              {headers.map(({ index }) => {
+                let value = (row as any)[index]
+
+                //Handles Case where values can be objects such as coordinates
+                if (typeof value !== 'string') {
+                  value = JSON.stringify(value)
+                }
+                return <TableCell key={index}>{value}</TableCell>
+              })}
             </TableRow>
           ))}
         </TableBody>

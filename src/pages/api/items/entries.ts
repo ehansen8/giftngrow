@@ -9,6 +9,7 @@ export default async function handle(
   try {
     const entries = await entityManager.allEntries()
     res.json(entries)
+    return
   } catch (err) {
     logger.fatal(err, 'error fetching all entries')
   }
