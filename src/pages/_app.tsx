@@ -11,6 +11,9 @@ import { NextPage } from 'next'
 import { ReactElement, ReactNode } from 'react'
 
 const theme = createTheme({
+  typography: {
+    fontFamily: 'Helvetica, Arial, sans-serif',
+  },
   palette: {
     primary: {
       // Purple and green play nicely together.

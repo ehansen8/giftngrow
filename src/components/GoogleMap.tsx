@@ -14,7 +14,7 @@ export function Map() {
   const mapRef = useRef(null)
   const [map, setMap] = useState<google.maps.Map>()
   const [cluster, setCluster] = useState<MarkerClusterer>()
-  const [bounds, setBounds] = useState<google.maps.LatLngBounds>()
+
   //const [markers, setMarkers] = useState<google.maps.Marker[]>([])
   const { data: entries } = useGetEntriesQuery()
 
@@ -50,7 +50,7 @@ export function Map() {
 
   //Render markers to map when map or entries change
   useEffect(() => {
-    setBounds(new window.google.maps.LatLngBounds())
+    const bounds = new window.google.maps.LatLngBounds()
 
     if (cluster) {
       entries?.forEach(async (entry, idx) => {
@@ -65,7 +65,7 @@ export function Map() {
           }
           // giver is parsed
           if (giverMarker) {
-            bounds?.extend(giverMarker.getPosition()!)
+            bounds.extend(giverMarker.getPosition()!)
             cluster.addMarker(giverMarker, false)
           }
 
@@ -78,7 +78,7 @@ export function Map() {
             recipMarker = await createMarker(entry.recipCity, entry.recipState)
           }
           if (recipMarker) {
-            bounds?.extend(recipMarker.getPosition()!)
+            bounds.extend(recipMarker.getPosition()!)
             cluster.addMarker(recipMarker)
           }
           if (map && bounds) {
@@ -88,10 +88,9 @@ export function Map() {
       })
     }
     return () => {
-      if (bounds) setBounds(undefined)
       if (cluster) cluster.clearMarkers()
     }
-  }, [entries, cluster])
+  }, [entries, cluster, map])
 
   return (
     <div
