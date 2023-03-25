@@ -4,10 +4,7 @@ export type SignUpParams = {
   given_name: string
   family_name: string
 }
-export type Coords = {
-  lat?: number
-  lng?: number
-}
+export type Coords = google.maps.LatLngLiteral | undefined
 
 export type AddCodeForm = {
   code: string
