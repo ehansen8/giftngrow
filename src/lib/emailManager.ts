@@ -31,7 +31,7 @@ function createTrackingUpdateCommand(addresses: string[], code: string) {
     code: code,
     track_root: process.env.NEXTAUTH_URL,
     //TODO: update home_root to be a env or just remeber to change once site is live
-    home_root: 'https://giftngrow.square.site',
+    home_root: 'https://giftngrow.com',
   }
 
   return new SendBulkTemplatedEmailCommand({

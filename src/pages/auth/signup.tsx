@@ -126,13 +126,11 @@ const SignUpForm = () => {
         label={
           <Typography fontSize={12}>
             I am 13 years of age or older and agree to the{' '}
-            <Link href='https://giftngrow.square.site/privacy-policy'>
+            <Link href='https://giftngrow.com/privacy-policy'>
               privacy policy
             </Link>{' '}
             and{' '}
-            <Link href='https://giftngrow.square.site/terms-of-use'>
-              terms of use.
-            </Link>
+            <Link href='https://giftngrow.com/terms-of-use'>terms of use.</Link>
           </Typography>
         }
       />

@@ -9,19 +9,19 @@ import logo_svg from '../../public/gng_logo.svg'
 const links = [
   {
     label: 'About',
-    url: 'https://giftngrow.square.site/about',
+    url: 'https://giftngrow.com/about',
   },
   {
     label: 'Conditions of Use',
-    url: 'https://giftngrow.square.site/terms-of-use',
+    url: 'https://giftngrow.com/terms-of-use',
   },
   {
     label: 'Privacy Policy',
-    url: 'https://giftngrow.square.site/privacy-policy',
+    url: 'https://giftngrow.com/privacy-policy',
   },
   {
     label: 'Contact Us',
-    url: 'https://giftngrow.square.site/contact-us',
+    url: 'https://giftngrow.com/contact-us',
   },
 ]
 
@@ -39,7 +39,7 @@ export default function Footer() {
     >
       <div className='flex  items-center gap-2 justify-center'>
         <a
-          href='https://giftngrow.square.site/'
+          href='https://giftngrow.com/'
           target='_blank'
           rel='noreferrer'
         >

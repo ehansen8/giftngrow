@@ -15,7 +15,7 @@ import Image from 'next/image'
 import { signOut, useSession } from 'next-auth/react'
 
 const pages = [
-  { label: 'Home', url: 'https://giftngrow.square.site/' },
+  { label: 'Home', url: 'https://giftngrow.com/' },
   { label: 'Track Codes', url: '/' },
 ]
 
@@ -80,7 +80,7 @@ export default function NavBar({
         className='flex flex-row justify-between'
       >
         <a
-          href='https://giftngrow.square.site/'
+          href='https://giftngrow.com/'
           target='_blank'
           rel='noreferrer'
         >
