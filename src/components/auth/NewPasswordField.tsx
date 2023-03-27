@@ -1,5 +1,4 @@
 import {
-  Typography,
   TextField,
   List,
   ListItem,
@@ -9,9 +8,8 @@ import {
 import React from 'react'
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
-import { text } from 'pdfkit'
 
-const passwordChecks = [
+export const passwordChecks = [
   {
     test: (p: string) => p.toUpperCase() != p,
     label: 'Password must contain a lower case letter',
@@ -96,15 +94,4 @@ export default function NewPasswordField({
       </List>
     </>
   )
-}
-
-{
-  /* <Typography
-            key={idx}
-            color={pass ? 'success' : 'error'}
-            fontSize={12}
-          >
-            <CloseIcon />
-            {check.label}
-          </Typography> */
 }

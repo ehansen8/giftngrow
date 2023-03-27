@@ -1,4 +1,3 @@
-import { UseQueryResult } from 'react-query'
 import { create } from 'zustand'
 
 type State = {
