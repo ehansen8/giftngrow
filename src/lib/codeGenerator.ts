@@ -115,7 +115,7 @@ class CodeGenerator {
               lineGap: 0,
             },
           )
-          doc.text('Then pass it on and track your wrap.', {
+          doc.text('Then pass it on and track your wrap!', {
             width: width,
             align: 'center',
             lineGap: 0,
