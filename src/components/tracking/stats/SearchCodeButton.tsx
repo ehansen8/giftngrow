@@ -1,11 +1,16 @@
-import { Typography, IconButton, Snackbar, Alert } from '@mui/material'
+import {
+  Typography,
+  IconButton,
+  Snackbar,
+  Alert,
+  ClickAwayListener,
+} from '@mui/material'
 import { useState } from 'react'
 import Box from '@mui/material/Box'
 import SearchIcon from '@mui/icons-material/Search'
 import Tooltip from '@mui/material/Tooltip'
 import { MuiOtpInput } from 'mui-one-time-password-input'
 import { useTrackingStore } from '../../../stores/trackingStore'
-import { ClickAwayListener } from '@mui/base'
 import fetchItem from '../../../services/fetchItem'
 
 export function SearchCodeButton({

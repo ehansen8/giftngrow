@@ -67,8 +67,8 @@ class CodeGenerator {
 
   async createPDF(pages: PageItem[][]) {
     const doc = new PDFDocument({ size: 'LETTER', margin: 0 })
-    const start_x = 6 //old: 36
-    const start_y = 0 //old: 36
+    const start_x = 2 //old: 36
+    const start_y = 2 //old: 36
     const width = 120 //1.5": 108
     const height = 156 //144
     const image_width = 54
@@ -79,13 +79,14 @@ class CodeGenerator {
       for (let x = 0; x < 5; x++) {
         for (let y = 0; y < 5; y++) {
           const code = page[y + 5 * x].code
-          const x_off = start_x + x * width
-          const y_off = start_y + y * height
+          const x_off = start_x + x * width + x * 2
+          const y_off = start_y + y * height + y * 2
           const text_x = x_off
           const text_y = y_off + width
           const spacing = (width - image_width) / 2
           const image_x = x_off + spacing
-          const image_y = y_off + spacing
+          const image_y = y_off + 20
+          const all_offset = 8
 
           const qr_png = await QRCode.toDataURL(
             `https://track.giftngrow.com/?code=${code}`,
@@ -93,24 +94,31 @@ class CodeGenerator {
               margin: 0,
             },
           )
-
-          doc.image(qr_png, image_x, image_y, {
+          doc.fontSize(10)
+          doc.text('www.giftngrow.com', x_off, y_off + 6 + all_offset, {
+            width: width,
+            align: 'center',
+          })
+          doc.image(qr_png, image_x, image_y + all_offset, {
             width: image_width,
             height: image_width,
           })
 
           doc.stroke()
-          doc.fontSize(12)
-          doc.text('Track Your Wrap', text_x, text_y - 12, {
+          doc.text(
+            'Scan QR code to enter or receive personalized message.',
+            text_x,
+            image_y + image_width + 6 + all_offset,
+            {
+              width: width,
+              align: 'center',
+              lineGap: 0,
+            },
+          )
+          doc.text('Then pass it on and track your wrap.', {
             width: width,
             align: 'center',
             lineGap: 0,
-          })
-          doc.fontSize(11)
-          doc.text('www.giftngrow.com', {
-            width: width,
-            align: 'center',
-            lineGap: 2,
           })
           doc.text(`Your ID: ${code}`, {
             width: width,

@@ -1,6 +1,5 @@
-import { Set } from 'immutable'
 import 'reflect-metadata'
-import Attribute, { AutoEpoch } from '../../utils/attribute.decorator'
+import Attribute from '../../utils/attribute.decorator'
 import { entityManager } from '../entityManager'
 import { Model } from './abcModel'
 
