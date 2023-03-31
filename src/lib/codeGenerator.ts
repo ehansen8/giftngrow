@@ -105,8 +105,9 @@ class CodeGenerator {
           })
 
           doc.stroke()
+          doc.fontSize(9)
           doc.text(
-            'Scan QR code to enter or receive personalized message.',
+            'Scan QR code to enter',
             text_x,
             image_y + image_width + 6 + all_offset,
             {
@@ -115,11 +116,17 @@ class CodeGenerator {
               lineGap: 0,
             },
           )
+          doc.text('or receive personalized message.', {
+            width: width,
+            align: 'center',
+            lineGap: 0,
+          })
           doc.text('Then pass it on and track your wrap!', {
             width: width,
             align: 'center',
             lineGap: 0,
           })
+          doc.fontSize(11)
           doc.text(`Your ID: ${code}`, {
             width: width,
             align: 'center',
