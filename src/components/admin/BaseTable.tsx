@@ -102,6 +102,13 @@ export function BaseTable<T extends Model>({
                 if (typeof value !== 'string') {
                   value = JSON.stringify(value)
                 }
+                if (index === 'regDate') {
+                  const date = new Date(value * 1000)
+                  const year = date.getFullYear()
+                  const month = date.getMonth() + 1 // months are zero-indexed, so add 1
+                  const day = date.getDate()
+                  value = `${month}/${day}/${year}`
+                }
                 return <TableCell key={index}>{value}</TableCell>
               })}
             </TableRow>
