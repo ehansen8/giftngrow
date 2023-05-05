@@ -55,7 +55,7 @@ const EntryCard = ({ entry }: { entry: IEntry }) => {
         </div>
         <div className='entry-card-body '>
           <p>
-            <strong>{entry.giverFN ? 'To:' : 'From:'}</strong>
+            <strong>{entry.giverFN !== '' ? 'To:' : 'From:'}</strong>
             {entry.recipFN} {recipLOC && <LOC location={recipLOC}></LOC>}
           </p>
           {entry.gift && (
