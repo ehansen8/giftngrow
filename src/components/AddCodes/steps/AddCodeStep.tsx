@@ -23,6 +23,7 @@ export default function AddCodeStep({
   const title = 'Enter Tracking Code'
   const { form, setForm, setValidationFn } = useForm()
   useEffect(() => setValidationFn(() => validate), [setValidationFn])
+
   return (
     <AddCodeContentWrapper title={title}>
       <MuiOtpInput

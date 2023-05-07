@@ -1,13 +1,14 @@
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import Button from '@mui/material/Button'
-import { useState, createContext, useContext } from 'react'
+import { useState, createContext, useContext, useEffect } from 'react'
 import { Updater, useImmer } from 'use-immer'
 import { AddCodeForm } from '../../../types/general'
 import AddCodeStep from './steps/AddCodeStep'
 import GivingReviewStep from './steps/GivingReviewStep'
 import ReceivingReviewStep from './steps/ReceivingReviewStep'
 import { CodeAPI } from '../../apis/CodeAPI'
+import { useTrackingStore } from '../../stores/trackingStore'
 
 type ContextType = {
   form: AddCodeForm
@@ -124,6 +125,13 @@ const defaultForm: AddCodeForm = {
 function FormStepper({ step }: { step: number }) {
   const [isGiving, setIsGiving] = useState(true)
   const { form, setForm } = useForm()
+  const { activeCode } = useTrackingStore()
+
+  // set code to active code only once on FormStepper mount or when activeCode changes
+  useEffect(() => {
+    setForm({ ...defaultForm, code: activeCode })
+  }, [activeCode, setForm])
+
   function handleIsGiving(val: string) {
     //reset form on switch except code
     setIsGiving(val === 'true')
