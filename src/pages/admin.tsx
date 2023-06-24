@@ -2,13 +2,6 @@ import {
   Button,
   CircularProgress,
   Dialog,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   TextField,
   Typography,
 } from '@mui/material'
@@ -21,12 +14,11 @@ import TabPanel from '@mui/lab/TabPanel'
 import { useState } from 'react'
 import { createBulkCodes } from '../services/createBulkCodes'
 import Link from 'next/link'
-import { useQuery, UseQueryResult } from 'react-query'
+import { useQuery } from 'react-query'
 import { AxiosError } from 'axios'
 import { logger } from '../lib/logger'
 import getAllEntries from '../services/getAllEntries'
 import { Entry } from '../lib/entities/entry.entity'
-import { Model } from '../lib/entities/abcModel'
 import { User } from '../lib/entities/user.entity'
 import { BaseTable } from '../components/admin/BaseTable'
 import getAllUsers from '../services/getAllUsers'
@@ -48,10 +40,10 @@ export default function Admin() {
   }
   const maxPages = 10
   const entriesQuery = useQuery<Entry[], AxiosError>(['all_entries'], () =>
-    getAllEntries(),
+    getAllEntries()
   )
   const usersQuery = useQuery<User[], AxiosError>(['all_users'], () =>
-    getAllUsers(),
+    getAllUsers()
   )
 
   const [numPages, setNumPages] = useState<number | undefined>(1)
@@ -64,7 +56,7 @@ export default function Admin() {
       enabled: false,
       onSuccess: downloadCodes,
       onError: (err) => setErrorMessage(err.message),
-    },
+    }
   )
 
   function downloadCodes(pdfData: Blob) {
