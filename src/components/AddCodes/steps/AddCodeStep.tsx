@@ -1,17 +1,11 @@
-import {
-  FormControl,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material'
 import { MuiOtpInput } from 'mui-one-time-password-input'
 import { useEffect } from 'react'
-import { AddCodeForm } from '../../../../types/general'
+import { AddCodeForm, ApiRes } from '../../../../types/general'
 import fetchItem from '../../../services/fetchItem'
 import AddCodeContentWrapper from '../AddCodeContentWrapper'
 import { useForm } from '../AddCodeModal'
+import axios from 'axios'
 
 export default function AddCodeStep({
   isGiving,
@@ -70,13 +64,19 @@ async function validate(form: AddCodeForm) {
     return 'Code Must Be 6 Characters'
   }
 
-  const res = await fetchItem(form.code)
-  if (res.error) {
-    return res.error
+  const check = await fetchItem(form.code)
+  if (check.error) {
+    return check.error
   }
-
-  if (!res.data) {
-    return 'Invalid Code'
+  if (!check.data) {
+    const res = await axios
+      .post<ApiRes<void>>('/api/item/create', {
+        code: form.code,
+      })
+      .then((r) => r.data)
+    if (res.error) {
+      return res.error
+    }
   }
 
   return ''
