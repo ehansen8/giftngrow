@@ -7,6 +7,7 @@ import {
   FormControlLabel,
   Link,
   Box,
+  Grid,
 } from '@mui/material'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
@@ -34,58 +35,71 @@ function Login() {
       className='rounded-md mt-4 flex flex-row box-border'
       style={{ backgroundColor: 'white' }}
     >
-      <Box
-        className='w-1/2 rounded-l-md p-5'
-        sx={{ bgcolor: '#006a68' }}
-      >
-        <Typography
-          marginBottom={2}
-          variant='h5'
-          color='white'
-          textAlign='center'
+      <Grid container>
+        <Grid
+          item
+          className='rounded-l-md p-5'
+          sx={{ bgcolor: '#006a68' }}
+          xs={12}
+          sm={6}
         >
-          Why create an account?
-        </Typography>
-        <List>
-          {bullets.map((text, idx) => {
-            return (
-              <ListItem key={idx}>
-                <ListItemIcon>
-                  <CheckIcon color='primary' />
-                </ListItemIcon>
-                <ListItemText
-                  primary={text}
-                  color='primary'
-                  primaryTypographyProps={{ color: 'white' }}
-                />
-              </ListItem>
-            )
-          })}
-        </List>
-      </Box>
-      <div className='flex flex-wrap flex-col gap-3 content-center p-4 w-1/2'>
-        <Typography
-          variant='h5'
-          textAlign='center'
-          color='primary'
-        >
-          Login
-        </Typography>
-        <GoogleButton width={buttonWidth} />
-        <Divider>or</Divider>
-        <LoginForm />
-        <div className='text-center'>
-          Need an account?
-          <Link
-            className='ml-3 no-underline'
-            fontSize={14}
-            color='primary'
-            href='/auth/signup'
+          <Typography
+            marginBottom={2}
+            variant='h5'
+            color='white'
+            textAlign='center'
           >
-            Sign Up
-          </Link>
-        </div>
-      </div>
+            Why create an account?
+          </Typography>
+          <List>
+            {bullets.map((text, idx) => {
+              return (
+                <ListItem key={idx}>
+                  <ListItemIcon>
+                    <CheckIcon color='primary' />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={text}
+                    color='primary'
+                    primaryTypographyProps={{ color: 'white' }}
+                  />
+                </ListItem>
+              )
+            })}
+          </List>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          alignContent='center'
+          display='flex'
+          flexDirection='column'
+          className='flex-wrap gap-3 p-4'
+        >
+          <Typography
+            variant='h5'
+            textAlign='center'
+            color='primary'
+          >
+            Login
+          </Typography>
+          <GoogleButton width={buttonWidth} />
+          <Divider>or</Divider>
+          <LoginForm />
+          <div className='text-center'>
+            Need an account?
+            <Link
+              className='ml-3 no-underline'
+              fontSize={14}
+              color='primary'
+              href='/auth/signup'
+            >
+              Sign Up
+            </Link>
+          </div>
+        </Grid>
+      </Grid>
     </main>
   )
 }

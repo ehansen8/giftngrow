@@ -134,12 +134,29 @@ export default function NavBar({
                   onClick={handleCloseNavMenu}
                   LinkComponent={Link}
                   href={page.url}
-                  sx={menuButtonStyle}
+                  sx={buttonStyle}
                   target={page.label == 'Home' ? '_blank' : ''}
                 >
                   {page.label}
                 </Button>
               ))}
+              {isAdmin && (
+                <Button
+                  className={activeLink('/admin')}
+                  key='admin'
+                  href='/admin'
+                  sx={buttonStyle}
+                  LinkComponent={Link}
+                  color='primary'
+                >
+                  Admin
+                </Button>
+              )}
+              <AuthButton
+                router={router}
+                status={status}
+                activeClass={activeLink('/auth/login')}
+              />
             </div>
           </Menu>
         </Box>
