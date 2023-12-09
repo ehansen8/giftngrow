@@ -1,26 +1,25 @@
+import CheckIcon from '@mui/icons-material/Check'
 import {
-  Typography,
   Button,
-  Divider,
-  TextField,
   Checkbox,
+  Divider,
   FormControlLabel,
-  Link,
-  Box,
   Grid,
+  Link,
+  TextField,
+  Typography,
 } from '@mui/material'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
-import CheckIcon from '@mui/icons-material/Check'
-import dynamic from 'next/dynamic'
 import { signIn } from 'next-auth/react'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
 import { FormEvent, useState } from 'react'
 import { GoogleButton } from '../../components/GoogleButton'
-import { useRouter } from 'next/router'
-import { sendRecoveryCode } from '../../services/sendRecoveryCode'
 import { sendCofirmationCode } from '../../services/sendConfirmationCode'
+import { sendRecoveryCode } from '../../services/sendRecoveryCode'
 
 const bullets = [
   "Never miss a beat: Each time your item is passed on, you'll receive an email notification that it's traveled.",
@@ -29,7 +28,7 @@ const bullets = [
 ]
 
 function Login() {
-  const buttonWidth = '250'
+  const buttonWidth = 250
   return (
     <main
       className='rounded-md mt-4 flex flex-row box-border'
@@ -109,7 +108,7 @@ const LoginForm = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
-    undefined,
+    undefined
   )
 
   async function handleSubmit(e: FormEvent) {
@@ -131,7 +130,7 @@ const LoginForm = () => {
         sendCofirmationCode({ email: email })
         router.push(
           { pathname: '/auth/verify', query: { email: email } },
-          '/auth/verify',
+          '/auth/verify'
         )
         return
       }
@@ -142,7 +141,7 @@ const LoginForm = () => {
             pathname: '/auth/recover',
             query: { email: email, isMigrated: true },
           },
-          '/auth/verify',
+          '/auth/verify'
         )
         return
       }

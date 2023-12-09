@@ -1,8 +1,14 @@
-export function GoogleButton({ width }: { width: string }) {
-  const renderButton = (parent: HTMLDivElement) => {
+import { useEffect, useRef } from 'react'
+
+export function GoogleButton({ width }: { width: number }) {
+  const parentRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
     const { google } = window
+    if (parentRef.current === null) {
+      return
+    }
     if (google) {
-      google.accounts.id.renderButton(parent, {
+      google.accounts.id.renderButton(parentRef.current, {
         type: 'standard',
         shape: 'pill',
         theme: 'outline',
@@ -13,7 +19,6 @@ export function GoogleButton({ width }: { width: string }) {
         logo_alignment: 'left',
       })
     }
-  }
-
-  return <div ref={renderButton}></div>
+  }, [width])
+  return <div ref={parentRef}></div>
 }
