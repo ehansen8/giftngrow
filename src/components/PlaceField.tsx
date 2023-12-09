@@ -1,11 +1,12 @@
-import Box from '@mui/material/Box'
-import TextField from '@mui/material/TextField'
-import Autocomplete from '@mui/material/Autocomplete'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
+import Autocomplete from '@mui/material/Autocomplete'
+import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
+import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import parse from 'autosuggest-highlight/parse'
 import { debounce } from '@mui/material/utils'
+import parse from 'autosuggest-highlight/parse'
+import { find } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
 import { Coords } from '../../types/general'
 import { geocode } from '../utils/geocode'
@@ -48,16 +49,16 @@ export default function PlaceField({
       debounce(
         (
           request: google.maps.places.AutocompletionRequest,
-          callback: (results?: readonly PlaceType[]) => void,
+          callback: (results?: readonly PlaceType[]) => void
         ) => {
           if (autocompleteService.current) {
             //@ts-ignore
             autocompleteService.current.getPlacePredictions(request, callback)
           }
         },
-        400,
+        400
       ),
-    [],
+    []
   )
 
   useEffect(() => {
@@ -78,7 +79,6 @@ export default function PlaceField({
 
     const autocompleteOptions: Partial<google.maps.places.AutocompletionRequest> =
       {
-        componentRestrictions: { country: ['us'] },
         types: ['(cities)'],
       }
     fetch(
@@ -97,7 +97,7 @@ export default function PlaceField({
 
           setOptions(newOptions)
         }
-      },
+      }
     )
 
     return () => {
@@ -108,8 +108,22 @@ export default function PlaceField({
   async function handleChange(event: any, newValue: PlaceType | null) {
     setOptions(newValue ? [newValue, ...options] : options)
     setValue(newValue)
-    setCity(newValue?.terms[0].value ?? '')
-    setState(newValue?.terms[1].value ?? '')
+    let address: ReturnType<typeof extractAddressComponents> = {
+      city: '',
+      adminArea: '',
+      country: '',
+    }
+    if (newValue?.place_id) {
+      const { place } = await new google.maps.places.Place({
+        id: newValue?.place_id,
+      }).fetchFields({ fields: ['addressComponents'] })
+
+      address = extractAddressComponents(place.addressComponents ?? [])
+    }
+    console.log(address)
+    setCity(address.city)
+    setState(address.adminArea)
+
     const placeId = newValue?.place_id ?? ''
     setPlaceId(placeId)
     setCoords(await geocode({ placeId }))
@@ -148,7 +162,7 @@ export default function PlaceField({
           matches.map((match: any) => [
             match.offset,
             match.offset + match.length,
-          ]),
+          ])
         )
 
         return (
@@ -189,4 +203,27 @@ export default function PlaceField({
       }}
     />
   )
+}
+
+function extractAddressComponents(
+  addressComponents: google.maps.places.AddressComponent[]
+) {
+  const locality = find(addressComponents, ({ types }) =>
+    types.includes('locality')
+  )
+  const adminArea3 = find(addressComponents, ({ types }) =>
+    types.includes('administrative_area_level_3')
+  )
+  const adminArea1 = find(addressComponents, ({ types }) =>
+    types.includes('administrative_area_level_1')
+  )
+  const country = find(addressComponents, ({ types }) =>
+    types.includes('country')
+  )
+
+  return {
+    city: locality?.longText ?? adminArea3?.longText ?? '',
+    adminArea: adminArea1?.longText ?? '',
+    country: country?.longText ?? '',
+  }
 }
