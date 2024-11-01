@@ -5,7 +5,7 @@ describe('StatsCard', () => {
   it('renders card value and body text', () => {
     const card = {
       value: 42,
-      body: 'States',
+      body: 'States and Countries',
     }
     const { getByText } = render(<StatsCard card={card} />)
     expect(getByText(card.value.toString())).toBeInTheDocument()

@@ -1,9 +1,9 @@
-import { IEntry } from '../../../lib/entities/entry.entity'
 import { AxiosError } from 'axios'
 import { UseQueryResult } from 'react-query'
+import { IEntry } from '../../../lib/entities/entry.entity'
 import { StatsType } from '../../../lib/entities/stats.entity'
-import { useTrackingStore } from '../../../stores/trackingStore'
 import { useGetEntriesQuery } from '../../../queries/getEntriesQuery'
+import { useTrackingStore } from '../../../stores/trackingStore'
 import { StatsCard } from './StatsCard'
 import { StatsTitle } from './StatsTitle'
 
@@ -53,7 +53,7 @@ export function StatsGrid({
 function getGlobalStats({ states, cities, times_gifted }: StatsType) {
   return [
     { value: cities, body: 'Cities' },
-    { value: states, body: 'States' },
+    { value: states, body: 'States and Countries' },
     { value: times_gifted, body: 'Total Entries' },
   ]
 }
@@ -70,7 +70,7 @@ function calcStats(entries: IEntry[]) {
 
   return [
     { value: cities.size, body: 'Cities' },
-    { value: states.size, body: 'States' },
+    { value: states.size, body: 'States and Countries' },
     { value: entries.length, body: 'Total Entries' },
   ]
 }
