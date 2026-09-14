@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { ReactNode } from 'react'
 import Footer from './Footer'
 import NavBar from './NavBar'
-import { OneTap } from './OneTap'
+import { GoogleIdentity } from './GoogleIdentity'
 import TestSiteAlert from './TestSiteAlert'
 
 export default function Layout({
@@ -26,7 +26,7 @@ export default function Layout({
           href='/favicon.ico'
         />
       </Head>
-      <OneTap />
+      <GoogleIdentity />
       <NavBar childNav={childNav} />
       <TestSiteAlert />
       {children}

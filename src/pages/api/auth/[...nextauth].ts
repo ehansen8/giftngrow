@@ -1,7 +1,6 @@
 import NextAuth, { AuthOptions, DefaultUser } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { User } from '../../../lib/entities/user.entity'
-import { entityManager } from '../../../lib/entityManager'
+import { ensureUser } from '../../../lib/ensureUser'
 import { serverInitiateAuth } from '../../../lib/cognitoManager'
 import { JWT } from 'next-auth/jwt'
 import jwtDecode from 'jwt-decode'
@@ -13,25 +12,6 @@ interface SpecialUser extends DefaultUser {
 export const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
-    CredentialsProvider({
-      id: 'google',
-      name: 'Google',
-      credentials: { credential: { type: 'text' } },
-      authorize: async (credentials) => {
-        const token = credentials?.credential
-        //const header = jwtDecode(token as string, { header: true }) as any
-        const data = jwtDecode(token as string) as any
-        const { email, name, given_name, family_name } = data
-        const user: SpecialUser = {
-          id: '',
-          email: email,
-          givenName: given_name,
-          familyName: family_name,
-          name: given_name,
-        }
-        return user
-      },
-    }),
     CredentialsProvider({
       id: 'cognito',
       name: 'Cognito',
@@ -76,13 +56,7 @@ export const authOptions: AuthOptions = {
     },
     async jwt({ token, user }: { token: JWT; user?: SpecialUser }) {
       if (user && user.email) {
-        const dbUser = new User(user.email)
-        dbUser.firstName = user?.givenName
-
-        const foundUser = await entityManager.findOne(dbUser)
-        if (!foundUser) {
-          entityManager.create(dbUser)
-        }
+        await ensureUser({ email: user.email, firstName: user.givenName })
       }
       return token
     },
