@@ -6,10 +6,10 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import { debounce } from '@mui/material/utils'
 import parse from 'autosuggest-highlight/parse'
-import { find } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
 import { Coords } from '../../types/general'
 import { geocode } from '../utils/geocode'
+import { resolveAddress } from '../utils/resolveAddress'
 
 type service = { current: null | google.maps.places.AutocompleteService }
 const autocompleteService: service = { current: null }
@@ -108,19 +108,7 @@ export default function PlaceField({
   async function handleChange(event: any, newValue: PlaceType | null) {
     setOptions(newValue ? [newValue, ...options] : options)
     setValue(newValue)
-    let address: ReturnType<typeof extractAddressComponents> = {
-      city: '',
-      adminArea: '',
-      country: '',
-    }
-    if (newValue?.place_id) {
-      const { place } = await new google.maps.places.Place({
-        id: newValue?.place_id,
-      }).fetchFields({ fields: ['addressComponents'] })
-
-      address = extractAddressComponents(place.addressComponents ?? [])
-    }
-    console.log(address)
+    const address = await resolveAddress(newValue)
     setCity(address.city)
     setState(address.adminArea)
 
@@ -203,27 +191,4 @@ export default function PlaceField({
       }}
     />
   )
-}
-
-function extractAddressComponents(
-  addressComponents: google.maps.places.AddressComponent[]
-) {
-  const locality = find(addressComponents, ({ types }) =>
-    types.includes('locality')
-  )
-  const adminArea3 = find(addressComponents, ({ types }) =>
-    types.includes('administrative_area_level_3')
-  )
-  const adminArea1 = find(addressComponents, ({ types }) =>
-    types.includes('administrative_area_level_1')
-  )
-  const country = find(addressComponents, ({ types }) =>
-    types.includes('country')
-  )
-
-  return {
-    city: locality?.longText ?? adminArea3?.longText ?? '',
-    adminArea: adminArea1?.longText ?? '',
-    country: country?.longText ?? '',
-  }
 }
