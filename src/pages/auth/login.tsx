@@ -27,8 +27,18 @@ const bullets = [
   'Stay organized: Keep all your tracked items in one convenient location by creating an account.',
 ]
 
+const SIGN_IN_ERROR_MESSAGES: Record<string, string> = {
+  csrf: 'That sign-in attempt expired. Try again.',
+  missing_credential: 'Google did not send a sign-in token. Try again.',
+  invalid_token: 'Google sign-in could not be verified. Try again.',
+  unverified_email: 'Verify your email with Google before signing in.',
+}
+
 function Login() {
   const buttonWidth = 250
+  const { error } = useRouter().query
+  const signInError =
+    typeof error === 'string' ? SIGN_IN_ERROR_MESSAGES[error] : undefined
   return (
     <main
       className='rounded-md mt-4 flex flex-row box-border'
@@ -83,6 +93,15 @@ function Login() {
           >
             Login
           </Typography>
+          {signInError && (
+            <Typography
+              color='error'
+              fontSize={12}
+              textAlign='center'
+            >
+              {signInError}
+            </Typography>
+          )}
           <GoogleButton width={buttonWidth} />
           <Divider>or</Divider>
           <LoginForm />
