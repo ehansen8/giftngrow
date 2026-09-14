@@ -27,6 +27,8 @@ Tests live in `__tests__/` mirroring `src/`, use Testing Library with jsdom, and
 
 Three long-lived branches, each an Amplify environment: `dev` -> `test` -> `prod`. Merge forward across them. `AWS_BRANCH` / `NEXT_PUBLIC_BRANCH` equal the branch name, and code branches on `=== 'prod'` for: the yellow test-site banner (`TestSiteAlert`), NextAuth debug logging, and the downloaded PDF filename. All three environments share one AWS account and region (`us-east-2`) but have separate DynamoDB tables via `TABLE_NAME`.
 
+Amplify's build image must be Amazon Linux 2023 (set per app in the console under build settings). The Node version used for the build is pinned with `nvm use` in `amplify.yml`. Amplify has dropped Node 16 and 18, and the older Amazon Linux 2 image cannot run Node 20 or later.
+
 ## Architecture
 
 ### Data layer: single-table DynamoDB with a home-grown entity mapper
