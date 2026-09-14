@@ -18,7 +18,7 @@ import { cognitoClient } from './cognitoClient'
 const client = cognitoClient
 
 const baseInput = {
-  AuthFlow: 'ADMIN_USER_PASSWORD_AUTH',
+  AuthFlow: 'ADMIN_USER_PASSWORD_AUTH' as const,
   UserPoolId: 'us-east-2_kaJAEgp0b', //TODO add to process.env
   ClientId: process.env.COGNITO_CLIENT_ID,
 }
