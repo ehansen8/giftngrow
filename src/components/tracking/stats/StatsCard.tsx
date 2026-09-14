@@ -10,7 +10,8 @@ export function StatsCard({ card }: StatsCardProps): JSX.Element {
       sx={{
         backgroundColor: '#4a607b',
         aspectRatio: '1/1',
-        height: '100%',
+        width: '100%',
+        maxWidth: 160,
         color: 'white',
       }}
       elevation={4}
@@ -28,7 +29,7 @@ export function StatsCard({ card }: StatsCardProps): JSX.Element {
           <Typography
             variant='body1'
             textAlign='center'
-            noWrap
+            lineHeight={1.2}
             className='mb-4'
           >
             {card.body}

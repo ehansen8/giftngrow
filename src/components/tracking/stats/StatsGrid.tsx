@@ -33,8 +33,9 @@ export function StatsGrid({
           width: '100%',
           height: 'max-content',
           gridTemplateRows: 'repeat(1, auto)',
-          gridTemplateColumns: 'repeat(3, minmax(auto, max-content))',
-          justifyContent: 'space-around',
+          gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+          justifyItems: 'center',
+          columnGap: '0.5rem',
         }}
       >
         {statCards.map((card, idx) => {
